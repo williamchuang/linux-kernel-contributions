@@ -1,0 +1,108 @@
+From 3a739d9fa148122950072a92b8e601b1ecce7060 Mon Sep 17 00:00:00 2001
+From: William Chuang <founder@logarcheon.com>
+Date: Mon, 16 Nov 2026 04:54:06 +0000
+Subject: [PATCH 2/2] lib/assoc_array: fix lookups after splitting a root
+ shortcut
+
+assoc_array_insert_mid_shortcut() splits a shortcut when a newly inserted
+leaf diverges from it partway along.  When the divergence point (diff)
+lies exactly one segment past the level at which the shortcut was
+entered, the function takes its "no pre-shortcut" path and attaches the
+new node directly in the shortcut's old place.
+
+For a shortcut that hangs off a parent node that is correct: the parent
+already consumes the entering segment, so the new node ends up indexed at
+the right level.  For a shortcut at the root of the tree
+(back_pointer == NULL) there is no parent to consume that segment, so the
+new node is installed as the root and walked from level 0 even though it
+was built to be indexed at level 'diff'.  Every node below it is then
+walked one segment too shallow and assoc_array_find() can no longer reach
+most of the leaves.  The leaves are still present -- assoc_array_iterate()
+visits them all and nr_leaves_on_tree stays correct -- so the data is
+intact but becomes unfindable.
+
+This is not seen in normal use because index keys are recommended to
+begin with a hash, which scatters them and makes a shared multi-segment
+prefix with an earlier-diverging sibling very unlikely.  With poorly
+scattered keys, which the documentation says must still work correctly,
+as few as 18 insertions can lose lookups.
+
+Create the pre-shortcut in the root case as well, so the leading
+segment(s) that the shortcut skipped stay covered and the new node is
+indexed at the correct level.  Non-root shortcuts are unaffected: the
+added condition is guarded by back_pointer == NULL.
+
+Add a KUnit regression case, aa_test_root_shortcut_split, that inserts
+18 poorly scattered keys and checks every one is still found; it fails
+before this change and passes after.
+
+Fixes: 3cb989501c26 ("Add a generic associative array implementation.")
+Signed-off-by: William Chuang <founder@logarcheon.com>
+---
+ lib/assoc_array.c             |  3 ++-
+ lib/tests/assoc_array_kunit.c | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/lib/assoc_array.c b/lib/assoc_array.c
+index b6c9723e1..272aeeedd 100644
+--- a/lib/assoc_array.c
++++ b/lib/assoc_array.c
+@@ -844,7 +844,8 @@ static bool assoc_array_insert_mid_shortcut(struct assoc_array_edit *edit,
+ 	 * parent.
+ 	 */
+ 	level += ASSOC_ARRAY_LEVEL_STEP;
+-	if (diff > level) {
++	if (diff > level ||
++	    (!shortcut->back_pointer && diff > level - ASSOC_ARRAY_LEVEL_STEP)) {
+ 		pr_devel("pre-shortcut %d...%d\n", level, diff);
+ 		keylen = round_up(diff, ASSOC_ARRAY_KEY_CHUNK_SIZE);
+ 		keylen >>= ASSOC_ARRAY_KEY_CHUNK_SHIFT;
+diff --git a/lib/tests/assoc_array_kunit.c b/lib/tests/assoc_array_kunit.c
+index bd253b6f6..427c71d37 100644
+--- a/lib/tests/assoc_array_kunit.c
++++ b/lib/tests/assoc_array_kunit.c
+@@ -936,6 +936,33 @@ static void aa_test_random_ops(struct kunit *test)
+ 	}
+ }
+ 
++/*
++ * Poorly scattered keys: 17 keys share an 8-bit prefix and cluster behind a
++ * shortcut at the root of the tree, then one key diverges a nibble earlier and
++ * splits that root shortcut.  The documentation permits poor scattering (it only
++ * widens and deepens the tree), so every key must still be found.
++ */
++static void aa_test_root_shortcut_split(struct kunit *test)
++{
++	struct aa_ctx *ctx = aa_ctx_new(test, 18, 900);
++	unsigned int i;
++
++	for (i = 0; i < ctx->nr_slots; i++) {
++		struct aa_key *key = &ctx->slots[i].key;
++
++		memset(key, 0, sizeof(*key));
++		aa_key_set_nibble(key, 4, i < 17 ? 0 : 1);	/* nibble 1 */
++		aa_key_set_nibble(key, 8, i & 0xf);		/* nibble 2 */
++		aa_key_set_nibble(key, 12, (i >> 4) & 0xf);	/* nibble 3 */
++		key->w[AA_KEY_WORDS - 1] = 0x100 + i;		/* globally unique */
++	}
++	for (i = 0; i < ctx->nr_slots; i++)
++		aa_insert(ctx, i);
++	aa_check(ctx);
++	aa_check_near_misses(ctx, 200);
++	aa_ctx_finish(ctx);
++}
++
+ static struct kunit_case assoc_array_test_cases[] = {
+ 	KUNIT_CASE(aa_test_empty),
+ 	KUNIT_CASE(aa_test_replace),
+@@ -948,6 +975,7 @@ static struct kunit_case assoc_array_test_cases[] = {
+ 	KUNIT_CASE_PARAM(aa_test_shortcut, aa_shortcut_gen_params),
+ 	KUNIT_CASE(aa_test_gc_fold),
+ 	KUNIT_CASE(aa_test_gc_all_or_nothing),
++	KUNIT_CASE(aa_test_root_shortcut_split),
+ 	KUNIT_CASE_SLOW(aa_test_random_ops),
+ 	{}
+ };
+-- 
+2.43.0
+

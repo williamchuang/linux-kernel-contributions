@@ -1,0 +1,1059 @@
+From 9d3980248334a3c521a31ce2d69eaf955cbcb43e Mon Sep 17 00:00:00 2001
+From: William Chuang <founder@logarcheon.com>
+Date: Mon, 16 Nov 2026 04:54:06 +0000
+Subject: [PATCH 1/2] lib/assoc_array: add KUnit test suite
+
+lib/assoc_array.c has had no tests since it was added in 2013, though
+it indexes the keys held in every keyring and has needed several
+correctness fixes over the years.  Eric Biggers noted the gap while
+reviewing one such fix and observed that the code runs easily in
+userspace, so KUnit is a good fit.
+
+Add a suite that drives an associative array through insertion,
+replacement, deletion, clearance, iteration and garbage collection
+while keeping a parallel model of the expected contents.  After each
+operation it checks that every present key is found, every absent key
+is not, iteration visits each object exactly once, and
+nr_leaves_on_tree matches the model.  Objects are reference counted the
+way keyrings count keys, so a leak, double free or premature free shows
+up as a non-zero live count or a refcount warning; the suite passes
+under KASAN.
+
+Keys are generated in several layouts (dense integers, uniformly
+random, high-bit-only and sparse clusters) to drive the tree into wide
+nodes, deep clusters and shortcuts, and the index-key space is kept
+small enough that near-miss probes exercise shortcut matching.  Some
+cases rebuild the tree shapes behind earlier fixes and name the commit
+they guard: the node split of commit ea6789980fda ("assoc_array: Fix a
+buggy node-splitting case", CVE-2017-12193), shortcut creation of
+commit bb2ba2d75a2d ("assoc_array: Fix shortcut creation"), the
+leaf/meta comparison of commit 8d4a2ec1e0b4 ("assoc_array: don't call
+compare_object() on a node") and the final-word trim of commit
+a82c8a05e86f ("assoc_array: trim the final shortcut word using the
+current chunk end").  Reverting any of those four fixes makes the suite
+fail.
+
+Run with:
+
+  ./tools/testing/kunit/kunit.py run assoc_array
+
+Signed-off-by: William Chuang <founder@logarcheon.com>
+---
+ lib/Kconfig.debug             |  17 +
+ lib/tests/Makefile            |   1 +
+ lib/tests/assoc_array_kunit.c | 963 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 981 insertions(+)
+ create mode 100644 lib/tests/assoc_array_kunit.c
+
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 2d22638ec..d68f29764 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2830,6 +2830,23 @@ config SYSCTL_KUNIT_TEST
+ 
+ 	  If unsure, say N.
+ 
++config ASSOC_ARRAY_KUNIT_TEST
++	tristate "KUnit test for the generic associative array" if !KUNIT_ALL_TESTS
++	depends on KUNIT
++	select ASSOCIATIVE_ARRAY
++	default KUNIT_ALL_TESTS
++	help
++	  This builds the KUnit test suite for the generic associative array
++	  (lib/assoc_array.c), which indexes the keys held in keyrings.
++	  It checks insertion, deletion, garbage collection and lookup
++	  against a model of the expected contents, including the tree
++	  shapes behind earlier fixes to the implementation.
++
++	  For more information on KUnit and unit tests in general please refer
++	  to the KUnit documentation in Documentation/dev-tools/kunit/.
++
++	  If unsure, say N.
++
+ config ERRSEQ_KUNIT_TEST
+ 	tristate "KUnit test for errseq" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+diff --git a/lib/tests/Makefile b/lib/tests/Makefile
+index df0537e1b..3e9c4a67d 100644
+--- a/lib/tests/Makefile
++++ b/lib/tests/Makefile
+@@ -5,6 +5,7 @@
+ # KUnit tests
+ CFLAGS_bitfield_kunit.o := $(DISABLE_STRUCTLEAK_PLUGIN)
+ obj-$(CONFIG_842_DECOMPRESS_KUNIT_TEST) += 842_decompress_kunit.o
++obj-$(CONFIG_ASSOC_ARRAY_KUNIT_TEST) += assoc_array_kunit.o
+ obj-$(CONFIG_BASE64_KUNIT) += base64_kunit.o
+ obj-$(CONFIG_BITOPS_KUNIT) += bitops_kunit.o
+ obj-$(CONFIG_BITFIELD_KUNIT) += bitfield_kunit.o
+diff --git a/lib/tests/assoc_array_kunit.c b/lib/tests/assoc_array_kunit.c
+new file mode 100644
+index 000000000..bd253b6f6
+--- /dev/null
++++ b/lib/tests/assoc_array_kunit.c
+@@ -0,0 +1,963 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * KUnit tests for the generic associative array (lib/assoc_array.c).
++ *
++ * Every test keeps a model of what the array should hold and, after each
++ * operation, checks the array against it: every present key must be found,
++ * every absent key must not be, iteration must visit each object exactly
++ * once and nr_leaves_on_tree must equal the number of present keys.
++ * Objects are reference counted the way keyrings count keys, so leaks,
++ * double frees and premature frees show up as a non-zero live count or a
++ * refcount warning.
++ *
++ * Several cases rebuild the tree shapes behind earlier fixes to
++ * lib/assoc_array.c; each such case names the commit it guards.
++ */
++
++#include <kunit/test.h>
++#include <kunit/test-bug.h>
++#include <linux/assoc_array.h>
++#include <linux/bitops.h>
++#include <linux/module.h>
++#include <linux/prandom.h>
++#include <linux/rcupdate.h>
++#include <linux/refcount.h>
++#include <linux/slab.h>
++
++#define AA_KEY_WORDS	3
++#define AA_KEY_BITS	(AA_KEY_WORDS * BITS_PER_LONG)
++#define AA_MAGIC	0x61737363UL	/* "assc" */
++
++struct aa_key {
++	unsigned long w[AA_KEY_WORDS];
++};
++
++struct aa_ctx;
++
++struct aa_obj {
++	unsigned long magic;
++	struct aa_key key;
++	refcount_t ref;
++	struct aa_ctx *ctx;
++	unsigned int idx;	/* model slot */
++	bool keep;		/* gc verdict */
++};
++
++/* One model slot per key the test may use. */
++struct aa_slot {
++	struct aa_key key;
++	struct aa_obj *obj;	/* NULL if the key is absent */
++};
++
++struct aa_ctx {
++	struct kunit *test;
++	struct assoc_array array;
++	struct aa_slot *slots;
++	unsigned int nr_slots;
++	unsigned int *seen;	/* iteration visit counts */
++	atomic_t live;		/* objects allocated and not yet freed */
++	struct rnd_state rnd;
++};
++
++/* ---------- Operations table ---------- */
++
++static const struct aa_obj *aa_check_obj(const void *object)
++{
++	const struct aa_obj *obj = object;
++
++	if (obj->magic != AA_MAGIC)
++		kunit_fail_current_test("method called on a non-object %p", object);
++	return obj;
++}
++
++static unsigned long aa_key_chunk(const struct aa_key *key, int level)
++{
++	int i = level / ASSOC_ARRAY_KEY_CHUNK_SIZE;
++
++	return i < AA_KEY_WORDS ? key->w[i] : 0;
++}
++
++static unsigned long aa_get_key_chunk(const void *index_key, int level)
++{
++	return aa_key_chunk(index_key, level);
++}
++
++static unsigned long aa_get_object_key_chunk(const void *object, int level)
++{
++	return aa_key_chunk(&aa_check_obj(object)->key, level);
++}
++
++static bool aa_compare_object(const void *object, const void *index_key)
++{
++	return !memcmp(&aa_check_obj(object)->key, index_key, sizeof(struct aa_key));
++}
++
++static int aa_diff_objects(const void *object, const void *index_key)
++{
++	const struct aa_key *a = &aa_check_obj(object)->key;
++	const struct aa_key *b = index_key;
++	int i;
++
++	for (i = 0; i < AA_KEY_WORDS; i++) {
++		unsigned long x = a->w[i] ^ b->w[i];
++
++		if (x)
++			return i * BITS_PER_LONG + __ffs(x);
++	}
++	return -1;
++}
++
++static void aa_put(struct aa_obj *obj)
++{
++	if (refcount_dec_and_test(&obj->ref)) {
++		atomic_dec(&obj->ctx->live);
++		obj->magic = 0;
++		kfree(obj);
++	}
++}
++
++static void aa_free_object(void *object)
++{
++	aa_put(object);
++}
++
++static const struct assoc_array_ops aa_ops = {
++	.get_key_chunk		= aa_get_key_chunk,
++	.get_object_key_chunk	= aa_get_object_key_chunk,
++	.compare_object		= aa_compare_object,
++	.diff_objects		= aa_diff_objects,
++	.free_object		= aa_free_object,
++};
++
++/* ---------- Context and model ---------- */
++
++/*
++ * Runs when the test ends, even after a failed assertion, so that no RCU
++ * callback can reach the context after KUnit has freed it.
++ */
++static void aa_ctx_cleanup(void *data)
++{
++	struct aa_ctx *ctx = data;
++
++	assoc_array_destroy(&ctx->array, &aa_ops);
++	rcu_barrier();
++}
++
++static struct aa_ctx *aa_ctx_new(struct kunit *test, unsigned int nr_slots, u64 seed)
++{
++	struct aa_ctx *ctx = kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
++
++	KUNIT_ASSERT_NOT_NULL(test, ctx);
++	ctx->test = test;
++	ctx->nr_slots = nr_slots;
++	ctx->slots = kunit_kcalloc(test, nr_slots, sizeof(*ctx->slots), GFP_KERNEL);
++	ctx->seen = kunit_kcalloc(test, nr_slots, sizeof(*ctx->seen), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, ctx->slots);
++	KUNIT_ASSERT_NOT_NULL(test, ctx->seen);
++	assoc_array_init(&ctx->array);
++	atomic_set(&ctx->live, 0);
++	prandom_seed_state(&ctx->rnd, seed);
++	KUNIT_ASSERT_EQ(test, kunit_add_action_or_reset(test, aa_ctx_cleanup, ctx), 0);
++	return ctx;
++}
++
++static unsigned long aa_rand_long(struct aa_ctx *ctx)
++{
++	unsigned long v = prandom_u32_state(&ctx->rnd);
++
++#if BITS_PER_LONG == 64
++	v = (v << 32) | prandom_u32_state(&ctx->rnd);
++#endif
++	return v;
++}
++
++static unsigned int aa_rand_below(struct aa_ctx *ctx, unsigned int n)
++{
++	return prandom_u32_state(&ctx->rnd) % n;
++}
++
++/* The four bits of @key starting at @bit (a multiple of 4). */
++static unsigned long aa_key_nibble(const struct aa_key *key, int bit)
++{
++	return (key->w[bit / BITS_PER_LONG] >> (bit % BITS_PER_LONG)) & 0xf;
++}
++
++static void aa_key_set_nibble(struct aa_key *key, int bit, unsigned long val)
++{
++	int w = bit / BITS_PER_LONG, s = bit % BITS_PER_LONG;
++
++	key->w[w] &= ~(0xfUL << s);
++	key->w[w] |= (val & 0xf) << s;
++}
++
++/* Keep bits below @bit from @prefix and take the rest from @tail. */
++static void aa_key_splice(struct aa_key *key, const struct aa_key *prefix,
++			  const struct aa_key *tail, int bit)
++{
++	int i;
++
++	for (i = 0; i < AA_KEY_WORDS; i++) {
++		int lo = i * BITS_PER_LONG;
++		unsigned long mask;
++
++		if (bit <= lo)
++			mask = 0;
++		else if (bit >= lo + BITS_PER_LONG)
++			mask = ULONG_MAX;
++		else
++			mask = (1UL << (bit - lo)) - 1;
++		key->w[i] = (prefix->w[i] & mask) | (tail->w[i] & ~mask);
++	}
++}
++
++static void aa_random_key(struct aa_ctx *ctx, struct aa_key *key)
++{
++	int i;
++
++	for (i = 0; i < AA_KEY_WORDS; i++)
++		key->w[i] = aa_rand_long(ctx);
++}
++
++static struct aa_slot *aa_model_find(struct aa_ctx *ctx, const struct aa_key *key)
++{
++	unsigned int i;
++
++	for (i = 0; i < ctx->nr_slots; i++)
++		if (!memcmp(&ctx->slots[i].key, key, sizeof(*key)))
++			return &ctx->slots[i];
++	return NULL;
++}
++
++static unsigned int aa_model_count(struct aa_ctx *ctx)
++{
++	unsigned int i, n = 0;
++
++	for (i = 0; i < ctx->nr_slots; i++)
++		n += !!ctx->slots[i].obj;
++	return n;
++}
++
++static struct aa_obj *aa_obj_new(struct aa_ctx *ctx, unsigned int idx)
++{
++	struct aa_obj *obj = kzalloc_obj(*obj);
++
++	KUNIT_ASSERT_NOT_NULL(ctx->test, obj);
++	obj->magic = AA_MAGIC;
++	obj->key = ctx->slots[idx].key;
++	obj->ctx = ctx;
++	obj->idx = idx;
++	refcount_set(&obj->ref, 1);
++	atomic_inc(&ctx->live);
++	return obj;
++}
++
++/* ---------- Operations, each applied to both the array and the model ---------- */
++
++static void aa_insert(struct aa_ctx *ctx, unsigned int idx)
++{
++	struct aa_obj *obj = aa_obj_new(ctx, idx);
++	struct assoc_array_edit *edit;
++
++	edit = assoc_array_insert(&ctx->array, &aa_ops, &obj->key, obj);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(ctx->test, edit);
++	assoc_array_apply_edit(edit);
++	/* Any object previously at this key is now freed by the edit. */
++	ctx->slots[idx].obj = obj;
++}
++
++static void aa_delete(struct aa_ctx *ctx, unsigned int idx)
++{
++	struct assoc_array_edit *edit;
++
++	edit = assoc_array_delete(&ctx->array, &aa_ops, &ctx->slots[idx].key);
++	if (!ctx->slots[idx].obj) {
++		KUNIT_EXPECT_NULL(ctx->test, edit);
++		return;
++	}
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(ctx->test, edit);
++	assoc_array_apply_edit(edit);
++	ctx->slots[idx].obj = NULL;
++}
++
++static bool aa_gc_iterator(void *object, void *data)
++{
++	struct aa_obj *obj = object;
++
++	aa_check_obj(obj);
++	if (!obj->keep)
++		return false;
++	refcount_inc(&obj->ref);
++	return true;
++}
++
++/*
++ * Garbage collect, keeping the present keys for which @keep[i] is true.
++ * The verdicts are copied into the objects before the call, because a
++ * discarded object may be freed as soon as an RCU grace period ends.
++ */
++static void aa_gc(struct aa_ctx *ctx, const bool *keep)
++{
++	unsigned int i;
++
++	for (i = 0; i < ctx->nr_slots; i++)
++		if (ctx->slots[i].obj)
++			ctx->slots[i].obj->keep = keep[i];
++
++	KUNIT_ASSERT_EQ(ctx->test, assoc_array_gc(&ctx->array, &aa_ops,
++						  aa_gc_iterator, NULL), 0);
++
++	for (i = 0; i < ctx->nr_slots; i++)
++		if (!keep[i])
++			ctx->slots[i].obj = NULL;
++}
++
++static int aa_iterator(const void *object, void *data)
++{
++	struct aa_ctx *ctx = data;
++	const struct aa_obj *obj = aa_check_obj(object);
++
++	if (obj->idx < ctx->nr_slots)
++		ctx->seen[obj->idx]++;
++	return 0;
++}
++
++/* Check the array against the model. */
++static void aa_check(struct aa_ctx *ctx)
++{
++	struct kunit *test = ctx->test;
++	unsigned int i;
++
++	KUNIT_EXPECT_EQ(test, ctx->array.nr_leaves_on_tree, aa_model_count(ctx));
++
++	for (i = 0; i < ctx->nr_slots; i++) {
++		void *found = assoc_array_find(&ctx->array, &aa_ops,
++					       &ctx->slots[i].key);
++
++		KUNIT_EXPECT_PTR_EQ_MSG(test, found, ctx->slots[i].obj,
++					"slot %u", i);
++	}
++
++	memset(ctx->seen, 0, ctx->nr_slots * sizeof(*ctx->seen));
++	KUNIT_EXPECT_EQ(test, assoc_array_iterate(&ctx->array, aa_iterator, ctx), 0);
++	for (i = 0; i < ctx->nr_slots; i++)
++		KUNIT_EXPECT_EQ_MSG(test, ctx->seen[i], ctx->slots[i].obj ? 1U : 0U,
++				    "slot %u", i);
++}
++
++/* Probe with keys that differ from present keys in one random nibble. */
++static void aa_check_near_misses(struct aa_ctx *ctx, unsigned int probes)
++{
++	unsigned int n;
++
++	for (n = 0; n < probes; n++) {
++		const struct aa_slot *slot = &ctx->slots[aa_rand_below(ctx, ctx->nr_slots)];
++		const struct aa_slot *hit;
++		struct aa_key key = slot->key;
++		int bit = aa_rand_below(ctx, AA_KEY_BITS / 4) * 4;
++		void *found;
++
++		aa_key_set_nibble(&key, bit,
++				  aa_key_nibble(&key, bit) ^ (1 + aa_rand_below(ctx, 15)));
++		hit = aa_model_find(ctx, &key);
++		found = assoc_array_find(&ctx->array, &aa_ops, &key);
++		KUNIT_EXPECT_PTR_EQ_MSG(ctx->test, found, hit ? hit->obj : NULL,
++					"near miss of slot bit %d", bit);
++	}
++}
++
++/* Destroy the array and check that every object was freed exactly once. */
++static void aa_ctx_finish(struct aa_ctx *ctx)
++{
++	unsigned int i;
++
++	assoc_array_destroy(&ctx->array, &aa_ops);
++	KUNIT_EXPECT_NULL(ctx->test, ctx->array.root);
++	for (i = 0; i < ctx->nr_slots; i++)
++		ctx->slots[i].obj = NULL;
++	rcu_barrier();
++	KUNIT_EXPECT_EQ(ctx->test, atomic_read(&ctx->live), 0);
++}
++
++static void aa_shuffle(struct aa_ctx *ctx, unsigned int *order, unsigned int n)
++{
++	unsigned int i;
++
++	for (i = 0; i < n; i++)
++		order[i] = i;
++	for (i = n - 1; i > 0; i--) {
++		unsigned int j = aa_rand_below(ctx, i + 1);
++
++		swap(order[i], order[j]);
++	}
++}
++
++/* ---------- Basic API ---------- */
++
++static void aa_test_empty(struct kunit *test)
++{
++	struct aa_ctx *ctx = aa_ctx_new(test, 1, 1);
++
++	aa_random_key(ctx, &ctx->slots[0].key);
++	aa_check(ctx);
++	KUNIT_EXPECT_NULL(test, assoc_array_delete(&ctx->array, &aa_ops,
++						   &ctx->slots[0].key));
++	KUNIT_EXPECT_NULL(test, assoc_array_clear(&ctx->array, &aa_ops));
++	KUNIT_EXPECT_EQ(test, assoc_array_gc(&ctx->array, &aa_ops,
++					     aa_gc_iterator, NULL), 0);
++	aa_check(ctx);
++	aa_ctx_finish(ctx);
++}
++
++/* Replacing an object frees the old one once a grace period has passed. */
++static void aa_test_replace(struct kunit *test)
++{
++	struct aa_ctx *ctx = aa_ctx_new(test, 40, 2);
++	unsigned int i;
++
++	for (i = 0; i < ctx->nr_slots; i++) {
++		ctx->slots[i].key.w[0] = i;
++		aa_insert(ctx, i);
++	}
++	for (i = 0; i < ctx->nr_slots; i += 3)
++		aa_insert(ctx, i);
++	aa_check(ctx);
++	rcu_barrier();
++	KUNIT_EXPECT_EQ(test, atomic_read(&ctx->live), ctx->nr_slots);
++	aa_ctx_finish(ctx);
++}
++
++/* A cancelled edit leaves the array unchanged and the object to the caller. */
++static void aa_test_cancel(struct kunit *test)
++{
++	struct aa_ctx *ctx = aa_ctx_new(test, 40, 3);
++	struct assoc_array_edit *edit;
++	struct aa_obj *obj;
++	unsigned int i;
++
++	for (i = 0; i < ctx->nr_slots; i++)
++		aa_random_key(ctx, &ctx->slots[i].key);
++	for (i = 0; i < ctx->nr_slots - 1; i++)
++		aa_insert(ctx, i);
++
++	obj = aa_obj_new(ctx, ctx->nr_slots - 1);
++	edit = assoc_array_insert(&ctx->array, &aa_ops, &obj->key, obj);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, edit);
++	assoc_array_cancel_edit(edit);
++	aa_check(ctx);
++	KUNIT_EXPECT_EQ(test, refcount_read(&obj->ref), 1);
++	aa_put(obj);
++
++	edit = assoc_array_delete(&ctx->array, &aa_ops, &ctx->slots[0].key);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, edit);
++	assoc_array_cancel_edit(edit);
++	aa_check(ctx);
++
++	edit = assoc_array_clear(&ctx->array, &aa_ops);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, edit);
++	assoc_array_cancel_edit(edit);
++	aa_check(ctx);
++
++	aa_ctx_finish(ctx);
++}
++
++/*
++ * Insert with a NULL object and fill it in before applying, as
++ * __key_link_begin() and __key_link() do for keyrings.
++ */
++static void aa_test_insert_set_object(struct kunit *test)
++{
++	struct aa_ctx *ctx = aa_ctx_new(test, 64, 4);
++	unsigned int i;
++
++	for (i = 0; i < ctx->nr_slots; i++) {
++		struct assoc_array_edit *edit;
++		struct aa_obj *obj;
++
++		aa_random_key(ctx, &ctx->slots[i].key);
++		edit = assoc_array_insert(&ctx->array, &aa_ops, &ctx->slots[i].key, NULL);
++		KUNIT_ASSERT_NOT_ERR_OR_NULL(test, edit);
++		obj = aa_obj_new(ctx, i);
++		assoc_array_insert_set_object(edit, obj);
++		assoc_array_apply_edit(edit);
++		ctx->slots[i].obj = obj;
++	}
++	aa_check(ctx);
++	aa_ctx_finish(ctx);
++}
++
++static int aa_stop_iterator(const void *object, void *data)
++{
++	unsigned int *calls = data;
++
++	aa_check_obj(object);
++	return ++(*calls) == 5 ? 42 : 0;
++}
++
++/* Iteration stops at, and returns, the first non-zero callback result. */
++static void aa_test_iterate_stop(struct kunit *test)
++{
++	struct aa_ctx *ctx = aa_ctx_new(test, 100, 5);
++	unsigned int i, calls = 0;
++
++	for (i = 0; i < ctx->nr_slots; i++) {
++		aa_random_key(ctx, &ctx->slots[i].key);
++		aa_insert(ctx, i);
++	}
++	KUNIT_EXPECT_EQ(test, assoc_array_iterate(&ctx->array, aa_stop_iterator,
++						  &calls), 42);
++	KUNIT_EXPECT_EQ(test, calls, 5U);
++	aa_ctx_finish(ctx);
++}
++
++/* Clearing frees every object; the array can be reused afterwards. */
++static void aa_test_clear(struct kunit *test)
++{
++	struct aa_ctx *ctx = aa_ctx_new(test, 300, 6);
++	struct assoc_array_edit *edit;
++	unsigned int i;
++
++	for (i = 0; i < ctx->nr_slots; i++) {
++		ctx->slots[i].key.w[0] = i;
++		aa_insert(ctx, i);
++	}
++	edit = assoc_array_clear(&ctx->array, &aa_ops);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, edit);
++	assoc_array_apply_edit(edit);
++	for (i = 0; i < ctx->nr_slots; i++)
++		ctx->slots[i].obj = NULL;
++	aa_check(ctx);
++	rcu_barrier();
++	KUNIT_EXPECT_EQ(test, atomic_read(&ctx->live), 0);
++
++	for (i = 0; i < ctx->nr_slots; i += 2)
++		aa_insert(ctx, i);
++	aa_check(ctx);
++	aa_ctx_finish(ctx);
++}
++
++/* ---------- Key layouts ---------- */
++
++/*
++ * Index keys are consumed four bits per level, starting from the least
++ * significant bit of the first word.  Each layout below drives the tree
++ * into a different shape.
++ */
++enum aa_layout {
++	AA_DENSE,	/* small integers: wide, shallow nodes */
++	AA_RANDOM,	/* uniformly random keys */
++	AA_HIGH_BITS,	/* only the top nibble of each word varies: shortcuts */
++	AA_SPARSE,	/* 2 bits in 4 random nibbles vary: deep clusters */
++};
++
++struct aa_layout_param {
++	const char *name;
++	enum aa_layout layout;
++	unsigned int nr;
++};
++
++static const struct aa_layout_param aa_layout_params[] = {
++	{ "dense",	AA_DENSE,	600 },
++	{ "random",	AA_RANDOM,	600 },
++	{ "high-bits",	AA_HIGH_BITS,	300 },
++	{ "sparse",	AA_SPARSE,	250 },
++};
++
++KUNIT_ARRAY_PARAM_DESC(aa_layout, aa_layout_params, name);
++
++static void aa_fill_keys(struct aa_ctx *ctx, enum aa_layout layout)
++{
++	int nibbles[4];
++	unsigned int i, j;
++
++	for (j = 0; j < ARRAY_SIZE(nibbles); j++)
++		nibbles[j] = aa_rand_below(ctx, AA_KEY_BITS / 4) * 4;
++
++	for (i = 0; i < ctx->nr_slots; i++) {
++		struct aa_key *key = &ctx->slots[i].key;
++
++		memset(key, 0, sizeof(*key));
++		switch (layout) {
++		case AA_DENSE:
++			key->w[0] = i;
++			break;
++		case AA_RANDOM:
++			aa_random_key(ctx, key);
++			break;
++		case AA_HIGH_BITS:
++			for (j = 0; j < AA_KEY_WORDS; j++)
++				key->w[j] = (unsigned long)((i >> (4 * j)) & 0xf) <<
++					    (BITS_PER_LONG - 4);
++			break;
++		case AA_SPARSE:
++			/* Base-4 digits of i spread over four distant nibbles. */
++			for (j = 0; j < ARRAY_SIZE(nibbles); j++)
++				aa_key_set_nibble(key, nibbles[j],
++						  aa_key_nibble(key, nibbles[j]) |
++						  ((i >> (2 * j)) & 3));
++			break;
++		}
++		/* Duplicate keys would make the model ambiguous. */
++		while (aa_model_find(ctx, key) != &ctx->slots[i])
++			key->w[AA_KEY_WORDS - 1] += aa_rand_long(ctx) | 1;
++	}
++}
++
++/*
++ * The complete life cycle: insert in random order, replace some, delete
++ * half, garbage collect, reinsert, clear.
++ */
++static void aa_test_lifecycle(struct kunit *test)
++{
++	const struct aa_layout_param *p = test->param_value;
++	struct aa_ctx *ctx = aa_ctx_new(test, p->nr, 7 + p->layout);
++	unsigned int *order;
++	struct assoc_array_edit *edit;
++	bool *keep;
++	unsigned int i;
++
++	order = kunit_kcalloc(test, p->nr, sizeof(*order), GFP_KERNEL);
++	keep = kunit_kcalloc(test, p->nr, sizeof(*keep), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, order);
++	KUNIT_ASSERT_NOT_NULL(test, keep);
++	aa_fill_keys(ctx, p->layout);
++
++	aa_shuffle(ctx, order, p->nr);
++	for (i = 0; i < p->nr; i++)
++		aa_insert(ctx, order[i]);
++	aa_check(ctx);
++	aa_check_near_misses(ctx, 200);
++
++	for (i = 0; i < p->nr; i += 7)
++		aa_insert(ctx, i);
++	aa_check(ctx);
++
++	aa_shuffle(ctx, order, p->nr);
++	for (i = 0; i < p->nr / 2; i++)
++		aa_delete(ctx, order[i]);
++	aa_check(ctx);
++	aa_check_near_misses(ctx, 200);
++
++	for (i = 0; i < p->nr; i++)
++		keep[i] = aa_rand_below(ctx, 3) != 0;
++	aa_gc(ctx, keep);
++	aa_check(ctx);
++
++	for (i = 0; i < p->nr; i++)
++		if (!ctx->slots[i].obj)
++			aa_insert(ctx, i);
++	aa_check(ctx);
++
++	aa_shuffle(ctx, order, p->nr);
++	for (i = 0; i < p->nr; i++)
++		aa_delete(ctx, order[i]);
++	aa_check(ctx);
++	KUNIT_EXPECT_NULL(test, ctx->array.root);
++
++	for (i = 0; i < p->nr; i++)
++		aa_insert(ctx, i);
++	edit = assoc_array_clear(&ctx->array, &aa_ops);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, edit);
++	assoc_array_apply_edit(edit);
++	for (i = 0; i < p->nr; i++)
++		ctx->slots[i].obj = NULL;
++	aa_check(ctx);
++	aa_ctx_finish(ctx);
++}
++
++/* ---------- Regression cases ---------- */
++
++static const int aa_split_levels[] = {
++	0, 4, 8, BITS_PER_LONG - 4, BITS_PER_LONG, BITS_PER_LONG + 4,
++	2 * BITS_PER_LONG - 4, 2 * BITS_PER_LONG,
++};
++
++/*
++ * A node full of leaves that cluster in one slot, then a leaf that wants a
++ * different slot, at several depths and behind a shortcut: the node-splitting
++ * case fixed by commit ea6789980fda ("assoc_array: Fix a buggy node-splitting
++ * case"), CVE-2017-12193.
++ */
++static void aa_test_full_node_outlier(struct kunit *test)
++{
++	unsigned int l;
++
++	for (l = 0; l < ARRAY_SIZE(aa_split_levels); l++) {
++		int level = aa_split_levels[l];
++		struct aa_ctx *ctx = aa_ctx_new(test, 32, 100 + l);
++		struct aa_key prefix;
++		unsigned int i;
++
++		aa_random_key(ctx, &prefix);
++		for (i = 0; i < 16; i++) {
++			struct aa_key *key = &ctx->slots[i].key;
++
++			/* Share the prefix and the nibble at @level ... */
++			aa_random_key(ctx, key);
++			aa_key_splice(key, &prefix, key, level + 4);
++			/* ... and differ in the next one. */
++			aa_key_set_nibble(key, level + 4, i);
++		}
++		/*
++		 * The outliers differ at @level itself; sixteen of them, so
++		 * the node they land in has to split again.
++		 */
++		for (i = 16; i < ctx->nr_slots; i++) {
++			ctx->slots[i].key = prefix;
++			aa_key_set_nibble(&ctx->slots[i].key, level,
++					  aa_key_nibble(&prefix, level) ^ 0x5);
++			aa_key_set_nibble(&ctx->slots[i].key, level + 4, i - 16);
++		}
++
++		for (i = 0; i < ctx->nr_slots; i++) {
++			aa_insert(ctx, i);
++			aa_check(ctx);
++		}
++		for (i = 0; i < ctx->nr_slots; i++) {
++			aa_delete(ctx, i);
++			aa_check(ctx);
++		}
++		aa_ctx_finish(ctx);
++	}
++}
++
++struct aa_shortcut_param {
++	const char *name;
++	int split;		/* first bit at which the clustered keys differ */
++	bool behind_node;	/* reach the shortcut through a root node */
++};
++
++static const struct aa_shortcut_param aa_shortcut_params[] = {
++	{ "word-1/4",		BITS_PER_LONG - 4,	false },
++	{ "word",		BITS_PER_LONG,		false },
++	{ "word+4",		BITS_PER_LONG + 4,	false },
++	{ "1.5-words",		BITS_PER_LONG * 3 / 2,	false },
++	{ "2-words-4",		2 * BITS_PER_LONG - 4,	false },
++	{ "2-words",		2 * BITS_PER_LONG,	false },
++	{ "2-words+4",		2 * BITS_PER_LONG + 4,	false },
++	{ "node/word",		BITS_PER_LONG,		true },
++	{ "node/1.5-words",	BITS_PER_LONG * 3 / 2,	true },
++	{ "node/2-words",	2 * BITS_PER_LONG,	true },
++};
++
++KUNIT_ARRAY_PARAM_DESC(aa_shortcut, aa_shortcut_params, name);
++
++/*
++ * Keys that agree on every bit below @split make the tree descend through
++ * a shortcut ending at @split.  Shortcut creation and traversal had to be
++ * fixed for shortcuts ending on a word boundary, commit bb2ba2d75a2d
++ * ("assoc_array: Fix shortcut creation"), and for shortcuts whose last
++ * word is only partly used, commit a82c8a05e86f ("assoc_array: trim the
++ * final shortcut word using the current chunk end").
++ *
++ * The near-miss probes differ from the shortcut inside the skipped bits,
++ * so a walk that compares too few or too many shortcut bits returns a
++ * wrong object or fails to find a present one.
++ */
++static void aa_test_shortcut(struct kunit *test)
++{
++	const struct aa_shortcut_param *p = test->param_value;
++	const unsigned int clustered = 24, side = 8;
++	struct aa_ctx *ctx = aa_ctx_new(test, clustered + side + 64, 200 + p->split);
++	unsigned int *order;
++	struct aa_key prefix;
++	unsigned int i, n = 0;
++
++	order = kunit_kcalloc(test, ctx->nr_slots, sizeof(*order), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, order);
++	aa_random_key(ctx, &prefix);
++
++	for (i = 0; i < clustered; i++, n++) {
++		struct aa_key *key = &ctx->slots[n].key;
++
++		aa_random_key(ctx, key);
++		aa_key_splice(key, &prefix, key, p->split);
++		aa_key_set_nibble(key, p->split, i);
++		if (i >= 16)
++			aa_key_set_nibble(key, p->split + 4, i);
++	}
++	/* Keys that leave the clustered set at the root node. */
++	for (i = 0; p->behind_node && i < side; i++, n++) {
++		aa_random_key(ctx, &ctx->slots[n].key);
++		aa_key_set_nibble(&ctx->slots[n].key, 0,
++				  aa_key_nibble(&prefix, 0) ^ (1 + i));
++	}
++	/*
++	 * Absent keys that leave the prefix at every nibble below @split,
++	 * inserted only in the second half of the test.
++	 */
++	for (i = 0; i < p->split / 4 && n < ctx->nr_slots; i++, n++) {
++		struct aa_key *key = &ctx->slots[n].key;
++
++		*key = prefix;
++		aa_key_set_nibble(key, i * 4, aa_key_nibble(key, i * 4) ^ 0xa);
++	}
++	ctx->nr_slots = n;
++
++	for (i = 0; i < clustered + (p->behind_node ? side : 0); i++)
++		aa_insert(ctx, i);
++	aa_check(ctx);
++	aa_check_near_misses(ctx, 300);
++
++	/* Now cut into the shortcut at every nibble. */
++	for (i = clustered + (p->behind_node ? side : 0); i < n; i++) {
++		aa_insert(ctx, i);
++		aa_check(ctx);
++	}
++	aa_check_near_misses(ctx, 300);
++
++	aa_shuffle(ctx, order, n);
++	for (i = 0; i < n; i++) {
++		aa_delete(ctx, order[i]);
++		aa_check(ctx);
++	}
++	aa_ctx_finish(ctx);
++}
++
++/*
++ * Fill a node's slots with child nodes, then let garbage collection keep
++ * only @kept[s] leaves under slot s.  With few survivors per child the
++ * tree has to pack back down as part of the same pass, which exercises
++ * the node-folding code in assoc_array_gc().
++ */
++static void aa_gc_fold_one(struct kunit *test, const unsigned int *kept, u64 seed)
++{
++	const unsigned int per_slot = 18;
++	struct aa_ctx *ctx = aa_ctx_new(test, 16 * per_slot, seed);
++	bool *keep;
++	unsigned int s, i;
++
++	keep = kunit_kcalloc(test, ctx->nr_slots, sizeof(*keep), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, keep);
++
++	for (s = 0; s < 16; s++) {
++		for (i = 0; i < per_slot; i++) {
++			unsigned int idx = s * per_slot + i;
++			struct aa_key *key = &ctx->slots[idx].key;
++
++			aa_random_key(ctx, key);
++			aa_key_set_nibble(key, 0, s);
++			keep[idx] = i < kept[s];
++		}
++	}
++	for (i = 0; i < ctx->nr_slots; i++)
++		aa_insert(ctx, i);
++	aa_check(ctx);
++	aa_gc(ctx, keep);
++	aa_check(ctx);
++
++	/* The array must stay usable after compaction. */
++	for (i = 0; i < ctx->nr_slots; i++)
++		if (!ctx->slots[i].obj)
++			aa_insert(ctx, i);
++	aa_check(ctx);
++	aa_ctx_finish(ctx);
++}
++
++static void aa_test_gc_fold(struct kunit *test)
++{
++	struct rnd_state rnd;
++	unsigned int kept[16];
++	unsigned int round, s;
++
++	prandom_seed_state(&rnd, 302);
++	for (round = 0; round < 40; round++) {
++		/* Mostly empty children, a few with 1-3 survivors. */
++		for (s = 0; s < 16; s++)
++			kept[s] = prandom_u32_state(&rnd) % 4 ?
++				  0 : 1 + prandom_u32_state(&rnd) % 3;
++		aa_gc_fold_one(test, kept, 303 + round);
++	}
++}
++
++/* Garbage collection that keeps nothing, or everything. */
++static void aa_test_gc_all_or_nothing(struct kunit *test)
++{
++	struct aa_ctx *ctx = aa_ctx_new(test, 500, 400);
++	bool *keep;
++	unsigned int i;
++
++	keep = kunit_kcalloc(test, ctx->nr_slots, sizeof(*keep), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, keep);
++	for (i = 0; i < ctx->nr_slots; i++) {
++		aa_random_key(ctx, &ctx->slots[i].key);
++		aa_insert(ctx, i);
++		keep[i] = true;
++	}
++	aa_gc(ctx, keep);
++	aa_check(ctx);
++
++	memset(keep, 0, ctx->nr_slots * sizeof(*keep));
++	aa_gc(ctx, keep);
++	aa_check(ctx);
++	rcu_barrier();
++	KUNIT_EXPECT_EQ(test, atomic_read(&ctx->live), 0);
++
++	for (i = 0; i < ctx->nr_slots; i++)
++		aa_insert(ctx, i);
++	aa_check(ctx);
++	aa_ctx_finish(ctx);
++}
++
++/* ---------- Randomised operations ---------- */
++
++/*
++ * Random inserts, replacements, deletions and garbage collections over a
++ * small, heavily clustered key space, checked after every operation.
++ */
++static void aa_test_random_ops(struct kunit *test)
++{
++	unsigned int round;
++
++	for (round = 0; round < 4; round++) {
++		struct aa_ctx *ctx = aa_ctx_new(test, 128, 500 + round);
++		bool *keep;
++		unsigned int op, i;
++
++		keep = kunit_kcalloc(test, ctx->nr_slots, sizeof(*keep), GFP_KERNEL);
++		KUNIT_ASSERT_NOT_NULL(test, keep);
++		aa_fill_keys(ctx, AA_SPARSE);
++
++		for (op = 0; op < 1500; op++) {
++			unsigned int r = aa_rand_below(ctx, 100);
++
++			i = aa_rand_below(ctx, ctx->nr_slots);
++			if (r < 55) {
++				aa_insert(ctx, i);
++			} else if (r < 97) {
++				aa_delete(ctx, i);
++			} else {
++				for (i = 0; i < ctx->nr_slots; i++)
++					keep[i] = aa_rand_below(ctx, 2);
++				aa_gc(ctx, keep);
++			}
++			aa_check(ctx);
++		}
++		aa_ctx_finish(ctx);
++	}
++}
++
++static struct kunit_case assoc_array_test_cases[] = {
++	KUNIT_CASE(aa_test_empty),
++	KUNIT_CASE(aa_test_replace),
++	KUNIT_CASE(aa_test_cancel),
++	KUNIT_CASE(aa_test_insert_set_object),
++	KUNIT_CASE(aa_test_iterate_stop),
++	KUNIT_CASE(aa_test_clear),
++	KUNIT_CASE_PARAM(aa_test_lifecycle, aa_layout_gen_params),
++	KUNIT_CASE(aa_test_full_node_outlier),
++	KUNIT_CASE_PARAM(aa_test_shortcut, aa_shortcut_gen_params),
++	KUNIT_CASE(aa_test_gc_fold),
++	KUNIT_CASE(aa_test_gc_all_or_nothing),
++	KUNIT_CASE_SLOW(aa_test_random_ops),
++	{}
++};
++
++static struct kunit_suite assoc_array_test_suite = {
++	.name = "assoc_array",
++	.test_cases = assoc_array_test_cases,
++};
++
++kunit_test_suite(assoc_array_test_suite);
++
++MODULE_DESCRIPTION("KUnit tests for the generic associative array");
++MODULE_LICENSE("GPL");
+-- 
+2.43.0
+
