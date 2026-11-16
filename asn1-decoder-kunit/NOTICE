@@ -1,0 +1,62 @@
+NOTICE — provenance and licensing for asn1-decoder-kunit/
+=========================================================
+
+This folder contains two kinds of file: original work, and verbatim or
+adapted sources from the mainline Linux kernel. They carry different
+copyright and licensing. Each file keeps its own SPDX header; this NOTICE
+summarises the distinction.
+
+Verbatim Linux kernel sources (GPL-2.0)
+---------------------------------------
+Copied without change from the mainline Linux tree (torvalds/linux).
+Copyright the respective kernel authors (the ASN.1 decoder and compiler are
+written by David Howells, Copyright (C) Red Hat, Inc.). Licensed GPL-2.0, as
+marked in each file's SPDX header. Record the exact upstream commit these
+were taken from when you publish.
+
+  src/asn1_decoder.c
+  src/asn1_compiler.c
+  src/asn1.h
+  src/asn1_ber_bytecode.h
+  src/asn1_decoder.h
+
+Adapted kernel sources — intentionally broken (GPL-2.0)
+-------------------------------------------------------
+Modified copies of src/asn1_decoder.c, each with one bounds check deliberately
+weakened, used ONLY to confirm the verification harness detects over-reads
+(mutation testing). These are not working code and must not be used as such.
+
+  src/mut_M1.c
+  src/mut_M2.c
+  src/mut_M3.c
+
+Generated from the test grammar
+-------------------------------
+Produced by the kernel's asn1_compiler from upstream/asn1_test.asn1.
+
+  src/asn1_test.asn1.c
+  src/asn1_test.asn1.h
+
+Original work — Copyright (C) 2026 William Chuang, Logarchéon Inc.
+-----------------------------------------------------------------
+The test suite prepared for upstream submission carries the kernel's
+license (SPDX GPL-2.0-or-later) because it is intended for the kernel tree:
+
+  upstream/asn1_decoder_kunit.c
+  upstream/asn1_test.asn1
+
+All other original files in this folder (test harnesses, proofs, the
+executable model-check, minimal userspace stubs, documentation) are the
+author's own work:
+
+  src/enum_verify.c  src/stress_verify.c  src/check_vec.c
+  src/run_kunit.c    src/kunit_shim.h     src/inc/**  src/shiminc/**
+  coq/Asn1Safety.v
+  lean/Asn1Safety.lean   lean/model_check.py
+  cbmc/harness_fixed.c   cbmc/harness_cbmc.c   cbmc/prelude.h
+  fuzz/fuzz_asn1.c
+  VERIFICATION.md   README.md
+
+The syzbot C reproducer and the kernel image/disk assets referenced by the
+gfs2 work are NOT redistributed here; they are linked from their sources,
+which carry their own licenses.

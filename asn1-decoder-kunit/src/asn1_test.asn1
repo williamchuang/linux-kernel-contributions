@@ -1,0 +1,11 @@
+-- SPDX-License-Identifier: GPL-2.0-or-later
+--
+-- Minimal grammar used only by the ASN.1 decoder KUnit tests
+-- (lib/tests/asn1_decoder_kunit.c).  It exercises a constructed type, a
+-- primitive INTEGER and a primitive OCTET STRING, each with an action, which
+-- is enough to drive the decoder's tag/length handling and action dispatch.
+
+TestData ::= SEQUENCE {
+	num	INTEGER ({ asn1_test_note_int }),
+	str	OCTET STRING ({ asn1_test_note_str })
+	}
