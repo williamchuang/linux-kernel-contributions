@@ -1,7 +1,9 @@
 # gfs2: NULL pointer dereference in gfs2_seek_data/gfs2_seek_hole
 
-**Status:** applied by the gfs2 maintainer (Andreas Gruenbacher) on 2026-11-17;
-heading to mainline via the gfs2 tree, with a stable backport (`Cc: stable`).
+**Status:** applied by the gfs2 maintainer (Andreas Gruenbacher) on 2026-11-17
+as commit `e3280ea8b7396` ("gfs2: Fix NULL pointer dereference in
+gfs2_seek_data/gfs2_seek_hole"); now in linux-next via the gfs2 tree, with a
+stable backport (`Cc: stable`), heading to mainline at the next merge window.
 **Reported by:** syzbot. **Root-cause + v1:** William Chuang (Logarchéon Inc.).
 **Final form of the fix:** gfs2 maintainer Andreas Gruenbacher (`Suggested-by:`).
 **Applied:** https://lore.kernel.org/all/20261116232409.46988-1-founder@logarcheon.com/
