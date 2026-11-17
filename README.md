@@ -6,6 +6,7 @@ root-cause analysis, and the verification artifacts.
 
 | Contribution | Subsystem | Status | Archive |
 |---|---|---|---|
+| [ext4 journal credit shortfalls (swap-boot, inline data)](ext4-journal-credits/) | `fs/ext4/ioctl.c`, `fs/ext4/inline.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/6afabb02.3f8ef711.2cc87e.0003.GAE@google.com/T/) |
 | [squashfs lookup: error code on directory header check](squashfs-lookup-errcode/) | `fs/squashfs/namei.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261116233530.47177-1-founder@logarcheon.com/) |
 | [GFS2 lseek NULL-pointer fix in `gfs2_glock_dq`](gfs2-glock-dq-nullderef/) | `fs/gfs2/inode.c` | v2 submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261116180002.44336-1-founder@logarcheon.com/T/) |
 | [ASN.1 decoder KUnit suite + verification kit](asn1-decoder-kunit/) | `lib/asn1_decoder.c` | RFC submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261117001711.47722-1-founder@logarcheon.com/) |
@@ -16,6 +17,9 @@ root-cause analysis, and the verification artifacts.
 Each folder's `VERIFICATION.md` or `README.md` gives the methods and exact
 commands. In brief:
 
+- **ext4:** standalone reproducers run on User Mode Linux before and after
+  the fix (unpatched: journal abort, and for swap-boot an inconsistent
+  filesystem; patched: no warning and a clean `e2fsck`).
 - **squashfs:** CBMC model checking of the real lookup, `readdir` and inode
   code, bounded and inductive (no size bound), on a hash-checked
   reconstruction of the tree under review.

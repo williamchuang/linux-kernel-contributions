@@ -1,0 +1,71 @@
+From f87b452346850840e0f86626ad387032d3d40783 Mon Sep 17 00:00:00 2001
+From: William Chuang <founder@logarcheon.com>
+Date: Tue, 17 Nov 2026 05:20:54 +0000
+Subject: [PATCH 2/2] ext4: reserve an orphan credit for inline data writes
+
+ext4_generic_write_inline_data() starts its handle with one credit.
+ext4_prepare_inline_data() uses it when it creates or grows the inline
+data xattr and dirties the inode table block.
+
+If the copy from user space then comes up short, write_end calls
+ext4_write_inline_data_end(), which sees pos + len > i_size and calls
+ext4_orphan_add() under the same handle.  That dirties a second block,
+the orphan file block or the superblock, and the handle has no credit
+left for it:
+
+  WARNING: fs/jbd2/transaction.c:1598 at jbd2_journal_dirty_metadata
+  Call Trace:
+   __ext4_handle_dirty_metadata
+   ext4_orphan_file_add
+   ext4_orphan_add
+   ext4_write_inline_data_end
+   generic_perform_write
+   ext4_buffered_write_iter
+   ext4_file_write_iter
+
+jbd2 returns -ENOSPC, the journal is aborted and write() fails with
+ENOSPC.  An unprivileged user who can write to a file on such a
+filesystem can trigger this.  The inode table block must not already
+be dirty in the running transaction, which is the case with lazytime,
+or when the write is the first change to that block since the last
+commit.  The block write path already reserves an extra credit for
+this case in ext4_write_begin().
+
+Start the inline handle with two credits.
+
+Tested on UML with filesystems made by "mke2fs -O inline_data", with
+and without orphan_file, mounted with lazytime: a write to a new file
+whose user buffer runs into an unmapped page after 10 of 21 bytes.
+Without this patch the WARN fires ("credits 2/0") and write() fails
+with ENOSPC, also when run as uid 65534; with it there is no warning,
+write() returns 10, and e2fsck -fn is clean.
+
+Fixes: f19d5870cbf7 ("ext4: add normal write support for inline data")
+Reported-by: syzbot+e8180f5590685cbc9037@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e8180f5590685cbc9037
+Signed-off-by: William Chuang <founder@logarcheon.com>
+---
+ fs/ext4/inline.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index ceee69a66..a1ae23888 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -709,7 +709,12 @@ int ext4_generic_write_inline_data(struct address_space *mapping,
+ 		return ret;
+ 
+ retry_journal:
+-	handle = ext4_journal_start(inode, EXT4_HT_INODE, 1);
++	/*
++	 * One credit for the inode table block, plus one for the orphan
++	 * file block or superblock that ext4_write_inline_data_end() may
++	 * dirty via ext4_orphan_add() after a short copy.
++	 */
++	handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
+ 	if (IS_ERR(handle)) {
+ 		ret = PTR_ERR(handle);
+ 		goto out_release_bh;
+-- 
+2.43.0
+

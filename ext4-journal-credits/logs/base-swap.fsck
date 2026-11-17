@@ -1,0 +1,15 @@
+e2fsck 1.47.0 (5-Feb-2023)
+Pass 1: Checking inodes, blocks, and sizes
+Inode 12, i_blocks is 128, should be 0.  Fix? no
+
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+[QUOTA WARNING] Usage inconsistent for ID 0:actual (20480, 3) != expected (86016, 3)
+Update quota info for quota type 1? no
+
+
+a.img: ********** WARNING: Filesystem still has errors **********
+
+a.img: 12/16384 files (8.3% non-contiguous), 2085/16384 blocks

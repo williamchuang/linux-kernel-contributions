@@ -1,0 +1,68 @@
+From e13da16e4af75492545eab804a4adbad8f271e2a Mon Sep 17 00:00:00 2001
+From: William Chuang <founder@logarcheon.com>
+Date: Tue, 17 Nov 2026 02:58:21 +0000
+Subject: [PATCH 1/2] ext4: reserve quota credits in swap_inode_boot_loader()
+
+swap_inode_boot_loader() starts its handle with 2 credits, enough for
+the two inode table blocks it dirties.  Since commit aa507b5faf38
+("ext4: update quota information while swapping boot loader inode") it
+also calls dquot_free_space() or dquot_alloc_space() under the same
+handle.  On a filesystem with quota enabled, that marks the dquots
+dirty and ext4_write_dquot() writes them to the quota file.  The
+nested ext4_journal_start() in ext4_write_dquot() reuses the running
+handle and adds no credits, so the quota block write can find the
+handle with no credits left:
+
+  WARNING: fs/jbd2/transaction.c:1598 at jbd2_journal_dirty_metadata
+  Call Trace:
+   __ext4_handle_dirty_metadata
+   ext4_quota_write
+   qtree_write_dquot
+   v2_write_dquot
+   dquot_commit
+   ext4_write_dquot
+   mark_all_dquot_dirty
+   __dquot_free_space
+   swap_inode_boot_loader
+   ext4_ioctl
+
+jbd2 returns -ENOSPC and the journal is aborted.  The ioctl still
+returns 0, and the filesystem is left with the wrong i_blocks on the
+swapped inode and inconsistent quota usage, which e2fsck reports.
+
+Reserve one quota block per quota type, as ext4_ext_migrate() does.
+
+Tested on UML with a filesystem made by "mke2fs -O quota": write and
+sync a file, then issue EXT4_IOC_SWAP_BOOT on it.  Without this patch
+the WARN fires ("credits 3/0") and e2fsck -fn reports errors; with it
+there is no warning and e2fsck -fn is clean.
+
+Fixes: aa507b5faf38 ("ext4: update quota information while swapping boot loader inode")
+Reported-by: syzbot+e8180f5590685cbc9037@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e8180f5590685cbc9037
+Signed-off-by: William Chuang <founder@logarcheon.com>
+---
+ fs/ext4/ioctl.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index e8e579498..ae03eb834 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -425,7 +425,12 @@ static long swap_inode_boot_loader(struct super_block *sb,
+ 	truncate_inode_pages(&inode->i_data, 0);
+ 	truncate_inode_pages(&inode_bl->i_data, 0);
+ 
+-	handle = ext4_journal_start(inode_bl, EXT4_HT_MOVE_EXTENTS, 2);
++	/*
++	 * Two inode table blocks, plus one quota block per quota type for
++	 * the dquot_free_space()/dquot_alloc_space() update below.
++	 */
++	handle = ext4_journal_start(inode_bl, EXT4_HT_MOVE_EXTENTS,
++				    2 + EXT4_MAXQUOTAS_TRANS_BLOCKS(sb));
+ 	if (IS_ERR(handle)) {
+ 		err = -EINVAL;
+ 		goto err_out;
+-- 
+2.43.0
+

@@ -17,3 +17,5 @@ mut_M3
 crash-*
 .DS_Store
 *.aux
+ext4-journal-credits/repro/root/
+ext4-journal-credits/repro/*.img
