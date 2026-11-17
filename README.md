@@ -19,12 +19,15 @@ root-cause analysis, and the verification artifacts.
 Each folder's `VERIFICATION.md` or `README.md` gives the methods and exact
 commands. In brief:
 
-- **configfs:** a check of every path that takes the configfs root lock,
-  then a QEMU lockdep run of the three operations behind the reported
-  cycle, before and after the fix.
-- **ext4 swap-boot inode type:** crafted images (inode 5 as a directory or
-  a character device) run on User Mode Linux before and after the fix;
-  the normal first use of the ioctl is checked to still work.
+- **configfs:** a check of every path that takes the configfs root lock;
+  a QEMU lockdep run of the three operations behind the reported cycle,
+  before and after the fix; the configfs kselftest (25/25) and a 60-second
+  three-process stress run on both kernels; and a comparison showing the
+  object code is identical without lockdep.
+- **ext4 swap-boot inode type:** crafted images (inode 5 as a directory,
+  with link count 1 and 0, or as a character device) run on User Mode
+  Linux before and after the fix; the normal first use of the ioctl is
+  checked to still work.
 - **ext4:** standalone reproducers run on User Mode Linux before and after
   the fix (unpatched: journal abort, and for swap-boot an inconsistent
   filesystem; patched: no warning and a clean `e2fsck`).
