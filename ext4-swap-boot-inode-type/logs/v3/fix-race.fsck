@@ -1,0 +1,16 @@
+e2fsck 1.47.0 (5-Feb-2023)
+Pass 1: Checking inodes, blocks, and sizes
+Reserved inode 5 (<The boot loader inode>) has invalid mode.  Clear? no
+
+Inode 5 is a zero-length directory.  Clear? no
+
+Pass 2: Checking directory structure
+Directory inode 5 has an unallocated block #0.  Allocate? no
+
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+
+a.img: ********** WARNING: Filesystem still has errors **********
+
+a.img: 13/16384 files (7.7% non-contiguous), 2067/16384 blocks

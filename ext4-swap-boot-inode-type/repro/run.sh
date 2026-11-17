@@ -1,6 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-2.0
-# usage: run.sh <uml-kernel> <fresh|dir|dir0|chrdev> <logfile>
+# usage: run.sh <uml-kernel> <fresh|dir|dir0|chrdev|race> <logfile>
 # Makes a fresh ext4 image, optionally sets the mode of inode 5 (the boot
 # loader inode) with debugfs, boots UML, runs EXT4_IOC_SWAP_BOOT twice,
 # then runs e2fsck -fn on the image.
@@ -14,7 +14,7 @@ mke2fs -q -F -t ext4 a.img
 case "$test" in
 	dir)    debugfs -w -R "sif <5> mode 040755" a.img >/dev/null 2>&1
 		debugfs -w -R "sif <5> links_count 1" a.img >/dev/null 2>&1 ;;
-	dir0)   debugfs -w -R "sif <5> mode 040755" a.img >/dev/null 2>&1
+	dir0|race) debugfs -w -R "sif <5> mode 040755" a.img >/dev/null 2>&1
 		debugfs -w -R "sif <5> links_count 0" a.img >/dev/null 2>&1 ;;
 	chrdev) debugfs -w -R "sif <5> mode 020644" a.img >/dev/null 2>&1
 		debugfs -w -R "sif <5> links_count 1" a.img >/dev/null 2>&1 ;;
@@ -22,7 +22,7 @@ case "$test" in
 esac
 debugfs -R "stat <5>" a.img 2>/dev/null | head -2 | sed 's/^/IMAGE: /' > "$log.pre"
 timeout 300 "$kernel" mem=256M ubd0=a.img root=/dev/root rootfstype=hostfs \
-	hostfs="$PWD/root" rw init=/init con=null con0=fd:0,fd:1 </dev/null >"$log" 2>&1 || true
+	hostfs="$PWD/root" rw init=/init $( [ "$test" = race ] && echo RACE=1 ) con=null con0=fd:0,fd:1 </dev/null >"$log" 2>&1 || true
 e2fsck -fn a.img > "${log%.log}.fsck" 2>&1 || true
 debugfs -R "stat <5>" a.img 2>/dev/null | head -2 | sed 's/^/AFTER: /' >> "$log.pre"
 cat "$log.pre"; rm -f "$log.pre"

@@ -1,11 +1,13 @@
 # ext4: reject a non-regular boot loader inode in EXT4_IOC_SWAP_BOOT
 
-**Status:** v2 submitted 2026-11-17, under review (v1 submitted 2026-11-16).
+**Status:** v3 submitted 2026-11-17, under review; Sashiko reviewed v3 and found no issues (v1 and v2 were submitted 2026-11-16/17).
 **Found by:** Sashiko AI review, while reviewing the [ext4 journal credit series](../ext4-journal-credits/).
 **Fix and reproducer:** William Chuang (Logarchéon Inc.), following the check Theodore Ts'o described in 2023.
 
 - mailing-list thread (lore), v1: https://lore.kernel.org/all/20261117061822.3826-1-founder@logarcheon.com/
-  (v2 is sent as a reply to it)
+  (v2 and v3 are sent as replies to it)
+- v3: https://lore.kernel.org/all/20261117223350.6920-1-founder@logarcheon.com/
+- Sashiko review of v3 (no issues): https://sashiko.dev/#/patchset/20261117223350.6920-1-founder@logarcheon.com?part=1
 - Sashiko report: https://sashiko.dev/#/bug/linux-8cfc8e22-8259-4c89-8a8b-64c16e4481a5
 - 2023 discussion, with the suggested check:
   https://lore.kernel.org/all/tencent_DABB2333139E8D1BCF4B5D1B2725FABA9108@qq.com/T/
@@ -47,6 +49,16 @@ otherwise a corrupted inode 5 with `i_links_count` 0 reaches the deletion
 path of `ext4_evict_inode()`; the v1 run below confirms it
 (`ext4_free_inode: reserved or nonexistent inode 5`).
 
+v3 keeps the v1/v2 check but changes how the rejected inode is released.
+Sashiko's review of v2 pointed out that `make_bad_inode()` changes the
+type and operations of an inode that other callers may already hold
+in the inode cache, so a concurrent caller could pass the check. v3
+leaves the inode's type alone, so every caller rejects it, and instead
+sets `i_nlink` to 1 under the inode lock when it is 0, so the last
+`iput()` does not take the deletion path for the reserved inode. The
+later `S_ISREG` test in the "never used as a boot loader" branch is now
+redundant and is dropped.
+
 - `Fixes: 991ed014de08 ("ext4: fix bug_on in __es_tree_search caused by bad boot loader inode")`
 - `Suggested-by: Theodore Ts'o`
 
@@ -66,6 +78,11 @@ Run on User Mode Linux at mainline `666539eec`. Inode 5 is set with
 | v2 | directory | none | `EFSCORRUPTED`, error logged | directory (unchanged) | none |
 | v2 | directory, `i_links_count` 0 | none | `EFSCORRUPTED`, error logged | directory (unchanged) | none |
 | v2 | character device | none | `EFSCORRUPTED`, error logged | character device (unchanged) | none |
+| v3 | unused (new filesystem) | none | succeed | regular | none |
+| v3 | directory | none | `EFSCORRUPTED`, error logged | directory (unchanged) | none |
+| v3 | directory, `i_links_count` 0 | none | `EFSCORRUPTED`, error logged | directory (unchanged) | none |
+| v3 | character device | none | `EFSCORRUPTED`, error logged | character device (unchanged) | none |
+| v3 | directory, `i_links_count` 0; two processes, 500 swaps each | none | 0 of 1000 succeed | directory (unchanged) | none |
 
 For the directory cases, `e2fsck -fn` on the patched runs reports the
 corruption the test injected ("Reserved inode 5 ... has invalid mode"),
@@ -73,7 +90,10 @@ since the kernel now refuses to touch it. On the unpatched runs it reports
 nothing, because the kernel has already rewritten inode 5 as a regular file.
 `e2fsck` does not flag a character-device inode 5.
 
-Not covered: KASAN builds and syzbot's 2023 reproducer.
+The two-process run (`race`) is on a single-CPU UML guest, so it
+exercises interleaving but not true parallel execution.
+
+Not covered: KASAN builds, SMP runs and syzbot's 2023 reproducer.
 
 ### Reproduce
 
@@ -82,7 +102,7 @@ Not covered: KASAN builds and syzbot's 2023 reproducer.
 cp repro/uml.config <build>/.config
 make ARCH=um O=<build> olddefconfig && make ARCH=um O=<build> -j"$(nproc)" linux
 
-# then, for each case (fresh, dir, dir0, chrdev):
+# then, for each case (fresh, dir, dir0, chrdev, race):
 repro/run.sh <build>/linux dir logs/dir.log
 ```
 
@@ -95,7 +115,8 @@ runs above are in `logs/`.
 
 | File | Contents |
 |---|---|
+| `v3-0001-ext4-reject-a-non-regular-boot-loader-inode-in-EX.patch` | v3 as sent |
 | `v2-0001-ext4-reject-a-non-regular-boot-loader-inode-in-EX.patch` | v2 as sent |
 | `0001-ext4-reject-a-non-regular-boot-loader-inode-in-EXT4_.patch` | v1 as sent |
 | `repro/init.c`, `repro/run.sh`, `repro/uml.config` | reproducer, runner, kernel config |
-| `logs/` | console logs (`.log`) and `e2fsck` output (`.fsck`): unpatched (`base-*`), v2 (`fix-*`), v1 (`v1/fix-*`) |
+| `logs/` | console logs (`.log`) and `e2fsck` output (`.fsck`): unpatched (`base-*`), v3 (`v3/fix-*`), v2 (`fix-*`), v1 (`v1/fix-*`) |

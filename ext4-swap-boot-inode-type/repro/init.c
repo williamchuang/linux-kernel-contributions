@@ -13,6 +13,8 @@
 #include <sys/mount.h>
 #include <sys/ioctl.h>
 #include <sys/reboot.h>
+#include <stdlib.h>
+#include <sys/wait.h>
 
 #define EXT4_IOC_SWAP_BOOT _IO('f', 17)
 
@@ -25,6 +27,43 @@ int main(void)
 	mount("devtmpfs", "/dev", "devtmpfs", 0, "");
 	if (mount("/dev/ubda", "/mnt/a", "ext4", 0, "")) {
 		perror("REPRO: mount");
+		goto out;
+	}
+	if (getenv("RACE")) {
+		/*
+		 * Two processes issue the ioctl on their own files at the
+		 * same time, many times over, against the same inode 5.
+		 */
+		int p, ok = 0, total = 0;
+
+		for (p = 0; p < 2; p++) {
+			if (fork() == 0) {
+				char name[32];
+				int n, good = 0;
+
+				snprintf(name, sizeof(name), "/mnt/a/f%d", p);
+				fd = open(name, O_CREAT | O_RDWR, 0644);
+				memset(buf, 'x', sizeof(buf));
+				if (write(fd, buf, sizeof(buf)) < 0)
+					perror("write");
+				fsync(fd);
+				for (n = 0; n < 500; n++)
+					if (ioctl(fd, EXT4_IOC_SWAP_BOOT) == 0)
+						good++;
+				close(fd);
+				_exit(good > 255 ? 255 : good);
+			}
+		}
+		for (p = 0; p < 2; p++) {
+			int st;
+
+			wait(&st);
+			ok += WEXITSTATUS(st);
+			total += 500;
+		}
+		printf("REPRO: race: %d of %d swaps succeeded\n", ok, total);
+		fflush(stdout);
+		umount("/mnt/a");
 		goto out;
 	}
 	fd = open("/mnt/a/f", O_CREAT | O_RDWR, 0644);
