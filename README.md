@@ -6,7 +6,7 @@ root-cause analysis, and the verification artifacts.
 
 | Contribution | Subsystem | Status | Archive |
 |---|---|---|---|
-| [ext4 journal credit shortfalls (swap-boot, inline data)](ext4-journal-credits/) | `fs/ext4/ioctl.c`, `fs/ext4/inline.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/6afabb02.3f8ef711.2cc87e.0003.GAE@google.com/T/) |
+| [ext4 journal credit shortfalls (swap-boot, inline data)](ext4-journal-credits/) | `fs/ext4/ioctl.c`, `fs/ext4/inline.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261117052750.2955-1-founder@logarcheon.com/) |
 | [squashfs lookup: error code on directory header check](squashfs-lookup-errcode/) | `fs/squashfs/namei.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261116233530.47177-1-founder@logarcheon.com/) |
 | [GFS2 lseek NULL-pointer fix in `gfs2_glock_dq`](gfs2-glock-dq-nullderef/) | `fs/gfs2/inode.c` | v2 submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261116180002.44336-1-founder@logarcheon.com/T/) |
 | [ASN.1 decoder KUnit suite + verification kit](asn1-decoder-kunit/) | `lib/asn1_decoder.c` | RFC submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261117001711.47722-1-founder@logarcheon.com/) |

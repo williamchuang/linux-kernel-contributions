@@ -5,8 +5,8 @@
 
 - syzbot bug: https://syzkaller.appspot.com/bug?extid=e8180f5590685cbc9037
   ("WARNING in jbd2_journal_dirty_metadata (4)")
-- mailing-list thread (lore), sent as a reply to the syzbot report:
-  https://lore.kernel.org/all/6afabb02.3f8ef711.2cc87e.0003.GAE@google.com/T/
+- mailing-list thread (lore): https://lore.kernel.org/all/20261117052750.2955-1-founder@logarcheon.com/
+- sent as a reply to the syzbot report: https://lore.kernel.org/all/6afabb02.3f8ef711.2cc87e.0003.GAE@google.com/T/
 
 ## The bug
 
