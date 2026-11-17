@@ -1,0 +1,13 @@
+diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
+index 547eb04f66bd..812e4ad0d0b6 100644
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -448,7 +448,7 @@ int squashfs_read_inode(struct inode *inode, long long ino)
+ 		inode->i_blocks += ((squashfs_i(inode)->xattr_size - 1) >> 9)
+ 				+ 1;
+ 	} else
+-		squashfs_i(inode)->xattr_count = 0;
++		squashfs_i(inode)->xattr = SQUASHFS_INVALID_BLK;
+ 
+ 	return 0;
+ 

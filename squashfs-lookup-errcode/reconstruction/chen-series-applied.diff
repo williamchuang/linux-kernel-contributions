@@ -1,0 +1,59 @@
+diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
+index 5404d7b..4cf8a41 100644
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -255,8 +255,10 @@ int squashfs_read_inode(struct inode *inode, long long ino)
+ 
+ 		/* The directory size must be 3 or larger, as it includes "." and ".." entries */
+ 		inode->i_size = le16_to_cpu(sqsh_ino->file_size);
+-		if (inode->i_size < 3)
++		if (inode->i_size < 3) {
++			err = -EINVAL;
+ 			goto failed_read;
++		}
+ 
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_op = &squashfs_dir_inode_ops;
+@@ -284,8 +286,10 @@ int squashfs_read_inode(struct inode *inode, long long ino)
+ 
+ 		/* The directory size must be 3 or larger, as it includes "." and ".." entries */
+ 		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+-		if (inode->i_size < 3)
++		if (inode->i_size < 3) {
++			err = -EINVAL;
+ 			goto failed_read;
++		}
+ 
+ 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+diff --git a/fs/squashfs/namei.c b/fs/squashfs/namei.c
+index 5f8dece..5dc21dd 100644
+--- a/fs/squashfs/namei.c
++++ b/fs/squashfs/namei.c
+@@ -203,7 +203,7 @@ static struct dentry *squashfs_lookup(struct inode *dir, struct dentry *dentry,
+ 		 * Read directory header.
+ 		 */
+ 		if (!squashfs_dir_space(dir, length, sizeof(dirh)))
+-			goto read_failure;
++			goto data_error;
+ 
+ 		err = squashfs_read_metadata(dir->i_sb, &dirh, &block,
+ 				&offset, sizeof(dirh));
+@@ -222,7 +222,7 @@ static struct dentry *squashfs_lookup(struct inode *dir, struct dentry *dentry,
+ 			 * Read directory entry.
+ 			 */
+ 			if (!squashfs_dir_space(dir, length, sizeof(*dire)))
+-				goto read_failure;
++				goto data_error;
+ 
+ 			err = squashfs_read_metadata(dir->i_sb, dire, &block,
+ 					&offset, sizeof(*dire));
+@@ -237,7 +237,7 @@ static struct dentry *squashfs_lookup(struct inode *dir, struct dentry *dentry,
+ 				goto data_error;
+ 
+ 			if (!squashfs_dir_space(dir, length, size))
+-				goto read_failure;
++				goto data_error;
+ 
+ 			err = squashfs_read_metadata(dir->i_sb, dire->name,
+ 					&block, &offset, size);

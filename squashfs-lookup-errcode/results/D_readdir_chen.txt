@@ -1,0 +1,388 @@
+CBMC version 5.95.1 (cbmc-5.95.1) 64-bit x86_64 linux
+Parsing harness_dir.c
+Converting
+Type-checking harness_dir
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 10 object bits, 54 offset bits (user-specified)
+Starting Bounded Model Checking
+Unwinding loop squashfs_readdir.2 iteration 1 file fd_chen.c line 123 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.2 iteration 2 file fd_chen.c line 123 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.2 iteration 3 file fd_chen.c line 123 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.2 iteration 4 file fd_chen.c line 123 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.2 iteration 5 file fd_chen.c line 123 function squashfs_readdir thread 0
+Not unwinding loop squashfs_readdir.2 iteration 6 file fd_chen.c line 123 function squashfs_readdir thread 0
+Unwinding loop get_dir_index_using_offset.1 iteration 1 file fd_chen.c line 35 function get_dir_index_using_offset thread 0
+Unwinding loop get_dir_index_using_offset.1 iteration 2 file fd_chen.c line 35 function get_dir_index_using_offset thread 0
+Unwinding loop get_dir_index_using_offset.1 iteration 3 file fd_chen.c line 35 function get_dir_index_using_offset thread 0
+Unwinding loop get_dir_index_using_offset.1 iteration 4 file fd_chen.c line 35 function get_dir_index_using_offset thread 0
+Unwinding loop get_dir_index_using_offset.1 iteration 5 file fd_chen.c line 35 function get_dir_index_using_offset thread 0
+Not unwinding loop get_dir_index_using_offset.1 iteration 6 file fd_chen.c line 35 function get_dir_index_using_offset thread 0
+Unwinding loop squashfs_readdir.3 iteration 1 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 2 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 3 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 4 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 5 file fd_chen.c line 170 function squashfs_readdir thread 0
+Not unwinding loop squashfs_readdir.3 iteration 6 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.4 iteration 1 file fd_chen.c line 150 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 1 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 2 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 3 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 4 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 5 file fd_chen.c line 170 function squashfs_readdir thread 0
+Not unwinding loop squashfs_readdir.3 iteration 6 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.4 iteration 2 file fd_chen.c line 150 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 1 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 2 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 3 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 4 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 5 file fd_chen.c line 170 function squashfs_readdir thread 0
+Not unwinding loop squashfs_readdir.3 iteration 6 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.4 iteration 3 file fd_chen.c line 150 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 1 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 2 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 3 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 4 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 5 file fd_chen.c line 170 function squashfs_readdir thread 0
+Not unwinding loop squashfs_readdir.3 iteration 6 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.4 iteration 4 file fd_chen.c line 150 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 1 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 2 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 3 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 4 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 5 file fd_chen.c line 170 function squashfs_readdir thread 0
+Not unwinding loop squashfs_readdir.3 iteration 6 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.4 iteration 5 file fd_chen.c line 150 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 1 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 2 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 3 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 4 file fd_chen.c line 170 function squashfs_readdir thread 0
+Unwinding loop squashfs_readdir.3 iteration 5 file fd_chen.c line 170 function squashfs_readdir thread 0
+Not unwinding loop squashfs_readdir.3 iteration 6 file fd_chen.c line 170 function squashfs_readdir thread 0
+Not unwinding loop squashfs_readdir.4 iteration 6 file fd_chen.c line 150 function squashfs_readdir thread 0
+Runtime Symex: 5.00004s
+size of program expression: 100420 steps
+simple slicing removed 673 assignments
+Generated 8747 VCC(s), 3720 remaining after simplification
+Runtime Postprocess Equation: 0.0353124s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 3.12048s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 6.73544s
+Solving with MiniSAT 2.2.1 with simplifier
+4211788 variables, 14025006 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 20.5329s
+Runtime decision procedure: 23.6688s
+
+** Results:
+<builtin-library-malloc> function malloc
+[malloc.assertion.1] line 31 max allocation size exceeded: SUCCESS
+[malloc.assertion.2] line 36 max allocation may fail: SUCCESS
+
+<builtin-library-memcpy> function memcpy
+[memcpy.pointer.1] line 33 same object violation in (const char *)(const void *)src >= (const char *)buffer + (signed long int)(size_t)length: SUCCESS
+[memcpy.pointer_arithmetic.1] line 33 pointer relation: dead object in (const char *)(const void *)src: SUCCESS
+[memcpy.pointer_arithmetic.2] line 33 pointer relation: pointer NULL in (const char *)buffer + (signed long int)(size_t)length: SUCCESS
+[memcpy.pointer_arithmetic.3] line 33 pointer relation: pointer invalid in (const char *)buffer + (signed long int)(size_t)length: SUCCESS
+[memcpy.pointer_arithmetic.4] line 33 pointer relation: deallocated dynamic object in (const char *)buffer + (signed long int)(size_t)length: SUCCESS
+[memcpy.pointer_arithmetic.5] line 33 pointer relation: dead object in (const char *)buffer + (signed long int)(size_t)length: SUCCESS
+[memcpy.pointer_arithmetic.6] line 33 pointer relation: pointer outside object bounds in (const char *)buffer + (signed long int)(size_t)length: SUCCESS
+[memcpy.pointer_arithmetic.7] line 33 pointer relation: invalid integer address in (const char *)buffer + (signed long int)(size_t)length: SUCCESS
+[memcpy.pointer.2] line 34 same object violation in (const char *)buffer >= (const char *)(const void *)src + (signed long int)(size_t)length: SUCCESS
+[memcpy.pointer_arithmetic.8] line 34 pointer relation: pointer NULL in (const char *)buffer: SUCCESS
+[memcpy.pointer_arithmetic.9] line 34 pointer relation: pointer invalid in (const char *)buffer: SUCCESS
+[memcpy.pointer_arithmetic.10] line 34 pointer relation: deallocated dynamic object in (const char *)buffer: SUCCESS
+[memcpy.pointer_arithmetic.11] line 34 pointer relation: dead object in (const char *)buffer: SUCCESS
+[memcpy.pointer_arithmetic.12] line 34 pointer relation: pointer outside object bounds in (const char *)buffer: SUCCESS
+[memcpy.pointer_arithmetic.13] line 34 pointer relation: invalid integer address in (const char *)buffer: SUCCESS
+[memcpy.pointer_arithmetic.14] line 34 pointer relation: dead object in (const char *)(const void *)src + (signed long int)(size_t)length: SUCCESS
+[memcpy.pointer_arithmetic.15] line 34 pointer relation: pointer outside object bounds in (const char *)(const void *)src + (signed long int)(size_t)length: SUCCESS
+
+fd_chen.c function get_dir_index_using_offset
+[get_dir_index_using_offset.pointer_dereference.1] line 5 dereference failure: pointer NULL in sb->s_fs_info: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.2] line 5 dereference failure: pointer invalid in sb->s_fs_info: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.3] line 5 dereference failure: deallocated dynamic object in sb->s_fs_info: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.4] line 5 dereference failure: dead object in sb->s_fs_info: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.5] line 5 dereference failure: pointer outside object bounds in sb->s_fs_info: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.6] line 5 dereference failure: invalid integer address in sb->s_fs_info: SUCCESS
+[get_dir_index_using_offset.overflow.1] line 22 arithmetic overflow on signed - in max_index - (signed long int)3: SUCCESS
+[get_dir_index_using_offset.unwind.1] line 35 unwinding assertion loop 1: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.7] line 82 dereference failure: pointer NULL in *next_block: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.8] line 82 dereference failure: pointer invalid in *next_block: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.9] line 82 dereference failure: deallocated dynamic object in *next_block: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.10] line 82 dereference failure: dead object in *next_block: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.11] line 82 dereference failure: pointer outside object bounds in *next_block: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.12] line 82 dereference failure: invalid integer address in *next_block: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.13] line 85 dereference failure: pointer NULL in *next_offset: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.14] line 85 dereference failure: pointer invalid in *next_offset: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.15] line 85 dereference failure: deallocated dynamic object in *next_offset: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.16] line 85 dereference failure: dead object in *next_offset: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.17] line 85 dereference failure: pointer outside object bounds in *next_offset: SUCCESS
+[get_dir_index_using_offset.pointer_dereference.18] line 85 dereference failure: invalid integer address in *next_offset: SUCCESS
+
+fd_chen.c function squashfs_readdir
+[squashfs_readdir.pointer_dereference.1] line 96 dereference failure: pointer NULL in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.2] line 96 dereference failure: pointer invalid in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.3] line 96 dereference failure: deallocated dynamic object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.4] line 96 dereference failure: dead object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.5] line 96 dereference failure: pointer outside object bounds in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.6] line 96 dereference failure: invalid integer address in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.7] line 96 dereference failure: pointer NULL in inode->i_sb->s_fs_info: SUCCESS
+[squashfs_readdir.pointer_dereference.8] line 96 dereference failure: pointer invalid in inode->i_sb->s_fs_info: SUCCESS
+[squashfs_readdir.pointer_dereference.9] line 96 dereference failure: deallocated dynamic object in inode->i_sb->s_fs_info: SUCCESS
+[squashfs_readdir.pointer_dereference.10] line 96 dereference failure: dead object in inode->i_sb->s_fs_info: SUCCESS
+[squashfs_readdir.pointer_dereference.11] line 96 dereference failure: pointer outside object bounds in inode->i_sb->s_fs_info: SUCCESS
+[squashfs_readdir.pointer_dereference.12] line 96 dereference failure: invalid integer address in inode->i_sb->s_fs_info: SUCCESS
+[squashfs_readdir.pointer_dereference.13] line 97 dereference failure: pointer NULL in return_value_squashfs_i->start: SUCCESS
+[squashfs_readdir.pointer_dereference.14] line 97 dereference failure: pointer invalid in return_value_squashfs_i->start: SUCCESS
+[squashfs_readdir.pointer_dereference.15] line 97 dereference failure: deallocated dynamic object in return_value_squashfs_i->start: SUCCESS
+[squashfs_readdir.pointer_dereference.16] line 97 dereference failure: dead object in return_value_squashfs_i->start: SUCCESS
+[squashfs_readdir.pointer_dereference.17] line 97 dereference failure: pointer outside object bounds in return_value_squashfs_i->start: SUCCESS
+[squashfs_readdir.pointer_dereference.18] line 97 dereference failure: invalid integer address in return_value_squashfs_i->start: SUCCESS
+[squashfs_readdir.pointer_dereference.19] line 98 dereference failure: pointer NULL in return_value_squashfs_i$0->offset: SUCCESS
+[squashfs_readdir.pointer_dereference.20] line 98 dereference failure: pointer invalid in return_value_squashfs_i$0->offset: SUCCESS
+[squashfs_readdir.pointer_dereference.21] line 98 dereference failure: deallocated dynamic object in return_value_squashfs_i$0->offset: SUCCESS
+[squashfs_readdir.pointer_dereference.22] line 98 dereference failure: dead object in return_value_squashfs_i$0->offset: SUCCESS
+[squashfs_readdir.pointer_dereference.23] line 98 dereference failure: pointer outside object bounds in return_value_squashfs_i$0->offset: SUCCESS
+[squashfs_readdir.pointer_dereference.24] line 98 dereference failure: invalid integer address in return_value_squashfs_i$0->offset: SUCCESS
+[squashfs_readdir.pointer_dereference.25] line 123 dereference failure: pointer NULL in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.26] line 123 dereference failure: pointer invalid in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.27] line 123 dereference failure: deallocated dynamic object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.28] line 123 dereference failure: dead object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.29] line 123 dereference failure: pointer outside object bounds in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.30] line 123 dereference failure: invalid integer address in ctx->pos: SUCCESS
+[squashfs_readdir.unwind.2] line 123 unwinding assertion loop 2: SUCCESS
+[squashfs_readdir.pointer_dereference.31] line 130 dereference failure: pointer NULL in inode->i_ino: SUCCESS
+[squashfs_readdir.pointer_dereference.32] line 130 dereference failure: pointer invalid in inode->i_ino: SUCCESS
+[squashfs_readdir.pointer_dereference.33] line 130 dereference failure: deallocated dynamic object in inode->i_ino: SUCCESS
+[squashfs_readdir.pointer_dereference.34] line 130 dereference failure: dead object in inode->i_ino: SUCCESS
+[squashfs_readdir.pointer_dereference.35] line 130 dereference failure: pointer outside object bounds in inode->i_ino: SUCCESS
+[squashfs_readdir.pointer_dereference.36] line 130 dereference failure: invalid integer address in inode->i_ino: SUCCESS
+[squashfs_readdir.pointer_dereference.37] line 134 dereference failure: pointer NULL in return_value_squashfs_i$1->parent: SUCCESS
+[squashfs_readdir.pointer_dereference.38] line 134 dereference failure: pointer invalid in return_value_squashfs_i$1->parent: SUCCESS
+[squashfs_readdir.pointer_dereference.39] line 134 dereference failure: deallocated dynamic object in return_value_squashfs_i$1->parent: SUCCESS
+[squashfs_readdir.pointer_dereference.40] line 134 dereference failure: dead object in return_value_squashfs_i$1->parent: SUCCESS
+[squashfs_readdir.pointer_dereference.41] line 134 dereference failure: pointer outside object bounds in return_value_squashfs_i$1->parent: SUCCESS
+[squashfs_readdir.pointer_dereference.42] line 134 dereference failure: invalid integer address in return_value_squashfs_i$1->parent: SUCCESS
+[squashfs_readdir.overflow.1] line 141 arithmetic overflow on signed + in ctx->pos + (signed long int)size: SUCCESS
+[squashfs_readdir.pointer_dereference.43] line 141 dereference failure: pointer NULL in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.44] line 141 dereference failure: pointer invalid in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.45] line 141 dereference failure: deallocated dynamic object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.46] line 141 dereference failure: dead object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.47] line 141 dereference failure: pointer outside object bounds in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.48] line 141 dereference failure: invalid integer address in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.49] line 144 dereference failure: pointer NULL in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.50] line 144 dereference failure: pointer invalid in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.51] line 144 dereference failure: deallocated dynamic object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.52] line 144 dereference failure: dead object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.53] line 144 dereference failure: pointer outside object bounds in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.54] line 144 dereference failure: invalid integer address in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.55] line 145 dereference failure: pointer NULL in return_value_squashfs_i$2->dir_idx_start: SUCCESS
+[squashfs_readdir.pointer_dereference.56] line 145 dereference failure: pointer invalid in return_value_squashfs_i$2->dir_idx_start: SUCCESS
+[squashfs_readdir.pointer_dereference.57] line 145 dereference failure: deallocated dynamic object in return_value_squashfs_i$2->dir_idx_start: SUCCESS
+[squashfs_readdir.pointer_dereference.58] line 145 dereference failure: dead object in return_value_squashfs_i$2->dir_idx_start: SUCCESS
+[squashfs_readdir.pointer_dereference.59] line 145 dereference failure: pointer outside object bounds in return_value_squashfs_i$2->dir_idx_start: SUCCESS
+[squashfs_readdir.pointer_dereference.60] line 145 dereference failure: invalid integer address in return_value_squashfs_i$2->dir_idx_start: SUCCESS
+[squashfs_readdir.pointer_dereference.61] line 146 dereference failure: pointer NULL in return_value_squashfs_i$3->dir_idx_offset: SUCCESS
+[squashfs_readdir.pointer_dereference.62] line 146 dereference failure: pointer invalid in return_value_squashfs_i$3->dir_idx_offset: SUCCESS
+[squashfs_readdir.pointer_dereference.63] line 146 dereference failure: deallocated dynamic object in return_value_squashfs_i$3->dir_idx_offset: SUCCESS
+[squashfs_readdir.pointer_dereference.64] line 146 dereference failure: dead object in return_value_squashfs_i$3->dir_idx_offset: SUCCESS
+[squashfs_readdir.pointer_dereference.65] line 146 dereference failure: pointer outside object bounds in return_value_squashfs_i$3->dir_idx_offset: SUCCESS
+[squashfs_readdir.pointer_dereference.66] line 146 dereference failure: invalid integer address in return_value_squashfs_i$3->dir_idx_offset: SUCCESS
+[squashfs_readdir.pointer_dereference.67] line 147 dereference failure: pointer NULL in return_value_squashfs_i$4->dir_idx_cnt: SUCCESS
+[squashfs_readdir.pointer_dereference.68] line 147 dereference failure: pointer invalid in return_value_squashfs_i$4->dir_idx_cnt: SUCCESS
+[squashfs_readdir.pointer_dereference.69] line 147 dereference failure: deallocated dynamic object in return_value_squashfs_i$4->dir_idx_cnt: SUCCESS
+[squashfs_readdir.pointer_dereference.70] line 147 dereference failure: dead object in return_value_squashfs_i$4->dir_idx_cnt: SUCCESS
+[squashfs_readdir.pointer_dereference.71] line 147 dereference failure: pointer outside object bounds in return_value_squashfs_i$4->dir_idx_cnt: SUCCESS
+[squashfs_readdir.pointer_dereference.72] line 147 dereference failure: invalid integer address in return_value_squashfs_i$4->dir_idx_cnt: SUCCESS
+[squashfs_readdir.pointer_dereference.73] line 148 dereference failure: pointer NULL in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.74] line 148 dereference failure: pointer invalid in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.75] line 148 dereference failure: deallocated dynamic object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.76] line 148 dereference failure: dead object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.77] line 148 dereference failure: pointer outside object bounds in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.78] line 148 dereference failure: invalid integer address in ctx->pos: SUCCESS
+[squashfs_readdir.unwind.4] line 150 unwinding assertion loop 4: SUCCESS
+[squashfs_readdir.assertion.1] line 157 R1d: SUCCESS
+[squashfs_readdir.overflow.2] line 157 arithmetic overflow on signed + in length + (loff_t)sizeof(struct squashfs_dir_header) /*12ul*/ : SUCCESS
+[squashfs_readdir.pointer_dereference.79] line 158 dereference failure: pointer NULL in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.80] line 158 dereference failure: pointer invalid in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.81] line 158 dereference failure: deallocated dynamic object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.82] line 158 dereference failure: dead object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.83] line 158 dereference failure: pointer outside object bounds in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.84] line 158 dereference failure: invalid integer address in inode->i_sb: SUCCESS
+[squashfs_readdir.unwind.3] line 170 unwinding assertion loop 3: SUCCESS
+[squashfs_readdir.assertion.2] line 177 R2d: SUCCESS
+[squashfs_readdir.overflow.3] line 177 arithmetic overflow on signed + in length + (loff_t)sizeof(struct squashfs_dir_entry) /*8ul*/ : SUCCESS
+[squashfs_readdir.pointer_dereference.85] line 178 dereference failure: pointer NULL in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.86] line 178 dereference failure: pointer invalid in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.87] line 178 dereference failure: deallocated dynamic object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.88] line 178 dereference failure: dead object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.89] line 178 dereference failure: pointer outside object bounds in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.90] line 178 dereference failure: invalid integer address in inode->i_sb: SUCCESS
+[squashfs_readdir.overflow.4] line 184 arithmetic overflow on signed + in (signed int)(u16)dire->size + 1: SUCCESS
+[squashfs_readdir.pointer_dereference.91] line 184 dereference failure: pointer NULL in dire->size: SUCCESS
+[squashfs_readdir.pointer_dereference.92] line 184 dereference failure: pointer invalid in dire->size: SUCCESS
+[squashfs_readdir.pointer_dereference.93] line 184 dereference failure: deallocated dynamic object in dire->size: SUCCESS
+[squashfs_readdir.pointer_dereference.94] line 184 dereference failure: dead object in dire->size: SUCCESS
+[squashfs_readdir.pointer_dereference.95] line 184 dereference failure: pointer outside object bounds in dire->size: SUCCESS
+[squashfs_readdir.pointer_dereference.96] line 184 dereference failure: invalid integer address in dire->size: SUCCESS
+[squashfs_readdir.assertion.3] line 193 R3d: SUCCESS
+[squashfs_readdir.overflow.5] line 193 arithmetic overflow on signed + in length + (loff_t)size: SUCCESS
+[squashfs_readdir.pointer_dereference.97] line 194 dereference failure: pointer NULL in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.98] line 194 dereference failure: pointer invalid in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.99] line 194 dereference failure: deallocated dynamic object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.100] line 194 dereference failure: dead object in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.101] line 194 dereference failure: pointer outside object bounds in inode->i_sb: SUCCESS
+[squashfs_readdir.pointer_dereference.102] line 194 dereference failure: invalid integer address in inode->i_sb: SUCCESS
+[squashfs_readdir.overflow.6] line 199 arithmetic overflow on signed + in length + (signed long int)size: SUCCESS
+[squashfs_readdir.pointer_dereference.103] line 201 dereference failure: pointer NULL in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.104] line 201 dereference failure: pointer invalid in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.105] line 201 dereference failure: deallocated dynamic object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.106] line 201 dereference failure: dead object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.107] line 201 dereference failure: pointer outside object bounds in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.108] line 201 dereference failure: invalid integer address in ctx->pos: SUCCESS
+[squashfs_readdir.array_bounds.1] line 204 array.name dynamic object upper bound in dire->name[(signed long int)size]: SUCCESS
+[squashfs_readdir.pointer_dereference.109] line 204 dereference failure: pointer NULL in dire->name: SUCCESS
+[squashfs_readdir.pointer_dereference.110] line 204 dereference failure: pointer invalid in dire->name: SUCCESS
+[squashfs_readdir.pointer_dereference.111] line 204 dereference failure: deallocated dynamic object in dire->name: SUCCESS
+[squashfs_readdir.pointer_dereference.112] line 204 dereference failure: dead object in dire->name: SUCCESS
+[squashfs_readdir.pointer_dereference.113] line 204 dereference failure: pointer outside object bounds in dire->name: SUCCESS
+[squashfs_readdir.pointer_dereference.114] line 204 dereference failure: invalid integer address in dire->name: SUCCESS
+[squashfs_readdir.pointer_dereference.115] line 206 dereference failure: pointer NULL in dire->inode_number: SUCCESS
+[squashfs_readdir.pointer_dereference.116] line 206 dereference failure: pointer invalid in dire->inode_number: SUCCESS
+[squashfs_readdir.pointer_dereference.117] line 206 dereference failure: deallocated dynamic object in dire->inode_number: SUCCESS
+[squashfs_readdir.pointer_dereference.118] line 206 dereference failure: dead object in dire->inode_number: SUCCESS
+[squashfs_readdir.pointer_dereference.119] line 206 dereference failure: pointer outside object bounds in dire->inode_number: SUCCESS
+[squashfs_readdir.pointer_dereference.120] line 206 dereference failure: invalid integer address in dire->inode_number: SUCCESS
+[squashfs_readdir.pointer_dereference.121] line 207 dereference failure: pointer NULL in dire->type: SUCCESS
+[squashfs_readdir.pointer_dereference.122] line 207 dereference failure: pointer invalid in dire->type: SUCCESS
+[squashfs_readdir.pointer_dereference.123] line 207 dereference failure: deallocated dynamic object in dire->type: SUCCESS
+[squashfs_readdir.pointer_dereference.124] line 207 dereference failure: dead object in dire->type: SUCCESS
+[squashfs_readdir.pointer_dereference.125] line 207 dereference failure: pointer outside object bounds in dire->type: SUCCESS
+[squashfs_readdir.pointer_dereference.126] line 207 dereference failure: invalid integer address in dire->type: SUCCESS
+[squashfs_readdir.array_bounds.2] line 214 array 'squashfs_filetype_table' upper bound in squashfs_filetype_table[(signed long int)type]: SUCCESS
+[squashfs_readdir.pointer_dereference.127] line 217 dereference failure: pointer NULL in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.128] line 217 dereference failure: pointer invalid in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.129] line 217 dereference failure: deallocated dynamic object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.130] line 217 dereference failure: dead object in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.131] line 217 dereference failure: pointer outside object bounds in ctx->pos: SUCCESS
+[squashfs_readdir.pointer_dereference.132] line 217 dereference failure: invalid integer address in ctx->pos: SUCCESS
+
+harness_dir.c function dir_emit
+[dir_emit.assertion.1] line 16 D1 emitted name is readable: SUCCESS
+
+harness_dir.c function file_inode
+[file_inode.pointer_dereference.1] line 13 dereference failure: pointer NULL in f->inode: SUCCESS
+[file_inode.pointer_dereference.2] line 13 dereference failure: pointer invalid in f->inode: SUCCESS
+[file_inode.pointer_dereference.3] line 13 dereference failure: deallocated dynamic object in f->inode: SUCCESS
+[file_inode.pointer_dereference.4] line 13 dereference failure: dead object in f->inode: SUCCESS
+[file_inode.pointer_dereference.5] line 13 dereference failure: pointer outside object bounds in f->inode: SUCCESS
+[file_inode.pointer_dereference.6] line 13 dereference failure: invalid integer address in f->inode: SUCCESS
+
+harness_dir.c function main
+[main.assertion.1] line 42 P4 readdir returns 0 (its error convention): SUCCESS
+
+prelude.h function d_splice_alias
+[d_splice_alias.assertion.1] line 130 P2 inode passed to d_splice_alias is NULL or a real inode: SUCCESS
+
+prelude.h function i_size_read
+[i_size_read.pointer_dereference.1] line 45 dereference failure: pointer NULL in i->i_size: SUCCESS
+[i_size_read.pointer_dereference.2] line 45 dereference failure: pointer invalid in i->i_size: SUCCESS
+[i_size_read.pointer_dereference.3] line 45 dereference failure: deallocated dynamic object in i->i_size: SUCCESS
+[i_size_read.pointer_dereference.4] line 45 dereference failure: dead object in i->i_size: SUCCESS
+[i_size_read.pointer_dereference.5] line 45 dereference failure: pointer outside object bounds in i->i_size: SUCCESS
+[i_size_read.pointer_dereference.6] line 45 dereference failure: invalid integer address in i->i_size: SUCCESS
+
+prelude.h function kfree
+[kfree.precondition_instance.1] line 49 free argument must be NULL or valid pointer: SUCCESS
+[kfree.precondition_instance.2] line 49 free argument must be dynamic object: SUCCESS
+[kfree.precondition_instance.3] line 49 free argument has offset zero: SUCCESS
+[kfree.precondition_instance.4] line 49 double free: SUCCESS
+[kfree.precondition_instance.5] line 49 free called for new[] object: SUCCESS
+[kfree.precondition_instance.6] line 49 free called for stack-allocated object: SUCCESS
+
+prelude.h function squashfs_dir_space
+[squashfs_dir_space.overflow.1] line 73 arithmetic overflow on signed - in return_value_i_size_read - length: SUCCESS
+
+prelude.h function squashfs_dir_start
+[squashfs_dir_start.pointer_dereference.1] line 60 dereference failure: pointer NULL in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.2] line 60 dereference failure: pointer invalid in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.3] line 60 dereference failure: deallocated dynamic object in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.4] line 60 dereference failure: dead object in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.5] line 60 dereference failure: pointer outside object bounds in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.6] line 60 dereference failure: invalid integer address in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.7] line 63 dereference failure: pointer NULL in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.8] line 63 dereference failure: pointer invalid in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.9] line 63 dereference failure: deallocated dynamic object in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.10] line 63 dereference failure: dead object in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.11] line 63 dereference failure: pointer outside object bounds in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.12] line 63 dereference failure: invalid integer address in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.13] line 65 dereference failure: pointer NULL in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.14] line 65 dereference failure: pointer invalid in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.15] line 65 dereference failure: deallocated dynamic object in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.16] line 65 dereference failure: dead object in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.17] line 65 dereference failure: pointer outside object bounds in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.18] line 65 dereference failure: invalid integer address in msblk->directory_table: SUCCESS
+[squashfs_dir_start.pointer_dereference.19] line 65 dereference failure: pointer NULL in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.20] line 65 dereference failure: pointer invalid in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.21] line 65 dereference failure: deallocated dynamic object in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.22] line 65 dereference failure: dead object in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.23] line 65 dereference failure: pointer outside object bounds in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.24] line 65 dereference failure: invalid integer address in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.25] line 66 dereference failure: pointer NULL in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.26] line 66 dereference failure: pointer invalid in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.27] line 66 dereference failure: deallocated dynamic object in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.28] line 66 dereference failure: dead object in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.29] line 66 dereference failure: pointer outside object bounds in msblk->directory_table_end: SUCCESS
+[squashfs_dir_start.pointer_dereference.30] line 66 dereference failure: invalid integer address in msblk->directory_table_end: SUCCESS
+
+prelude.h function squashfs_read_metadata
+[squashfs_read_metadata.overflow.1] line 87 arithmetic overflow on signed + in g_bad_block_reads + 1: SUCCESS
+[squashfs_read_metadata.pointer_dereference.1] line 87 dereference failure: pointer NULL in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.2] line 87 dereference failure: pointer invalid in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.3] line 87 dereference failure: deallocated dynamic object in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.4] line 87 dereference failure: dead object in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.5] line 87 dereference failure: pointer outside object bounds in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.6] line 87 dereference failure: invalid integer address in *block: SUCCESS
+[squashfs_read_metadata.assertion.1] line 92 M0 read_metadata destination is large enough: SUCCESS
+[squashfs_read_metadata.precondition_instance.1] line 93 memcpy src/dst overlap: SUCCESS
+[squashfs_read_metadata.precondition_instance.2] line 93 memcpy source region readable: SUCCESS
+[squashfs_read_metadata.precondition_instance.3] line 93 memcpy destination region writeable: SUCCESS
+[squashfs_read_metadata.pointer_dereference.7] line 96 dereference failure: pointer NULL in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.8] line 96 dereference failure: pointer invalid in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.9] line 96 dereference failure: deallocated dynamic object in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.10] line 96 dereference failure: dead object in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.11] line 96 dereference failure: pointer outside object bounds in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.12] line 96 dereference failure: invalid integer address in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.13] line 96 dereference failure: pointer NULL in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.14] line 96 dereference failure: pointer invalid in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.15] line 96 dereference failure: deallocated dynamic object in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.16] line 96 dereference failure: dead object in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.17] line 96 dereference failure: pointer outside object bounds in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.18] line 96 dereference failure: invalid integer address in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.19] line 97 dereference failure: pointer NULL in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.20] line 97 dereference failure: pointer invalid in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.21] line 97 dereference failure: deallocated dynamic object in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.22] line 97 dereference failure: dead object in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.23] line 97 dereference failure: pointer outside object bounds in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.24] line 97 dereference failure: invalid integer address in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.25] line 97 dereference failure: pointer NULL in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.26] line 97 dereference failure: pointer invalid in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.27] line 97 dereference failure: deallocated dynamic object in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.28] line 97 dereference failure: dead object in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.29] line 97 dereference failure: pointer outside object bounds in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.30] line 97 dereference failure: invalid integer address in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.31] line 97 dereference failure: pointer NULL in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.32] line 97 dereference failure: pointer invalid in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.33] line 97 dereference failure: deallocated dynamic object in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.34] line 97 dereference failure: dead object in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.35] line 97 dereference failure: pointer outside object bounds in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.36] line 97 dereference failure: invalid integer address in *offset: SUCCESS
+
+** 0 of 278 failed (1 iterations)
+VERIFICATION SUCCESSFUL

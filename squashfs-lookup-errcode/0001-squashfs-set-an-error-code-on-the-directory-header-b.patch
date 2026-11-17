@@ -1,0 +1,64 @@
+From 5a45eded397ff2dc7ec947d869b5c7fe67084b70 Mon Sep 17 00:00:00 2001
+From: William Chuang <founder@logarcheon.com>
+Date: Mon, 16 Nov 2026 23:03:54 +0000
+Subject: [PATCH] squashfs: set an error code on the directory header bounds
+ check in lookup
+
+The squashfs_dir_space() check before the directory header read in
+squashfs_lookup() jumps to read_failure without setting err.  The two
+checks before the entry and name reads were given an error code by
+squashfs-fix-variables-in-directory-code-and-add-more-sanity-checks-fix,
+but this one was missed.
+
+On this path err is either the positive byte count of an earlier
+successful squashfs_read_metadata() call (12 after a directory header),
+or uninitialised when the check fails on the first iteration (for a
+directory whose size is too small to hold a header).  squashfs_lookup()
+then returns ERR_PTR(err) with a value that IS_ERR() does not catch, and
+the VFS dereferences it.
+
+A model check (CBMC) of squashfs_lookup() as it stands in
+mm-nonmm-unstable produces both cases: a 15-byte directory gives
+ERR_PTR(12), and a 9-byte directory gives ERR_PTR(<uninitialised>).
+With this change, the same check proves that every return value is NULL,
+a dentry, or ERR_PTR(-errno), for every directory size.
+
+The header check validates on-disk directory content, so jump to
+data_error (-EIO) like the neighbouring dir_count check.  Aibing Chen
+posted the same hunk as part of "[PATCH 2/2] squashfs: return -EIO on
+out-of-bounds directory entry in lookup" on 2026-11-14.
+
+Fixes: 5213b0a08263 ("Squashfs: fix variables in directory code and add more sanity checks")
+Signed-off-by: William Chuang <founder@logarcheon.com>
+---
+Notes for reviewers (not part of the commit):
+
+- This is the third squashfs_dir_space() path; Dan noted two.  The fix
+  goes on top of squashfs-fix-variables-in-directory-code-and-add-more-
+  sanity-checks-fix and can simply be folded into it.  If -ENOSPC is
+  preferred for consistency with that fix, I'm happy to respin.
+- squashfs_read_inode() has the same problem: the two new
+  "i_size < 3" checks reach failed_read with err = 32 or 40.  That is
+  fixed by Aibing Chen's "[PATCH 1/2] squashfs: return -EINVAL on
+  invalid directory inode size" (2026-11-14), which is still needed.
+- The model-checking harnesses and outputs are available on request.
+
+ fs/squashfs/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/squashfs/namei.c b/fs/squashfs/namei.c
+index dc63920..1945e5d 100644
+--- a/fs/squashfs/namei.c
++++ b/fs/squashfs/namei.c
+@@ -203,7 +203,7 @@ static struct dentry *squashfs_lookup(struct inode *dir, struct dentry *dentry,
+ 		 * Read directory header.
+ 		 */
+ 		if (!squashfs_dir_space(dir, length, sizeof(dirh)))
+-			goto read_failure;
++			goto data_error;
+ 
+ 		err = squashfs_read_metadata(dir->i_sb, &dirh, &block,
+ 				&offset, sizeof(dirh));
+-- 
+2.43.0
+

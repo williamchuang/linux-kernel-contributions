@@ -1,0 +1,835 @@
+CBMC version 5.95.1 (cbmc-5.95.1) 64-bit x86_64 linux
+Parsing harness_inode.c
+Converting
+Type-checking harness_inode
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 8 object bits, 56 offset bits (default)
+Starting Bounded Model Checking
+**** WARNING: no body for function __builtin_memcpy
+Runtime Symex: 0.119101s
+size of program expression: 4262 steps
+simple slicing removed 11 assignments
+Generated 1008 VCC(s), 172 remaining after simplification
+Runtime Postprocess Equation: 0.00048035s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 0.0559498s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 4.051e-06s
+Solving with MiniSAT 2.2.1 with simplifier
+72480 variables, 140787 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 0.0664104s
+Runtime decision procedure: 0.122706s
+
+** Results:
+fi_final.c function squashfs_read_inode
+[squashfs_read_inode.pointer_dereference.1] line 3 dereference failure: pointer NULL in inode->i_sb: SUCCESS
+[squashfs_read_inode.pointer_dereference.2] line 3 dereference failure: pointer invalid in inode->i_sb: SUCCESS
+[squashfs_read_inode.pointer_dereference.3] line 3 dereference failure: deallocated dynamic object in inode->i_sb: SUCCESS
+[squashfs_read_inode.pointer_dereference.4] line 3 dereference failure: dead object in inode->i_sb: SUCCESS
+[squashfs_read_inode.pointer_dereference.5] line 3 dereference failure: pointer outside object bounds in inode->i_sb: SUCCESS
+[squashfs_read_inode.pointer_dereference.6] line 3 dereference failure: invalid integer address in inode->i_sb: SUCCESS
+[squashfs_read_inode.pointer_dereference.7] line 4 dereference failure: pointer NULL in sb->s_fs_info: SUCCESS
+[squashfs_read_inode.pointer_dereference.8] line 4 dereference failure: pointer invalid in sb->s_fs_info: SUCCESS
+[squashfs_read_inode.pointer_dereference.9] line 4 dereference failure: deallocated dynamic object in sb->s_fs_info: SUCCESS
+[squashfs_read_inode.pointer_dereference.10] line 4 dereference failure: dead object in sb->s_fs_info: SUCCESS
+[squashfs_read_inode.pointer_dereference.11] line 4 dereference failure: pointer outside object bounds in sb->s_fs_info: SUCCESS
+[squashfs_read_inode.pointer_dereference.12] line 4 dereference failure: invalid integer address in sb->s_fs_info: SUCCESS
+[squashfs_read_inode.pointer_dereference.13] line 29 dereference failure: pointer NULL in sqshb_ino->inode_type: SUCCESS
+[squashfs_read_inode.pointer_dereference.14] line 29 dereference failure: pointer invalid in sqshb_ino->inode_type: SUCCESS
+[squashfs_read_inode.pointer_dereference.15] line 29 dereference failure: deallocated dynamic object in sqshb_ino->inode_type: SUCCESS
+[squashfs_read_inode.pointer_dereference.16] line 29 dereference failure: dead object in sqshb_ino->inode_type: SUCCESS
+[squashfs_read_inode.pointer_dereference.17] line 29 dereference failure: pointer outside object bounds in sqshb_ino->inode_type: SUCCESS
+[squashfs_read_inode.pointer_dereference.18] line 29 dereference failure: invalid integer address in sqshb_ino->inode_type: SUCCESS
+[squashfs_read_inode.pointer_dereference.19] line 42 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.20] line 42 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.21] line 42 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.22] line 42 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.23] line 42 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.24] line 42 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.25] line 42 dereference failure: pointer NULL in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.26] line 42 dereference failure: pointer invalid in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.27] line 42 dereference failure: deallocated dynamic object in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.28] line 42 dereference failure: dead object in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.29] line 42 dereference failure: pointer outside object bounds in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.30] line 42 dereference failure: invalid integer address in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.31] line 43 dereference failure: pointer NULL in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.32] line 43 dereference failure: pointer invalid in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.33] line 43 dereference failure: deallocated dynamic object in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.34] line 43 dereference failure: dead object in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.35] line 43 dereference failure: pointer outside object bounds in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.36] line 43 dereference failure: invalid integer address in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.37] line 49 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.38] line 49 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.39] line 49 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.40] line 49 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.41] line 49 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.42] line 49 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.43] line 49 dereference failure: pointer NULL in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.44] line 49 dereference failure: pointer invalid in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.45] line 49 dereference failure: deallocated dynamic object in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.46] line 49 dereference failure: dead object in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.47] line 49 dereference failure: pointer outside object bounds in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.48] line 49 dereference failure: invalid integer address in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.49] line 53 dereference failure: pointer NULL in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.50] line 53 dereference failure: pointer invalid in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.51] line 53 dereference failure: deallocated dynamic object in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.52] line 53 dereference failure: dead object in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.53] line 53 dereference failure: pointer outside object bounds in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.54] line 53 dereference failure: invalid integer address in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.55] line 64 dereference failure: pointer NULL in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.56] line 64 dereference failure: pointer invalid in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.57] line 64 dereference failure: deallocated dynamic object in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.58] line 64 dereference failure: dead object in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.59] line 64 dereference failure: pointer outside object bounds in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.60] line 64 dereference failure: invalid integer address in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.61] line 65 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.62] line 65 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.63] line 65 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.64] line 65 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.65] line 65 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.66] line 65 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.67] line 66 dereference failure: pointer NULL in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.68] line 66 dereference failure: pointer invalid in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.69] line 66 dereference failure: deallocated dynamic object in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.70] line 66 dereference failure: dead object in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.71] line 66 dereference failure: pointer outside object bounds in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.72] line 66 dereference failure: invalid integer address in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.73] line 66 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.74] line 66 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.75] line 66 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.76] line 66 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.77] line 66 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.78] line 66 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.79] line 67 dereference failure: pointer NULL in return_value_squashfs_i->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.80] line 67 dereference failure: pointer invalid in return_value_squashfs_i->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.81] line 67 dereference failure: deallocated dynamic object in return_value_squashfs_i->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.82] line 67 dereference failure: dead object in return_value_squashfs_i->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.83] line 67 dereference failure: pointer outside object bounds in return_value_squashfs_i->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.84] line 67 dereference failure: invalid integer address in return_value_squashfs_i->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.85] line 68 dereference failure: pointer NULL in return_value_squashfs_i$0->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.86] line 68 dereference failure: pointer invalid in return_value_squashfs_i$0->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.87] line 68 dereference failure: deallocated dynamic object in return_value_squashfs_i$0->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.88] line 68 dereference failure: dead object in return_value_squashfs_i$0->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.89] line 68 dereference failure: pointer outside object bounds in return_value_squashfs_i$0->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.90] line 68 dereference failure: invalid integer address in return_value_squashfs_i$0->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.91] line 69 dereference failure: pointer NULL in return_value_squashfs_i$1->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.92] line 69 dereference failure: pointer invalid in return_value_squashfs_i$1->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.93] line 69 dereference failure: deallocated dynamic object in return_value_squashfs_i$1->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.94] line 69 dereference failure: dead object in return_value_squashfs_i$1->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.95] line 69 dereference failure: pointer outside object bounds in return_value_squashfs_i$1->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.96] line 69 dereference failure: invalid integer address in return_value_squashfs_i$1->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.97] line 70 dereference failure: pointer NULL in return_value_squashfs_i$2->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.98] line 70 dereference failure: pointer invalid in return_value_squashfs_i$2->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.99] line 70 dereference failure: deallocated dynamic object in return_value_squashfs_i$2->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.100] line 70 dereference failure: dead object in return_value_squashfs_i$2->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.101] line 70 dereference failure: pointer outside object bounds in return_value_squashfs_i$2->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.102] line 70 dereference failure: invalid integer address in return_value_squashfs_i$2->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.103] line 70 dereference failure: pointer NULL in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.104] line 70 dereference failure: pointer invalid in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.105] line 70 dereference failure: deallocated dynamic object in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.106] line 70 dereference failure: dead object in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.107] line 70 dereference failure: pointer outside object bounds in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.108] line 70 dereference failure: invalid integer address in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.109] line 71 dereference failure: pointer NULL in return_value_squashfs_i$3->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.110] line 71 dereference failure: pointer invalid in return_value_squashfs_i$3->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.111] line 71 dereference failure: deallocated dynamic object in return_value_squashfs_i$3->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.112] line 71 dereference failure: dead object in return_value_squashfs_i$3->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.113] line 71 dereference failure: pointer outside object bounds in return_value_squashfs_i$3->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.114] line 71 dereference failure: invalid integer address in return_value_squashfs_i$3->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.115] line 72 dereference failure: pointer NULL in return_value_squashfs_i$4->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.116] line 72 dereference failure: pointer invalid in return_value_squashfs_i$4->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.117] line 72 dereference failure: deallocated dynamic object in return_value_squashfs_i$4->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.118] line 72 dereference failure: dead object in return_value_squashfs_i$4->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.119] line 72 dereference failure: pointer outside object bounds in return_value_squashfs_i$4->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.120] line 72 dereference failure: invalid integer address in return_value_squashfs_i$4->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.121] line 73 dereference failure: pointer NULL in return_value_squashfs_i$5->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.122] line 73 dereference failure: pointer invalid in return_value_squashfs_i$5->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.123] line 73 dereference failure: deallocated dynamic object in return_value_squashfs_i$5->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.124] line 73 dereference failure: dead object in return_value_squashfs_i$5->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.125] line 73 dereference failure: pointer outside object bounds in return_value_squashfs_i$5->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.126] line 73 dereference failure: invalid integer address in return_value_squashfs_i$5->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.127] line 74 dereference failure: pointer NULL in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.128] line 74 dereference failure: pointer invalid in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.129] line 74 dereference failure: deallocated dynamic object in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.130] line 74 dereference failure: dead object in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.131] line 74 dereference failure: pointer outside object bounds in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.132] line 74 dereference failure: invalid integer address in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.133] line 93 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.134] line 93 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.135] line 93 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.136] line 93 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.137] line 93 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.138] line 93 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.139] line 93 dereference failure: pointer NULL in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.140] line 93 dereference failure: pointer invalid in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.141] line 93 dereference failure: deallocated dynamic object in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.142] line 93 dereference failure: dead object in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.143] line 93 dereference failure: pointer outside object bounds in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.144] line 93 dereference failure: invalid integer address in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.145] line 94 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.146] line 94 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.147] line 94 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.148] line 94 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.149] line 94 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.150] line 94 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.151] line 98 dereference failure: pointer NULL in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.152] line 98 dereference failure: pointer invalid in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.153] line 98 dereference failure: deallocated dynamic object in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.154] line 98 dereference failure: dead object in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.155] line 98 dereference failure: pointer outside object bounds in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.156] line 98 dereference failure: invalid integer address in sqsh_ino->fragment: SUCCESS
+[squashfs_read_inode.pointer_dereference.157] line 104 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.158] line 104 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.159] line 104 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.160] line 104 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.161] line 104 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.162] line 104 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.163] line 104 dereference failure: pointer NULL in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.164] line 104 dereference failure: pointer invalid in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.165] line 104 dereference failure: deallocated dynamic object in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.166] line 104 dereference failure: dead object in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.167] line 104 dereference failure: pointer outside object bounds in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.168] line 104 dereference failure: invalid integer address in msblk->block_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.169] line 108 dereference failure: pointer NULL in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.170] line 108 dereference failure: pointer invalid in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.171] line 108 dereference failure: deallocated dynamic object in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.172] line 108 dereference failure: dead object in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.173] line 108 dereference failure: pointer outside object bounds in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.174] line 108 dereference failure: invalid integer address in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.175] line 118 dereference failure: pointer NULL in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.176] line 118 dereference failure: pointer invalid in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.177] line 118 dereference failure: deallocated dynamic object in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.178] line 118 dereference failure: dead object in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.179] line 118 dereference failure: pointer outside object bounds in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.180] line 118 dereference failure: invalid integer address in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.181] line 119 dereference failure: pointer NULL in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.182] line 119 dereference failure: pointer invalid in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.183] line 119 dereference failure: deallocated dynamic object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.184] line 119 dereference failure: dead object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.185] line 119 dereference failure: pointer outside object bounds in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.186] line 119 dereference failure: invalid integer address in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.187] line 120 dereference failure: pointer NULL in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.188] line 120 dereference failure: pointer invalid in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.189] line 120 dereference failure: deallocated dynamic object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.190] line 120 dereference failure: dead object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.191] line 120 dereference failure: pointer outside object bounds in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.192] line 120 dereference failure: invalid integer address in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.193] line 121 dereference failure: pointer NULL in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.194] line 121 dereference failure: pointer invalid in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.195] line 121 dereference failure: deallocated dynamic object in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.196] line 121 dereference failure: dead object in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.197] line 121 dereference failure: pointer outside object bounds in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.198] line 121 dereference failure: invalid integer address in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.199] line 122 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.200] line 122 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.201] line 122 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.202] line 122 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.203] line 122 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.204] line 122 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.205] line 123 dereference failure: pointer NULL in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.206] line 123 dereference failure: pointer invalid in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.207] line 123 dereference failure: deallocated dynamic object in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.208] line 123 dereference failure: dead object in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.209] line 123 dereference failure: pointer outside object bounds in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.210] line 123 dereference failure: invalid integer address in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.211] line 123 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.212] line 123 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.213] line 123 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.214] line 123 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.215] line 123 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.216] line 123 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.217] line 124 dereference failure: pointer NULL in sqsh_ino->sparse: SUCCESS
+[squashfs_read_inode.pointer_dereference.218] line 124 dereference failure: pointer invalid in sqsh_ino->sparse: SUCCESS
+[squashfs_read_inode.pointer_dereference.219] line 124 dereference failure: deallocated dynamic object in sqsh_ino->sparse: SUCCESS
+[squashfs_read_inode.pointer_dereference.220] line 124 dereference failure: dead object in sqsh_ino->sparse: SUCCESS
+[squashfs_read_inode.pointer_dereference.221] line 124 dereference failure: pointer outside object bounds in sqsh_ino->sparse: SUCCESS
+[squashfs_read_inode.pointer_dereference.222] line 124 dereference failure: invalid integer address in sqsh_ino->sparse: SUCCESS
+[squashfs_read_inode.pointer_dereference.223] line 126 dereference failure: pointer NULL in return_value_squashfs_i$6->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.224] line 126 dereference failure: pointer invalid in return_value_squashfs_i$6->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.225] line 126 dereference failure: deallocated dynamic object in return_value_squashfs_i$6->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.226] line 126 dereference failure: dead object in return_value_squashfs_i$6->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.227] line 126 dereference failure: pointer outside object bounds in return_value_squashfs_i$6->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.228] line 126 dereference failure: invalid integer address in return_value_squashfs_i$6->fragment_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.229] line 127 dereference failure: pointer NULL in return_value_squashfs_i$7->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.230] line 127 dereference failure: pointer invalid in return_value_squashfs_i$7->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.231] line 127 dereference failure: deallocated dynamic object in return_value_squashfs_i$7->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.232] line 127 dereference failure: dead object in return_value_squashfs_i$7->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.233] line 127 dereference failure: pointer outside object bounds in return_value_squashfs_i$7->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.234] line 127 dereference failure: invalid integer address in return_value_squashfs_i$7->fragment_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.235] line 128 dereference failure: pointer NULL in return_value_squashfs_i$8->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.236] line 128 dereference failure: pointer invalid in return_value_squashfs_i$8->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.237] line 128 dereference failure: deallocated dynamic object in return_value_squashfs_i$8->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.238] line 128 dereference failure: dead object in return_value_squashfs_i$8->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.239] line 128 dereference failure: pointer outside object bounds in return_value_squashfs_i$8->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.240] line 128 dereference failure: invalid integer address in return_value_squashfs_i$8->fragment_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.241] line 129 dereference failure: pointer NULL in return_value_squashfs_i$9->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.242] line 129 dereference failure: pointer invalid in return_value_squashfs_i$9->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.243] line 129 dereference failure: deallocated dynamic object in return_value_squashfs_i$9->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.244] line 129 dereference failure: dead object in return_value_squashfs_i$9->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.245] line 129 dereference failure: pointer outside object bounds in return_value_squashfs_i$9->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.246] line 129 dereference failure: invalid integer address in return_value_squashfs_i$9->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.247] line 129 dereference failure: pointer NULL in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.248] line 129 dereference failure: pointer invalid in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.249] line 129 dereference failure: deallocated dynamic object in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.250] line 129 dereference failure: dead object in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.251] line 129 dereference failure: pointer outside object bounds in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.252] line 129 dereference failure: invalid integer address in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.253] line 130 dereference failure: pointer NULL in return_value_squashfs_i$10->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.254] line 130 dereference failure: pointer invalid in return_value_squashfs_i$10->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.255] line 130 dereference failure: deallocated dynamic object in return_value_squashfs_i$10->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.256] line 130 dereference failure: dead object in return_value_squashfs_i$10->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.257] line 130 dereference failure: pointer outside object bounds in return_value_squashfs_i$10->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.258] line 130 dereference failure: invalid integer address in return_value_squashfs_i$10->block_list_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.259] line 131 dereference failure: pointer NULL in return_value_squashfs_i$11->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.260] line 131 dereference failure: pointer invalid in return_value_squashfs_i$11->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.261] line 131 dereference failure: deallocated dynamic object in return_value_squashfs_i$11->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.262] line 131 dereference failure: dead object in return_value_squashfs_i$11->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.263] line 131 dereference failure: pointer outside object bounds in return_value_squashfs_i$11->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.264] line 131 dereference failure: invalid integer address in return_value_squashfs_i$11->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.265] line 132 dereference failure: pointer NULL in return_value_squashfs_i$12->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.266] line 132 dereference failure: pointer invalid in return_value_squashfs_i$12->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.267] line 132 dereference failure: deallocated dynamic object in return_value_squashfs_i$12->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.268] line 132 dereference failure: dead object in return_value_squashfs_i$12->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.269] line 132 dereference failure: pointer outside object bounds in return_value_squashfs_i$12->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.270] line 132 dereference failure: invalid integer address in return_value_squashfs_i$12->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.271] line 133 dereference failure: pointer NULL in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.272] line 133 dereference failure: pointer invalid in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.273] line 133 dereference failure: deallocated dynamic object in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.274] line 133 dereference failure: dead object in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.275] line 133 dereference failure: pointer outside object bounds in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.276] line 133 dereference failure: invalid integer address in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.277] line 150 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.278] line 150 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.279] line 150 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.280] line 150 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.281] line 150 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.282] line 150 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.283] line 150 dereference failure: pointer NULL in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.284] line 150 dereference failure: pointer invalid in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.285] line 150 dereference failure: deallocated dynamic object in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.286] line 150 dereference failure: dead object in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.287] line 150 dereference failure: pointer outside object bounds in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.288] line 150 dereference failure: invalid integer address in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.289] line 151 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.290] line 151 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.291] line 151 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.292] line 151 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.293] line 151 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.294] line 151 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.295] line 156 dereference failure: pointer NULL in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.296] line 156 dereference failure: pointer invalid in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.297] line 156 dereference failure: deallocated dynamic object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.298] line 156 dereference failure: dead object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.299] line 156 dereference failure: pointer outside object bounds in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.300] line 156 dereference failure: invalid integer address in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.301] line 157 dereference failure: pointer NULL in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.302] line 157 dereference failure: pointer invalid in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.303] line 157 dereference failure: deallocated dynamic object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.304] line 157 dereference failure: dead object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.305] line 157 dereference failure: pointer outside object bounds in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.306] line 157 dereference failure: invalid integer address in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.307] line 158 dereference failure: pointer NULL in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.308] line 158 dereference failure: pointer invalid in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.309] line 158 dereference failure: deallocated dynamic object in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.310] line 158 dereference failure: dead object in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.311] line 158 dereference failure: pointer outside object bounds in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.312] line 158 dereference failure: invalid integer address in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.313] line 159 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.314] line 159 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.315] line 159 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.316] line 159 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.317] line 159 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.318] line 159 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.319] line 160 dereference failure: pointer NULL in return_value_squashfs_i$13->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.320] line 160 dereference failure: pointer invalid in return_value_squashfs_i$13->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.321] line 160 dereference failure: deallocated dynamic object in return_value_squashfs_i$13->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.322] line 160 dereference failure: dead object in return_value_squashfs_i$13->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.323] line 160 dereference failure: pointer outside object bounds in return_value_squashfs_i$13->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.324] line 160 dereference failure: invalid integer address in return_value_squashfs_i$13->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.325] line 160 dereference failure: pointer NULL in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.326] line 160 dereference failure: pointer invalid in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.327] line 160 dereference failure: deallocated dynamic object in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.328] line 160 dereference failure: dead object in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.329] line 160 dereference failure: pointer outside object bounds in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.330] line 160 dereference failure: invalid integer address in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.331] line 161 dereference failure: pointer NULL in return_value_squashfs_i$14->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.332] line 161 dereference failure: pointer invalid in return_value_squashfs_i$14->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.333] line 161 dereference failure: deallocated dynamic object in return_value_squashfs_i$14->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.334] line 161 dereference failure: dead object in return_value_squashfs_i$14->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.335] line 161 dereference failure: pointer outside object bounds in return_value_squashfs_i$14->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.336] line 161 dereference failure: invalid integer address in return_value_squashfs_i$14->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.337] line 161 dereference failure: pointer NULL in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.338] line 161 dereference failure: pointer invalid in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.339] line 161 dereference failure: deallocated dynamic object in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.340] line 161 dereference failure: dead object in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.341] line 161 dereference failure: pointer outside object bounds in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.342] line 161 dereference failure: invalid integer address in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.343] line 162 dereference failure: pointer NULL in return_value_squashfs_i$15->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.344] line 162 dereference failure: pointer invalid in return_value_squashfs_i$15->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.345] line 162 dereference failure: deallocated dynamic object in return_value_squashfs_i$15->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.346] line 162 dereference failure: dead object in return_value_squashfs_i$15->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.347] line 162 dereference failure: pointer outside object bounds in return_value_squashfs_i$15->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.348] line 162 dereference failure: invalid integer address in return_value_squashfs_i$15->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.349] line 163 dereference failure: pointer NULL in return_value_squashfs_i$16->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.350] line 163 dereference failure: pointer invalid in return_value_squashfs_i$16->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.351] line 163 dereference failure: deallocated dynamic object in return_value_squashfs_i$16->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.352] line 163 dereference failure: dead object in return_value_squashfs_i$16->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.353] line 163 dereference failure: pointer outside object bounds in return_value_squashfs_i$16->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.354] line 163 dereference failure: invalid integer address in return_value_squashfs_i$16->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.355] line 163 dereference failure: pointer NULL in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.356] line 163 dereference failure: pointer invalid in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.357] line 163 dereference failure: deallocated dynamic object in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.358] line 163 dereference failure: dead object in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.359] line 163 dereference failure: pointer outside object bounds in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.360] line 163 dereference failure: invalid integer address in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.361] line 181 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.362] line 181 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.363] line 181 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.364] line 181 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.365] line 181 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.366] line 181 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.367] line 181 dereference failure: pointer NULL in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.368] line 181 dereference failure: pointer invalid in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.369] line 181 dereference failure: deallocated dynamic object in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.370] line 181 dereference failure: dead object in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.371] line 181 dereference failure: pointer outside object bounds in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.372] line 181 dereference failure: invalid integer address in sqsh_ino->file_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.373] line 182 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.374] line 182 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.375] line 182 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.376] line 182 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.377] line 182 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.378] line 182 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.379] line 187 dereference failure: pointer NULL in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.380] line 187 dereference failure: pointer invalid in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.381] line 187 dereference failure: deallocated dynamic object in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.382] line 187 dereference failure: dead object in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.383] line 187 dereference failure: pointer outside object bounds in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.384] line 187 dereference failure: invalid integer address in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.385] line 188 dereference failure: pointer NULL in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.386] line 188 dereference failure: pointer invalid in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.387] line 188 dereference failure: deallocated dynamic object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.388] line 188 dereference failure: dead object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.389] line 188 dereference failure: pointer outside object bounds in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.390] line 188 dereference failure: invalid integer address in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.391] line 189 dereference failure: pointer NULL in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.392] line 189 dereference failure: pointer invalid in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.393] line 189 dereference failure: deallocated dynamic object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.394] line 189 dereference failure: dead object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.395] line 189 dereference failure: pointer outside object bounds in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.396] line 189 dereference failure: invalid integer address in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.397] line 190 dereference failure: pointer NULL in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.398] line 190 dereference failure: pointer invalid in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.399] line 190 dereference failure: deallocated dynamic object in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.400] line 190 dereference failure: dead object in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.401] line 190 dereference failure: pointer outside object bounds in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.402] line 190 dereference failure: invalid integer address in inode->i_fop: SUCCESS
+[squashfs_read_inode.pointer_dereference.403] line 191 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.404] line 191 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.405] line 191 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.406] line 191 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.407] line 191 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.408] line 191 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.409] line 192 dereference failure: pointer NULL in return_value_squashfs_i$17->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.410] line 192 dereference failure: pointer invalid in return_value_squashfs_i$17->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.411] line 192 dereference failure: deallocated dynamic object in return_value_squashfs_i$17->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.412] line 192 dereference failure: dead object in return_value_squashfs_i$17->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.413] line 192 dereference failure: pointer outside object bounds in return_value_squashfs_i$17->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.414] line 192 dereference failure: invalid integer address in return_value_squashfs_i$17->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.415] line 192 dereference failure: pointer NULL in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.416] line 192 dereference failure: pointer invalid in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.417] line 192 dereference failure: deallocated dynamic object in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.418] line 192 dereference failure: dead object in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.419] line 192 dereference failure: pointer outside object bounds in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.420] line 192 dereference failure: invalid integer address in sqsh_ino->start_block: SUCCESS
+[squashfs_read_inode.pointer_dereference.421] line 193 dereference failure: pointer NULL in return_value_squashfs_i$18->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.422] line 193 dereference failure: pointer invalid in return_value_squashfs_i$18->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.423] line 193 dereference failure: deallocated dynamic object in return_value_squashfs_i$18->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.424] line 193 dereference failure: dead object in return_value_squashfs_i$18->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.425] line 193 dereference failure: pointer outside object bounds in return_value_squashfs_i$18->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.426] line 193 dereference failure: invalid integer address in return_value_squashfs_i$18->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.427] line 193 dereference failure: pointer NULL in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.428] line 193 dereference failure: pointer invalid in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.429] line 193 dereference failure: deallocated dynamic object in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.430] line 193 dereference failure: dead object in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.431] line 193 dereference failure: pointer outside object bounds in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.432] line 193 dereference failure: invalid integer address in sqsh_ino->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.433] line 194 dereference failure: pointer NULL in return_value_squashfs_i$19->dir_idx_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.434] line 194 dereference failure: pointer invalid in return_value_squashfs_i$19->dir_idx_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.435] line 194 dereference failure: deallocated dynamic object in return_value_squashfs_i$19->dir_idx_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.436] line 194 dereference failure: dead object in return_value_squashfs_i$19->dir_idx_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.437] line 194 dereference failure: pointer outside object bounds in return_value_squashfs_i$19->dir_idx_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.438] line 194 dereference failure: invalid integer address in return_value_squashfs_i$19->dir_idx_start: SUCCESS
+[squashfs_read_inode.pointer_dereference.439] line 195 dereference failure: pointer NULL in return_value_squashfs_i$20->dir_idx_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.440] line 195 dereference failure: pointer invalid in return_value_squashfs_i$20->dir_idx_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.441] line 195 dereference failure: deallocated dynamic object in return_value_squashfs_i$20->dir_idx_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.442] line 195 dereference failure: dead object in return_value_squashfs_i$20->dir_idx_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.443] line 195 dereference failure: pointer outside object bounds in return_value_squashfs_i$20->dir_idx_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.444] line 195 dereference failure: invalid integer address in return_value_squashfs_i$20->dir_idx_offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.445] line 196 dereference failure: pointer NULL in return_value_squashfs_i$21->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.446] line 196 dereference failure: pointer invalid in return_value_squashfs_i$21->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.447] line 196 dereference failure: deallocated dynamic object in return_value_squashfs_i$21->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.448] line 196 dereference failure: dead object in return_value_squashfs_i$21->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.449] line 196 dereference failure: pointer outside object bounds in return_value_squashfs_i$21->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.450] line 196 dereference failure: invalid integer address in return_value_squashfs_i$21->dir_idx_cnt: SUCCESS
+[squashfs_read_inode.pointer_dereference.451] line 196 dereference failure: pointer NULL in sqsh_ino->i_count: SUCCESS
+[squashfs_read_inode.pointer_dereference.452] line 196 dereference failure: pointer invalid in sqsh_ino->i_count: SUCCESS
+[squashfs_read_inode.pointer_dereference.453] line 196 dereference failure: deallocated dynamic object in sqsh_ino->i_count: SUCCESS
+[squashfs_read_inode.pointer_dereference.454] line 196 dereference failure: dead object in sqsh_ino->i_count: SUCCESS
+[squashfs_read_inode.pointer_dereference.455] line 196 dereference failure: pointer outside object bounds in sqsh_ino->i_count: SUCCESS
+[squashfs_read_inode.pointer_dereference.456] line 196 dereference failure: invalid integer address in sqsh_ino->i_count: SUCCESS
+[squashfs_read_inode.pointer_dereference.457] line 197 dereference failure: pointer NULL in return_value_squashfs_i$22->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.458] line 197 dereference failure: pointer invalid in return_value_squashfs_i$22->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.459] line 197 dereference failure: deallocated dynamic object in return_value_squashfs_i$22->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.460] line 197 dereference failure: dead object in return_value_squashfs_i$22->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.461] line 197 dereference failure: pointer outside object bounds in return_value_squashfs_i$22->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.462] line 197 dereference failure: invalid integer address in return_value_squashfs_i$22->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.463] line 197 dereference failure: pointer NULL in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.464] line 197 dereference failure: pointer invalid in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.465] line 197 dereference failure: deallocated dynamic object in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.466] line 197 dereference failure: dead object in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.467] line 197 dereference failure: pointer outside object bounds in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.468] line 197 dereference failure: invalid integer address in sqsh_ino->parent_inode: SUCCESS
+[squashfs_read_inode.pointer_dereference.469] line 215 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.470] line 215 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.471] line 215 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.472] line 215 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.473] line 215 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.474] line 215 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.475] line 215 dereference failure: pointer NULL in sqsh_ino->symlink_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.476] line 215 dereference failure: pointer invalid in sqsh_ino->symlink_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.477] line 215 dereference failure: deallocated dynamic object in sqsh_ino->symlink_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.478] line 215 dereference failure: dead object in sqsh_ino->symlink_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.479] line 215 dereference failure: pointer outside object bounds in sqsh_ino->symlink_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.480] line 215 dereference failure: invalid integer address in sqsh_ino->symlink_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.481] line 216 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.482] line 216 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.483] line 216 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.484] line 216 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.485] line 216 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.486] line 216 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.487] line 221 dereference failure: pointer NULL in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.488] line 221 dereference failure: pointer invalid in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.489] line 221 dereference failure: deallocated dynamic object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.490] line 221 dereference failure: dead object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.491] line 221 dereference failure: pointer outside object bounds in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.492] line 221 dereference failure: invalid integer address in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.493] line 222 dereference failure: pointer NULL in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.494] line 222 dereference failure: pointer invalid in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.495] line 222 dereference failure: deallocated dynamic object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.496] line 222 dereference failure: dead object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.497] line 222 dereference failure: pointer outside object bounds in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.498] line 222 dereference failure: invalid integer address in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.499] line 224 dereference failure: pointer NULL in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.500] line 224 dereference failure: pointer invalid in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.501] line 224 dereference failure: deallocated dynamic object in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.502] line 224 dereference failure: dead object in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.503] line 224 dereference failure: pointer outside object bounds in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.504] line 224 dereference failure: invalid integer address in inode->i_data: SUCCESS
+[squashfs_read_inode.pointer_dereference.505] line 225 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.506] line 225 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.507] line 225 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.508] line 225 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.509] line 225 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.510] line 225 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.511] line 226 dereference failure: pointer NULL in return_value_squashfs_i$23->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.512] line 226 dereference failure: pointer invalid in return_value_squashfs_i$23->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.513] line 226 dereference failure: deallocated dynamic object in return_value_squashfs_i$23->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.514] line 226 dereference failure: dead object in return_value_squashfs_i$23->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.515] line 226 dereference failure: pointer outside object bounds in return_value_squashfs_i$23->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.516] line 226 dereference failure: invalid integer address in return_value_squashfs_i$23->start: SUCCESS
+[squashfs_read_inode.pointer_dereference.517] line 227 dereference failure: pointer NULL in return_value_squashfs_i$24->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.518] line 227 dereference failure: pointer invalid in return_value_squashfs_i$24->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.519] line 227 dereference failure: deallocated dynamic object in return_value_squashfs_i$24->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.520] line 227 dereference failure: dead object in return_value_squashfs_i$24->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.521] line 227 dereference failure: pointer outside object bounds in return_value_squashfs_i$24->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.522] line 227 dereference failure: invalid integer address in return_value_squashfs_i$24->offset: SUCCESS
+[squashfs_read_inode.pointer_dereference.523] line 228 dereference failure: pointer NULL in return_value_squashfs_i$25->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.524] line 228 dereference failure: pointer invalid in return_value_squashfs_i$25->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.525] line 228 dereference failure: deallocated dynamic object in return_value_squashfs_i$25->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.526] line 228 dereference failure: dead object in return_value_squashfs_i$25->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.527] line 228 dereference failure: pointer outside object bounds in return_value_squashfs_i$25->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.528] line 228 dereference failure: invalid integer address in return_value_squashfs_i$25->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.529] line 234 dereference failure: pointer NULL in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.530] line 234 dereference failure: pointer invalid in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.531] line 234 dereference failure: deallocated dynamic object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.532] line 234 dereference failure: dead object in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.533] line 234 dereference failure: pointer outside object bounds in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.534] line 234 dereference failure: invalid integer address in inode->i_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.535] line 260 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.536] line 260 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.537] line 260 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.538] line 260 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.539] line 260 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.540] line 260 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.541] line 262 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.542] line 262 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.543] line 262 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.544] line 262 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.545] line 262 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.546] line 262 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.547] line 263 dereference failure: pointer NULL in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.548] line 263 dereference failure: pointer invalid in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.549] line 263 dereference failure: deallocated dynamic object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.550] line 263 dereference failure: dead object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.551] line 263 dereference failure: pointer outside object bounds in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.552] line 263 dereference failure: invalid integer address in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.553] line 264 dereference failure: pointer NULL in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.554] line 264 dereference failure: pointer invalid in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.555] line 264 dereference failure: deallocated dynamic object in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.556] line 264 dereference failure: dead object in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.557] line 264 dereference failure: pointer outside object bounds in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.558] line 264 dereference failure: invalid integer address in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.559] line 265 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.560] line 265 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.561] line 265 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.562] line 265 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.563] line 265 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.564] line 265 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.565] line 266 dereference failure: pointer NULL in return_value_squashfs_i$26->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.566] line 266 dereference failure: pointer invalid in return_value_squashfs_i$26->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.567] line 266 dereference failure: deallocated dynamic object in return_value_squashfs_i$26->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.568] line 266 dereference failure: dead object in return_value_squashfs_i$26->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.569] line 266 dereference failure: pointer outside object bounds in return_value_squashfs_i$26->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.570] line 266 dereference failure: invalid integer address in return_value_squashfs_i$26->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.571] line 284 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.572] line 284 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.573] line 284 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.574] line 284 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.575] line 284 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.576] line 284 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.577] line 286 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.578] line 286 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.579] line 286 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.580] line 286 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.581] line 286 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.582] line 286 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.583] line 287 dereference failure: pointer NULL in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.584] line 287 dereference failure: pointer invalid in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.585] line 287 dereference failure: deallocated dynamic object in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.586] line 287 dereference failure: dead object in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.587] line 287 dereference failure: pointer outside object bounds in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.588] line 287 dereference failure: invalid integer address in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.589] line 288 dereference failure: pointer NULL in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.590] line 288 dereference failure: pointer invalid in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.591] line 288 dereference failure: deallocated dynamic object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.592] line 288 dereference failure: dead object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.593] line 288 dereference failure: pointer outside object bounds in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.594] line 288 dereference failure: invalid integer address in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.595] line 289 dereference failure: pointer NULL in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.596] line 289 dereference failure: pointer invalid in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.597] line 289 dereference failure: deallocated dynamic object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.598] line 289 dereference failure: dead object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.599] line 289 dereference failure: pointer outside object bounds in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.600] line 289 dereference failure: invalid integer address in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.601] line 290 dereference failure: pointer NULL in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.602] line 290 dereference failure: pointer invalid in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.603] line 290 dereference failure: deallocated dynamic object in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.604] line 290 dereference failure: dead object in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.605] line 290 dereference failure: pointer outside object bounds in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.606] line 290 dereference failure: invalid integer address in sqsh_ino->rdev: SUCCESS
+[squashfs_read_inode.pointer_dereference.607] line 291 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.608] line 291 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.609] line 291 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.610] line 291 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.611] line 291 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.612] line 291 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.613] line 292 dereference failure: pointer NULL in return_value_squashfs_i$27->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.614] line 292 dereference failure: pointer invalid in return_value_squashfs_i$27->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.615] line 292 dereference failure: deallocated dynamic object in return_value_squashfs_i$27->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.616] line 292 dereference failure: dead object in return_value_squashfs_i$27->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.617] line 292 dereference failure: pointer outside object bounds in return_value_squashfs_i$27->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.618] line 292 dereference failure: invalid integer address in return_value_squashfs_i$27->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.619] line 309 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.620] line 309 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.621] line 309 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.622] line 309 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.623] line 309 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.624] line 309 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.625] line 311 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.626] line 311 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.627] line 311 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.628] line 311 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.629] line 311 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.630] line 311 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.631] line 312 dereference failure: pointer NULL in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.632] line 312 dereference failure: pointer invalid in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.633] line 312 dereference failure: deallocated dynamic object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.634] line 312 dereference failure: dead object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.635] line 312 dereference failure: pointer outside object bounds in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.636] line 312 dereference failure: invalid integer address in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.637] line 313 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.638] line 313 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.639] line 313 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.640] line 313 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.641] line 313 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.642] line 313 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.643] line 314 dereference failure: pointer NULL in return_value_squashfs_i$28->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.644] line 314 dereference failure: pointer invalid in return_value_squashfs_i$28->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.645] line 314 dereference failure: deallocated dynamic object in return_value_squashfs_i$28->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.646] line 314 dereference failure: dead object in return_value_squashfs_i$28->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.647] line 314 dereference failure: pointer outside object bounds in return_value_squashfs_i$28->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.648] line 314 dereference failure: invalid integer address in return_value_squashfs_i$28->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.649] line 327 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.650] line 327 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.651] line 327 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.652] line 327 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.653] line 327 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.654] line 327 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.655] line 329 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.656] line 329 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.657] line 329 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.658] line 329 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.659] line 329 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.660] line 329 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.661] line 330 dereference failure: pointer NULL in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.662] line 330 dereference failure: pointer invalid in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.663] line 330 dereference failure: deallocated dynamic object in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.664] line 330 dereference failure: dead object in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.665] line 330 dereference failure: pointer outside object bounds in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.666] line 330 dereference failure: invalid integer address in sqsh_ino->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.667] line 331 dereference failure: pointer NULL in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.668] line 331 dereference failure: pointer invalid in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.669] line 331 dereference failure: deallocated dynamic object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.670] line 331 dereference failure: dead object in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.671] line 331 dereference failure: pointer outside object bounds in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.672] line 331 dereference failure: invalid integer address in inode->i_op: SUCCESS
+[squashfs_read_inode.pointer_dereference.673] line 332 dereference failure: pointer NULL in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.674] line 332 dereference failure: pointer invalid in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.675] line 332 dereference failure: deallocated dynamic object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.676] line 332 dereference failure: dead object in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.677] line 332 dereference failure: pointer outside object bounds in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.678] line 332 dereference failure: invalid integer address in sqsh_ino->nlink: SUCCESS
+[squashfs_read_inode.pointer_dereference.679] line 333 dereference failure: pointer NULL in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.680] line 333 dereference failure: pointer invalid in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.681] line 333 dereference failure: deallocated dynamic object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.682] line 333 dereference failure: dead object in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.683] line 333 dereference failure: pointer outside object bounds in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.684] line 333 dereference failure: invalid integer address in inode->i_mode: SUCCESS
+[squashfs_read_inode.pointer_dereference.685] line 334 dereference failure: pointer NULL in return_value_squashfs_i$29->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.686] line 334 dereference failure: pointer invalid in return_value_squashfs_i$29->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.687] line 334 dereference failure: deallocated dynamic object in return_value_squashfs_i$29->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.688] line 334 dereference failure: dead object in return_value_squashfs_i$29->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.689] line 334 dereference failure: pointer outside object bounds in return_value_squashfs_i$29->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.690] line 334 dereference failure: invalid integer address in return_value_squashfs_i$29->parent: SUCCESS
+[squashfs_read_inode.pointer_dereference.691] line 342 dereference failure: pointer NULL in msblk->xattr_id_array: SUCCESS
+[squashfs_read_inode.pointer_dereference.692] line 342 dereference failure: pointer invalid in msblk->xattr_id_array: SUCCESS
+[squashfs_read_inode.pointer_dereference.693] line 342 dereference failure: deallocated dynamic object in msblk->xattr_id_array: SUCCESS
+[squashfs_read_inode.pointer_dereference.694] line 342 dereference failure: dead object in msblk->xattr_id_array: SUCCESS
+[squashfs_read_inode.pointer_dereference.695] line 342 dereference failure: pointer outside object bounds in msblk->xattr_id_array: SUCCESS
+[squashfs_read_inode.pointer_dereference.696] line 342 dereference failure: invalid integer address in msblk->xattr_id_array: SUCCESS
+[squashfs_read_inode.pointer_dereference.697] line 349 dereference failure: pointer NULL in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.698] line 349 dereference failure: pointer invalid in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.699] line 349 dereference failure: deallocated dynamic object in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.700] line 349 dereference failure: dead object in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.701] line 349 dereference failure: pointer outside object bounds in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.702] line 349 dereference failure: invalid integer address in inode->i_blocks: SUCCESS
+[squashfs_read_inode.pointer_dereference.703] line 349 dereference failure: pointer NULL in return_value_squashfs_i$33->xattr_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.704] line 349 dereference failure: pointer invalid in return_value_squashfs_i$33->xattr_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.705] line 349 dereference failure: deallocated dynamic object in return_value_squashfs_i$33->xattr_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.706] line 349 dereference failure: dead object in return_value_squashfs_i$33->xattr_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.707] line 349 dereference failure: pointer outside object bounds in return_value_squashfs_i$33->xattr_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.708] line 349 dereference failure: invalid integer address in return_value_squashfs_i$33->xattr_size: SUCCESS
+[squashfs_read_inode.pointer_dereference.709] line 352 dereference failure: pointer NULL in return_value_squashfs_i$34->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.710] line 352 dereference failure: pointer invalid in return_value_squashfs_i$34->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.711] line 352 dereference failure: deallocated dynamic object in return_value_squashfs_i$34->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.712] line 352 dereference failure: dead object in return_value_squashfs_i$34->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.713] line 352 dereference failure: pointer outside object bounds in return_value_squashfs_i$34->xattr: SUCCESS
+[squashfs_read_inode.pointer_dereference.714] line 352 dereference failure: invalid integer address in return_value_squashfs_i$34->xattr: SUCCESS
+
+harness_inode.c function main
+[main.assertion.1] line 14 P3 squashfs_read_inode returns 0 or -errno (so squashfs_iget never builds ERR_PTR(positive)): SUCCESS
+
+prelude_inode.h function init_special_inode
+[init_special_inode.pointer_dereference.1] line 46 dereference failure: pointer NULL in i->i_mode: SUCCESS
+[init_special_inode.pointer_dereference.2] line 46 dereference failure: pointer invalid in i->i_mode: SUCCESS
+[init_special_inode.pointer_dereference.3] line 46 dereference failure: deallocated dynamic object in i->i_mode: SUCCESS
+[init_special_inode.pointer_dereference.4] line 46 dereference failure: dead object in i->i_mode: SUCCESS
+[init_special_inode.pointer_dereference.5] line 46 dereference failure: pointer outside object bounds in i->i_mode: SUCCESS
+[init_special_inode.pointer_dereference.6] line 46 dereference failure: invalid integer address in i->i_mode: SUCCESS
+
+prelude_inode.h function set_nlink
+[set_nlink.pointer_dereference.1] line 43 dereference failure: pointer NULL in i->nlink: SUCCESS
+[set_nlink.pointer_dereference.2] line 43 dereference failure: pointer invalid in i->nlink: SUCCESS
+[set_nlink.pointer_dereference.3] line 43 dereference failure: deallocated dynamic object in i->nlink: SUCCESS
+[set_nlink.pointer_dereference.4] line 43 dereference failure: dead object in i->nlink: SUCCESS
+[set_nlink.pointer_dereference.5] line 43 dereference failure: pointer outside object bounds in i->nlink: SUCCESS
+[set_nlink.pointer_dereference.6] line 43 dereference failure: invalid integer address in i->nlink: SUCCESS
+
+prelude_inode.h function squashfs_frag_lookup
+[squashfs_frag_lookup.pointer_dereference.1] line 90 dereference failure: pointer NULL in *blk: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.2] line 90 dereference failure: pointer invalid in *blk: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.3] line 90 dereference failure: deallocated dynamic object in *blk: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.4] line 90 dereference failure: dead object in *blk: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.5] line 90 dereference failure: pointer outside object bounds in *blk: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.6] line 90 dereference failure: invalid integer address in *blk: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.7] line 90 dereference failure: pointer NULL in *size: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.8] line 90 dereference failure: pointer invalid in *size: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.9] line 90 dereference failure: deallocated dynamic object in *size: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.10] line 90 dereference failure: dead object in *size: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.11] line 90 dereference failure: pointer outside object bounds in *size: SUCCESS
+[squashfs_frag_lookup.pointer_dereference.12] line 90 dereference failure: invalid integer address in *size: SUCCESS
+
+prelude_inode.h function squashfs_inode_start
+[squashfs_inode_start.pointer_dereference.1] line 60 dereference failure: pointer NULL in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.2] line 60 dereference failure: pointer invalid in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.3] line 60 dereference failure: deallocated dynamic object in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.4] line 60 dereference failure: dead object in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.5] line 60 dereference failure: pointer outside object bounds in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.6] line 60 dereference failure: invalid integer address in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.7] line 63 dereference failure: pointer NULL in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.8] line 63 dereference failure: pointer invalid in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.9] line 63 dereference failure: deallocated dynamic object in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.10] line 63 dereference failure: dead object in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.11] line 63 dereference failure: pointer outside object bounds in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.12] line 63 dereference failure: invalid integer address in msblk->inode_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.13] line 65 dereference failure: pointer NULL in msblk->directory_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.14] line 65 dereference failure: pointer invalid in msblk->directory_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.15] line 65 dereference failure: deallocated dynamic object in msblk->directory_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.16] line 65 dereference failure: dead object in msblk->directory_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.17] line 65 dereference failure: pointer outside object bounds in msblk->directory_table: SUCCESS
+[squashfs_inode_start.pointer_dereference.18] line 65 dereference failure: invalid integer address in msblk->directory_table: SUCCESS
+
+prelude_inode.h function squashfs_read_metadata
+[squashfs_read_metadata.assertion.1] line 81 M0 destination large enough: SUCCESS
+[squashfs_read_metadata.pointer_dereference.1] line 84 dereference failure: pointer NULL in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.2] line 84 dereference failure: pointer invalid in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.3] line 84 dereference failure: deallocated dynamic object in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.4] line 84 dereference failure: dead object in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.5] line 84 dereference failure: pointer outside object bounds in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.6] line 84 dereference failure: invalid integer address in *block: SUCCESS
+[squashfs_read_metadata.pointer_dereference.7] line 84 dereference failure: pointer NULL in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.8] line 84 dereference failure: pointer invalid in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.9] line 84 dereference failure: deallocated dynamic object in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.10] line 84 dereference failure: dead object in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.11] line 84 dereference failure: pointer outside object bounds in *offset: SUCCESS
+[squashfs_read_metadata.pointer_dereference.12] line 84 dereference failure: invalid integer address in *offset: SUCCESS
+
+prelude_inode.h function squashfs_xattr_lookup
+[squashfs_xattr_lookup.pointer_dereference.1] line 92 dereference failure: pointer NULL in *count: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.2] line 92 dereference failure: pointer invalid in *count: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.3] line 92 dereference failure: deallocated dynamic object in *count: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.4] line 92 dereference failure: dead object in *count: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.5] line 92 dereference failure: pointer outside object bounds in *count: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.6] line 92 dereference failure: invalid integer address in *count: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.7] line 92 dereference failure: pointer NULL in *size: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.8] line 92 dereference failure: pointer invalid in *size: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.9] line 92 dereference failure: deallocated dynamic object in *size: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.10] line 92 dereference failure: dead object in *size: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.11] line 92 dereference failure: pointer outside object bounds in *size: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.12] line 92 dereference failure: invalid integer address in *size: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.13] line 92 dereference failure: pointer NULL in *xattr: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.14] line 92 dereference failure: pointer invalid in *xattr: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.15] line 92 dereference failure: deallocated dynamic object in *xattr: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.16] line 92 dereference failure: dead object in *xattr: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.17] line 92 dereference failure: pointer outside object bounds in *xattr: SUCCESS
+[squashfs_xattr_lookup.pointer_dereference.18] line 92 dereference failure: invalid integer address in *xattr: SUCCESS
+
+** 0 of 788 failed (1 iterations)
+VERIFICATION SUCCESSFUL
