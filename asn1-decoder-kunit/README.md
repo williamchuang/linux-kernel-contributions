@@ -4,13 +4,9 @@ A KUnit test suite for the kernel's ASN.1 BER/DER decoder (`lib/asn1_decoder.c`,
 `asn1_ber_decoder`), together with an independent verification kit that checks
 the decoder's memory safety with **eight methods** across three families.
 
-**Status:** RFC submitted to LKML on 2026-11-16, under review: `[RFC PATCH]
-lib/asn1_decoder: add KUnit test suite`, to Andrew Morton, Cc David Howells and
-the keyrings, kunit-dev and linux-kernel lists. In-kernel `kunit.py` run on UML:
-13/13 tests passed. No over-read was found by any method, so the deliverable is
-the test suite, not a bug fix.
-
-**Archive:** https://lore.kernel.org/all/20261117001711.47722-1-founder@logarcheon.com/
+**Status:** test suite prepared; pending an in-kernel `kunit.py` run (KASAN
+build) before submission as an RFC. No over-read was found by any method, so the
+deliverable is the test suite, not a bug fix.
 
 **Licensing:** this folder mixes original work and verbatim GPL-2.0 kernel
 sources — see `NOTICE`.
@@ -63,7 +59,7 @@ Complete results and exact commands are in `VERIFICATION.md`.
 | Path | What it is |
 |---|---|
 | `VERIFICATION.md` | the complete report, methods and results |
-| `upstream/asn1_decoder_kunit.c` | the KUnit suite exactly as submitted |
+| `upstream/asn1_decoder_kunit.c` | the KUnit suite prepared for submission |
 | `upstream/asn1_test.asn1` | the test grammar |
 | `upstream/PLACEMENT_AND_RUN.md` | where the suite goes in-tree and how to run it |
 | `src/` | userspace port, harnesses, mutants, kernel stubs |

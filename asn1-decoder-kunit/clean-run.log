@@ -1,0 +1,18 @@
+=== running kunit.py (UML build + run asn1_decoder suite) ===
+$ /tmp/kunit-asn1/linux kunit.filter_glob=asn1_decoder kunit.enable=1 mem=1G console=tty kunit_shutdown=halt
+[00:02:11] ================ asn1_decoder (13 subtests) ================
+[00:02:11] [PASSED] asn1_test_decode_valid
+[00:02:11] [PASSED] asn1_test_truncated_content
+[00:02:11] [PASSED] asn1_test_length_overrun
+[00:02:11] [PASSED] asn1_test_long_tag
+[00:02:11] [PASSED] asn1_test_wrong_tag
+[00:02:11] [PASSED] asn1_test_too_large
+[00:02:11] [PASSED] asn1_test_short_header
+[00:02:11] [PASSED] asn1_test_missing_eoc
+[00:02:11] [PASSED] asn1_test_invalid_eoc
+[00:02:11] [PASSED] asn1_test_indefinite_ok
+[00:02:11] [PASSED] asn1_test_long_form_length
+[00:02:11] [PASSED] asn1_test_zero_length_string
+[00:02:11] [PASSED] asn1_test_random_stress
+[00:02:11] ================== [PASSED] asn1_decoder ===================
+[00:02:11] Testing complete. Ran 13 tests: passed: 13

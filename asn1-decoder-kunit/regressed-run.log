@@ -1,0 +1,23 @@
+$ /tmp/kunit-asn1/linux kunit.filter_glob=asn1_decoder kunit.enable=1 mem=1G console=tty kunit_shutdown=halt
+[02:19:19] ================ asn1_decoder (13 subtests) ================
+[02:19:19] [PASSED] asn1_test_decode_valid
+[02:19:19] # asn1_test_truncated_content: EXPECTATION FAILED at lib/tests/asn1_decoder_kunit.c:112
+[02:19:19] Expected asn1_ber_decoder(&asn1_test_decoder, &ctx, der, sizeof(der)) == -74, but
+[02:19:19]     asn1_ber_decoder(&asn1_test_decoder, &ctx, der, sizeof(der)) == 0 (0x0)
+[02:19:19] [FAILED] asn1_test_truncated_content
+[02:19:19] [PASSED] asn1_test_length_overrun
+[02:19:19] [PASSED] asn1_test_long_tag
+[02:19:19] [PASSED] asn1_test_wrong_tag
+[02:19:19] [PASSED] asn1_test_too_large
+[02:19:19] [PASSED] asn1_test_short_header
+[02:19:19] [PASSED] asn1_test_missing_eoc
+[02:19:19] [PASSED] asn1_test_invalid_eoc
+[02:19:19] [PASSED] asn1_test_indefinite_ok
+[02:19:19] [PASSED] asn1_test_long_form_length
+[02:19:19] [PASSED] asn1_test_zero_length_string
+[02:19:19] [PASSED] asn1_test_random_stress
+[02:19:19]     # module: asn1_decoder_kunit_test
+[02:19:19] # asn1_decoder: pass:12 fail:1 skip:0 total:13
+[02:19:19] # Totals: pass:12 fail:1 skip:0 total:13
+[02:19:19] ================== [FAILED] asn1_decoder ===================
+[02:19:19] Testing complete. Ran 13 tests: passed: 12, failed: 1

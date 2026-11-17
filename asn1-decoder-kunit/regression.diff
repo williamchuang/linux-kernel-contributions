@@ -1,0 +1,11 @@
+--- a/lib/asn1_decoder.c	2026-11-17 02:26:41.090036474 +0000
++++ b/lib/asn1_decoder.c	2026-11-17 02:26:41.137993407 +0000
+@@ -281,7 +281,7 @@
+ 					goto data_overrun_error;
+ 			}
+ 		} else {
+-			if (unlikely(len > datalen - dp))
++			if (unlikely(len > datalen - dp + 16))  /* INJECTED REGRESSION */
+ 				goto data_overrun_error;
+ 		}
+ 
