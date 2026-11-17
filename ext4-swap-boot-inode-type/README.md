@@ -1,10 +1,11 @@
 # ext4: reject a non-regular boot loader inode in EXT4_IOC_SWAP_BOOT
 
-**Status:** submitted 2026-11-16, under review.
+**Status:** v2 submitted 2026-11-17, under review (v1 submitted 2026-11-16).
 **Found by:** Sashiko AI review, while reviewing the [ext4 journal credit series](../ext4-journal-credits/).
 **Fix and reproducer:** William Chuang (Logarchéon Inc.), following the check Theodore Ts'o described in 2023.
 
-- mailing-list thread (lore): https://lore.kernel.org/all/?q=s%3A%22reject+a+non-regular+boot+loader+inode%22
+- mailing-list thread (lore), v1: https://lore.kernel.org/all/20261117061822.3826-1-founder@logarcheon.com/
+  (v2 is sent as a reply to it)
 - Sashiko report: https://sashiko.dev/#/bug/linux-8cfc8e22-8259-4c89-8a8b-64c16e4481a5
 - 2023 discussion, with the suggested check:
   https://lore.kernel.org/all/tencent_DABB2333139E8D1BCF4B5D1B2725FABA9108@qq.com/T/
@@ -40,6 +41,12 @@ and return `-EFSCORRUPTED` unless the inode is a regular file. The unused
 case is unaffected, because `make_bad_inode()` has already made it
 `S_IFREG`.
 
+v2 also marks the rejected inode bad before `iput()`, as
+`ext4_get_journal_inode()` does. Sashiko's review of v1 pointed out that
+otherwise a corrupted inode 5 with `i_links_count` 0 reaches the deletion
+path of `ext4_evict_inode()`; the v1 run below confirms it
+(`ext4_free_inode: reserved or nonexistent inode 5`).
+
 - `Fixes: 991ed014de08 ("ext4: fix bug_on in __es_tree_search caused by bad boot loader inode")`
 - `Suggested-by: Theodore Ts'o`
 
@@ -48,16 +55,19 @@ case is unaffected, because `make_bad_inode()` has already made it
 Run on User Mode Linux at mainline `666539eec`. Inode 5 is set with
 `debugfs`, then `EXT4_IOC_SWAP_BOOT` is issued twice:
 
-| Kernel | Inode 5 before | Warning | Result of both swaps | Inode 5 on disk after | `e2fsck -fn` |
+| Kernel | Inode 5 before | Warning | Result of both swaps | Inode 5 on disk after | Other errors |
 |---|---|---|---|---|---|
-| unpatched | unused (new filesystem) | none | succeed | regular | clean |
-| unpatched | directory | `lock_two_nondirectories` | succeed | regular (type changed) | clean |
-| unpatched | character device | none | succeed | regular (type changed) | clean |
-| patched | unused (new filesystem) | none | succeed | regular | clean |
-| patched | directory | none | `EFSCORRUPTED`, error logged | directory (unchanged) | reports the invalid inode 5, left for repair |
-| patched | character device | none | `EFSCORRUPTED`, error logged | character device (unchanged) | clean |
+| unpatched | unused (new filesystem) | none | succeed | regular | none |
+| unpatched | directory | `lock_two_nondirectories` | succeed | regular (type changed) | none |
+| unpatched | directory, `i_links_count` 0 | `lock_two_nondirectories` | succeed | regular (type changed) | none |
+| unpatched | character device | none | succeed | regular (type changed) | none |
+| v1 | directory, `i_links_count` 0 | none | `EFSCORRUPTED` | directory (unchanged) | `ext4_free_inode: reserved or nonexistent inode 5` |
+| v2 | unused (new filesystem) | none | succeed | regular | none |
+| v2 | directory | none | `EFSCORRUPTED`, error logged | directory (unchanged) | none |
+| v2 | directory, `i_links_count` 0 | none | `EFSCORRUPTED`, error logged | directory (unchanged) | none |
+| v2 | character device | none | `EFSCORRUPTED`, error logged | character device (unchanged) | none |
 
-For the directory case, `e2fsck -fn` on the patched run reports the
+For the directory cases, `e2fsck -fn` on the patched runs reports the
 corruption the test injected ("Reserved inode 5 ... has invalid mode"),
 since the kernel now refuses to touch it. On the unpatched runs it reports
 nothing, because the kernel has already rewritten inode 5 as a regular file.
@@ -72,7 +82,7 @@ Not covered: KASAN builds and syzbot's 2023 reproducer.
 cp repro/uml.config <build>/.config
 make ARCH=um O=<build> olddefconfig && make ARCH=um O=<build> -j"$(nproc)" linux
 
-# then, for each case (fresh, dir, chrdev):
+# then, for each case (fresh, dir, dir0, chrdev):
 repro/run.sh <build>/linux dir logs/dir.log
 ```
 
@@ -85,6 +95,7 @@ runs above are in `logs/`.
 
 | File | Contents |
 |---|---|
-| `0001-ext4-reject-a-non-regular-boot-loader-inode-in-EXT4_.patch` | the patch as sent |
+| `v2-0001-ext4-reject-a-non-regular-boot-loader-inode-in-EX.patch` | v2 as sent |
+| `0001-ext4-reject-a-non-regular-boot-loader-inode-in-EXT4_.patch` | v1 as sent |
 | `repro/init.c`, `repro/run.sh`, `repro/uml.config` | reproducer, runner, kernel config |
-| `logs/` | console logs (`.log`) and `e2fsck` output (`.fsck`), unpatched (`base-*`) and patched (`fix-*`) |
+| `logs/` | console logs (`.log`) and `e2fsck` output (`.fsck`): unpatched (`base-*`), v2 (`fix-*`), v1 (`v1/fix-*`) |

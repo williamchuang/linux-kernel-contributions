@@ -1,6 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-2.0
-# usage: run.sh <uml-kernel> <fresh|dir|chrdev> <logfile>
+# usage: run.sh <uml-kernel> <fresh|dir|dir0|chrdev> <logfile>
 # Makes a fresh ext4 image, optionally sets the mode of inode 5 (the boot
 # loader inode) with debugfs, boots UML, runs EXT4_IOC_SWAP_BOOT twice,
 # then runs e2fsck -fn on the image.
@@ -14,6 +14,8 @@ mke2fs -q -F -t ext4 a.img
 case "$test" in
 	dir)    debugfs -w -R "sif <5> mode 040755" a.img >/dev/null 2>&1
 		debugfs -w -R "sif <5> links_count 1" a.img >/dev/null 2>&1 ;;
+	dir0)   debugfs -w -R "sif <5> mode 040755" a.img >/dev/null 2>&1
+		debugfs -w -R "sif <5> links_count 0" a.img >/dev/null 2>&1 ;;
 	chrdev) debugfs -w -R "sif <5> mode 020644" a.img >/dev/null 2>&1
 		debugfs -w -R "sif <5> links_count 1" a.img >/dev/null 2>&1 ;;
 	fresh)  ;;

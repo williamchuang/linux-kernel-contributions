@@ -6,7 +6,7 @@ Checking if /dev/shm is on tmpfs...OK
 Checking PROT_EXEC mmap in /dev/shm...OK
 Checking that ptrace can change system call numbers...OK
 Checking syscall emulation for ptrace...OK
-Linux version 7.4.0-rc3-g666539eecdf4-dirty (root@vm) (gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #1 Tue Nov 17 06:09:57 UTC 2026
+Linux version 7.4.0-rc3-g7b4ae43b77c9-dirty (root@vm) (gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #2 Tue Nov 17 06:54:41 UTC 2026
 random: crng init done
 Zone ranges:
   Normal   [mem 0x0000000000000000-0x000000006fffffff]
@@ -25,7 +25,7 @@ SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
 NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 64
 clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
 clocksource: timer: mask: 0xffffffffffffffff max_cycles: 0x1cd42e205, max_idle_ns: 881590404426 ns
-Calibrating delay loop... 6808.37 BogoMIPS (lpj=34041856)
+Calibrating delay loop... 6402.86 BogoMIPS (lpj=32014336)
 Checking that host ptys support output SIGIO...Yes
 pid_max: default: 32768 minimum: 301
 VFS: Disk quotas dquot_6.6.0
@@ -52,7 +52,7 @@ TCP: Hash tables configured (established 2048 bind 2048)
 UDP hash table entries: 256 (order: 2, 16384 bytes, linear)
 NET: Registered PF_UNIX/PF_LOCAL protocol family
 printk: legacy console [stderr0] disabled
-mconsole (version 2) initialized on /root/.uml/cQnF1l/mconsole
+mconsole (version 2) initialized on /root/.uml/wChbmV/mconsole
 Checking host MADV_REMOVE support...OK
 workingset: timestamp_bits=62 (anon: 57) max_order=16 bucket_order=0 (anon: 0)
 io scheduler mq-deadline registered
@@ -70,12 +70,12 @@ VFS: Mounted root (hostfs filesystem) on device 0:17.
 devtmpfs: mounted
 VFS: Pivoted into new rootfs
 Run /init as init process
-EXT4-fs (ubda): mounted filesystem ee35555d-98f7-4fcf-bbed-9137c6d040fe r/w with ordered data mode. Quota mode: none.
+EXT4-fs (ubda): mounted filesystem d8d9c2fe-763e-4c86-9432-3255fc5a1a65 r/w with ordered data mode. Quota mode: none.
 EXT4-fs error (device ubda): swap_inode_boot_loader:400: inode #5: comm init: boot loader inode is not a regular file (mode 020644)
 REPRO: swap 1 returned -1 (Structure needs cleaning)
 EXT4-fs error (device ubda): swap_inode_boot_loader:400: inode #5: comm init: boot loader inode is not a regular file (mode 020644)
 REPRO: swap 2 returned -1 (Structure needs cleaning)
-EXT4-fs (ubda): unmounting filesystem ee35555d-98f7-4fcf-bbed-9137c6d040fe.
+EXT4-fs (ubda): unmounting filesystem d8d9c2fe-763e-4c86-9432-3255fc5a1a65.
 REPRO: done
 reboot: Power down
 

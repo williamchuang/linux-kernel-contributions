@@ -1,0 +1,92 @@
+From 3d720c8b9e5b82ea55564aa9589884ab7ea189e5 Mon Sep 17 00:00:00 2001
+From: William Chuang <founder@logarcheon.com>
+Date: Tue, 17 Nov 2026 06:10:46 +0000
+Subject: [PATCH v2] ext4: reject a non-regular boot loader inode in
+ EXT4_IOC_SWAP_BOOT
+
+swap_inode_boot_loader() gets the boot loader inode (inode 5) with
+EXT4_IGET_BAD.  On a new filesystem that inode is unused, its mode is
+0, and ext4_iget() returns it as a bad inode, which make_bad_inode()
+sets to S_IFREG.  On a corrupted or crafted filesystem, ext4_iget()
+can instead return inode 5 as a directory or another non-regular type,
+fully set up with that type's inode and file operations.
+
+Such an inode is first passed to lock_two_nondirectories(), which
+warns if it is a directory:
+
+  WARNING: fs/inode.c:1271 at lock_two_nondirectories
+   swap_inode_boot_loader
+   __ext4_ioctl
+
+The "never used as a boot loader" branch then sets inode_bl->i_mode
+to S_IFREG, changing the type of a live in-core inode while it keeps
+the operations of its old type.
+
+Check the type right after ext4_iget(): report the corruption and
+return -EFSCORRUPTED unless the inode is a regular file.  Mark the
+rejected inode bad before iput(), as ext4_get_journal_inode() does, so
+that a corrupted inode 5 with i_nlink == 0 is not passed to the
+deletion path of ext4_evict_inode().  The unused
+case is unaffected, since make_bad_inode() has already made it
+S_IFREG.  This is the check Ted Ts'o suggested when the warning was
+first reported.
+
+Tested on UML at 666539eec: inode 5 set with debugfs to a directory
+(with i_links_count 1, and with 0) or a character device, then
+EXT4_IOC_SWAP_BOOT issued twice.  Before this patch, the directory
+cases warn, and all cases succeed and leave inode 5 as a regular file
+on disk.  After it, all return EFSCORRUPTED, the error is logged,
+inode 5 is unchanged, and no attempt is made to free it.  On a
+new filesystem the ioctl still succeeds, twice.  Not tested: KASAN
+builds and syzbot's 2023 reproducer.
+
+Fixes: 991ed014de08 ("ext4: fix bug_on in __es_tree_search caused by bad boot loader inode")
+Suggested-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/all/tencent_DABB2333139E8D1BCF4B5D1B2725FABA9108@qq.com/T/
+Link: https://sashiko.dev/#/bug/linux-8cfc8e22-8259-4c89-8a8b-64c16e4481a5
+Signed-off-by: William Chuang <founder@logarcheon.com>
+---
+v2: mark the rejected inode bad before iput(), as ext4_get_journal_inode()
+    does (Sashiko review).  Without it, a corrupted inode 5 with
+    i_links_count 0 went to the deletion path on iput(), which logged
+    "ext4_free_inode: reserved or nonexistent inode 5".  Added that case
+    to the tests.
+v1: https://lore.kernel.org/all/20261117061822.3826-1-founder@logarcheon.com/
+
+ fs/ext4/ioctl.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index e8e579498..8990122f5 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -390,6 +390,26 @@ static long swap_inode_boot_loader(struct super_block *sb,
+ 		return PTR_ERR(inode_bl);
+ 	ei_bl = EXT4_I(inode_bl);
+ 
++	/*
++	 * An unused boot loader inode comes back from ext4_iget() as a bad
++	 * inode, which make_bad_inode() leaves as S_IFREG.  Any other type
++	 * means the on-disk inode is corrupted; its type cannot be changed
++	 * in place below.
++	 */
++	if (!S_ISREG(inode_bl->i_mode)) {
++		EXT4_ERROR_INODE(inode_bl,
++				 "boot loader inode is not a regular file (mode 0%o)",
++				 inode_bl->i_mode);
++		/*
++		 * Drop it as a bad inode, as ext4_get_journal_inode() does:
++		 * with i_nlink == 0, a plain iput() would try to delete the
++		 * reserved inode, and otherwise it would stay cached.
++		 */
++		make_bad_inode(inode_bl);
++		iput(inode_bl);
++		return -EFSCORRUPTED;
++	}
++
+ 	/* Protect orig inodes against a truncate and make sure,
+ 	 * that only 1 swap_inode_boot_loader is running. */
+ 	lock_two_nondirectories(inode, inode_bl);
+-- 
+2.43.0
+
