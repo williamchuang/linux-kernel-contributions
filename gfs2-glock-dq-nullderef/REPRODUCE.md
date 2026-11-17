@@ -20,8 +20,8 @@ The crash trace matches the fix exactly: the filesystem is withdrawn,
 | crash commit | `a975094bf98ca97be9146f9d3b5681a6f9cf5ce3` |
 | prebuilt bzImage / vmlinux | linked under "Assets" on the dashboard row |
 
-The C reproducer mounts a crafted (corrupt) gfs2 image over a loop device with
-`errors=withdraw`, then does an `lseek(SEEK_DATA/SEEK_HOLE)` on a file in it.
+The C reproducer mounts a crafted (corrupt) GFS2 image over a loop device with
+`errors=withdraw`, then runs an `lseek()` data search on a file in it.
 The corruption forces a withdraw, which is the path that leaves the glock
 holder NULL.
 
@@ -40,7 +40,7 @@ VM. Never run a syzbot reproducer on a host system.
        git checkout a975094bf98c            # reproduce the crash
        # or, to confirm the fix:
        git checkout a975094bf98c
-       git am /path/to/v2-0001-gfs2-seek-fix.patch
+       git am /path/to/v2-0001-gfs2-glock-dq-nullderef-fix.patch
 
 2. **Config.** Use the syzbot `.config` (it already enables `KASAN`, `GFS2_FS`,
    loop, and the debug locking that turns the NULL deref into a clean report):
@@ -78,7 +78,7 @@ VM. Never run a syzbot reproducer on a host system.
 
 ## Note
 
-This is independent confirmation only. The fix has been reviewed by the gfs2
+This is independent confirmation only. The fix has been reviewed by the GFS2
 maintainer (Andreas Gruenbacher), who supplied its final form, and the `Reported-by:`/`Closes:`
 tags let syzbot auto-close the bug once the fix lands in a tree it tracks, so
 running this is optional — it is the check that `#syz test` would have

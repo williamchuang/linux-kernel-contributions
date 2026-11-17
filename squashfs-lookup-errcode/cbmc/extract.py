@@ -1,4 +1,4 @@
-# usage: extract.py <file> <func-start-regex>... ; prints verbatim function bodies
+# usage: extract.py <file> <func-start-regex>... ; prints verbatim function definitions
 import sys,re
 src=open(sys.argv[1]).read().split('\n')
 for pat in sys.argv[2:]:

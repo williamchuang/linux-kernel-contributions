@@ -1,7 +1,7 @@
 /* libFuzzer entry for asn1_ber_decoder().
  *
  * Coverage-guided fuzzing of the real decoder under ASan + UBSan.  The input
- * bytes come straight from the fuzzer; the callbacks assert (I2) that every
+ * bytes are taken directly from the fuzzer; the callbacks assert (I2) that every
  * (value, vlen) slice lies inside the buffer.  ASan catches any over-read
  * (I1) directly.  The decoder caps datalen at 65535, so inputs are truncated
  * to that.

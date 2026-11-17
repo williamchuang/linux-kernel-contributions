@@ -71,7 +71,7 @@ def buggySplit (_d : Nat) (oldSeg : Seg) (cluster : Tree) (newSeg : Seg) (newKey
   splitNode oldSeg cluster newSeg newKey
 
 /-- The buggy result is precisely the fixed result with its pre-shortcut
-    stripped off: the omission of that `shortcut d` is the whole bug. -/
+    removed: the omission of that `shortcut d` is the whole bug. -/
 theorem buggy_is_fixed_without_preshortcut
     (d oldSeg newSeg : Nat) (cluster : Tree) (newKey : Key) :
     buggySplit d oldSeg cluster newSeg newKey

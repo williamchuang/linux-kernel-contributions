@@ -1,16 +1,27 @@
-# gfs2: NULL pointer dereference in gfs2_seek_data/gfs2_seek_hole
+# GFS2: NULL pointer dereference in `gfs2_glock_dq` during `lseek()`
 
 **Status:** submitted, v2 under review.
 **Reported by:** syzbot. **Root-cause + v1:** William Chuang (Logarchéon Inc.).
-**Final form of the fix:** gfs2 maintainer Andreas Gruenbacher (`Suggested-by:`).
+**Final form of the fix:** GFS2 maintainer Andreas Gruenbacher (`Suggested-by:`).
 
 - syzbot bug: https://syzkaller.appspot.com/bug?extid=5a5f492ccae698fd7434
 - mailing-list thread (lore): https://lore.kernel.org/all/20261116180002.44336-1-founder@logarcheon.com/T/
 
+## A note on names
+
+`gfs2_seek_hole`, `SEEK_HOLE` and `gfs2` are real names in the Linux kernel.
+GFS2 is a filesystem, the Global File System 2. `gfs2_seek_hole()` is a C
+function in it, and `SEEK_HOLE` is a standard option of the `lseek()` system
+call: it finds the next unallocated region ("hole") of a sparse file, the
+counterpart of `SEEK_DATA`, which finds the next region holding data. These
+names appear verbatim in the patch and in quoted commit titles because they are
+the kernel's own identifiers.
+
 ## The bug
 
 A general protection fault in `gfs2_glock_dq`, reachable from userspace by an
-`lseek(SEEK_DATA/SEEK_HOLE)` on a gfs2 file whose filesystem has been withdrawn.
+`lseek()` data search (`SEEK_DATA` and its counterpart mode) on a file in a GFS2
+(Global File System 2) filesystem that has been withdrawn.
 KASAN reports a null-ptr-deref in range `[0x20-0x27]` — the `gl_lockref.lock`
 offset inside `struct gfs2_glock`.
 
@@ -18,8 +29,9 @@ offset inside `struct gfs2_glock`.
 
 When the filesystem has been withdrawn, `gfs2_glock_nq()` returns an error
 without queuing the holder, and `gfs2_glock_nq_init()` then calls
-`gfs2_holder_uninit()`, which sets `gh.gh_gl` to NULL. `gfs2_seek_data()` and
-`gfs2_seek_hole()` called `gfs2_glock_dq_uninit()` regardless of the outcome, so
+`gfs2_holder_uninit()`, which sets `gh.gh_gl` to NULL. The two `lseek()` search
+helpers in `fs/gfs2/inode.c` (`gfs2_seek_data()` and its counterpart) called
+`gfs2_glock_dq_uninit()` regardless of the outcome, so
 `gfs2_glock_dq()` dereferenced the NULL glock when it took
 `gl->gl_lockref.lock` — the general protection fault.
 
@@ -39,7 +51,7 @@ a `goto out` to skip the dequeue on the failure path.
    glock to the withdraw path. The fix follows the idiom already used elsewhere
    in the same file (`gfs2_fiemap`, `gfs2_getattr`).
 
-2. **Machine-checked Coq proof** (`Gfs2Holder.v`). A model of the control-flow
+2. **Machine-checked Coq proof** (`GlockHolder.v`). A model of the control-flow
    property the fix establishes, checked by `coqc` (Coq 8.18):
    - `fixed_is_safe` — the `goto out` flow dequeues only an *acquired* holder,
      so `gh_gl` is never NULL at `gfs2_glock_dq_uninit`;
@@ -47,7 +59,7 @@ a `goto out` to skip the dequeue on the failure path.
      failure path, i.e. the reported NULL dereference.
 
    ```sh
-   coqc Gfs2Holder.v        # exit 0 = both theorems accepted
+   coqc GlockHolder.v       # exit 0 = both theorems accepted
    ```
 
 3. **syzbot C reproducer** (`REPRODUCE.md`). Runtime confirmation: the crash
@@ -60,7 +72,7 @@ a `goto out` to skip the dequeue on the failure path.
 
 | File | What it is |
 |---|---|
-| `v2-0001-gfs2-seek-fix.patch` | the submitted patch (maintainer's final form, carried forward under the author's Signed-off-by) |
-| `Gfs2Holder.v` | the machine-checked Coq proof of the holder-lifecycle property |
+| `v2-0001-gfs2-glock-dq-nullderef-fix.patch` | the submitted patch (maintainer's final form, carried forward under the author's Signed-off-by) |
+| `GlockHolder.v` | the machine-checked Coq proof of the holder-lifecycle property |
 | `REPRODUCE.md` | download links and VM steps for the syzbot reproducer |
 | `README.md` | this file |

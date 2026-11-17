@@ -1,5 +1,5 @@
 (*
-  Gfs2Holder.v
+  GlockHolder.v
   ---------------------------------------------------------------------------
   A minimal machine-checked model of the control-flow property fixed by
   "gfs2: Fix NULL pointer dereference in gfs2_seek_data/gfs2_seek_hole".
