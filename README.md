@@ -11,7 +11,7 @@ root-cause analysis, and the verification artifacts.
 | [ext4 journal credit shortfalls (swap-boot, inline data)](ext4-journal-credits/) | `fs/ext4/ioctl.c`, `fs/ext4/inline.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261117052750.2955-1-founder@logarcheon.com/) |
 | [squashfs lookup: error code on directory header check](squashfs-lookup-errcode/) | `fs/squashfs/namei.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261116233530.47177-1-founder@logarcheon.com/) |
 | [GFS2 lseek NULL-pointer fix in `gfs2_glock_dq`](gfs2-glock-dq-nullderef/) | `fs/gfs2/inode.c` | Applied by the gfs2 maintainer (2026-11-17) | [lore](https://lore.kernel.org/all/20261116180002.44336-1-founder@logarcheon.com/T/) |
-| [ASN.1 decoder KUnit suite + verification kit](asn1-decoder-kunit/) | `lib/asn1_decoder.c` | RFC submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261117001711.47722-1-founder@logarcheon.com/) |
+| [ASN.1 decoder KUnit suite + verification kit](asn1-decoder-kunit/) | `lib/asn1_decoder.c` | Withdrawn (2026-11-17) — maintainer judged an in-tree suite not worth its upkeep | [lore](https://lore.kernel.org/all/20261117001711.47722-1-founder@logarcheon.com/) |
 | [assoc_array root-shortcut split fix](assoc_array-root-shortcut-fix/) | `lib/assoc_array.c` | Withdrawn (2026-11-16) — subsystem being replaced upstream | [lore](https://lore.kernel.org/all/20261116054112.39078-1-founder@logarcheon.com/) |
 
 ## Verification methods

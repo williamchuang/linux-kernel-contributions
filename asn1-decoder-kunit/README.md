@@ -5,8 +5,11 @@ A KUnit test suite for the kernel's ASN.1 BER/DER decoder (`lib/asn1_decoder.c`,
 the decoder's memory safety with **eight methods** across three families, and a
 reproducible **regression-detection demonstration** of the suite itself.
 
-**Status:** submitted as an RFC on 2026-11-17; builds and passes under
-`kunit.py` (13/13); under maintainer review.
+**Status:** withdrawn (2026-11-17) after maintainer review. The KEYS
+maintainer judged that the decoder changes too rarely (22 commits in 17
+years) for a permanent in-tree test suite to justify its upkeep. The suite
+builds and passes under `kunit.py` (13/13); the verification kit below
+found no over-read.
 Thread: https://lore.kernel.org/all/20261117001711.47722-1-founder@logarcheon.com/
 
 No over-read was found by any verification method, so the deliverable is the
