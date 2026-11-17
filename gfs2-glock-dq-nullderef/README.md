@@ -7,15 +7,13 @@
 - syzbot bug: https://syzkaller.appspot.com/bug?extid=5a5f492ccae698fd7434
 - mailing-list thread (lore): https://lore.kernel.org/all/20261116180002.44336-1-founder@logarcheon.com/T/
 
-## A note on names
+## Terms
 
-`gfs2_seek_hole`, `SEEK_HOLE` and `gfs2` are real names in the Linux kernel.
-GFS2 is a filesystem, the Global File System 2. `gfs2_seek_hole()` is a C
-function in it, and `SEEK_HOLE` is a standard option of the `lseek()` system
-call: it finds the next unallocated region ("hole") of a sparse file, the
-counterpart of `SEEK_DATA`, which finds the next region holding data. These
-names appear verbatim in the patch and in quoted commit titles because they are
-the kernel's own identifiers.
+- **GFS2** (Global File System 2): a shared-disk cluster filesystem in the Linux kernel.
+- **`lseek()`**: the system call that moves a file's read/write position.
+- **`SEEK_DATA` / `SEEK_HOLE`**: `lseek()` options that find the next region of a
+  sparse file that holds data, or the next unallocated region.
+- **glock**: GFS2's cluster-wide lock; `gfs2_glock_dq()` releases one.
 
 ## The bug
 
