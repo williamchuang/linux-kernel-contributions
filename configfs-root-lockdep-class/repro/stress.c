@@ -33,6 +33,8 @@
 
 static volatile long *count;
 
+static int nworkers = 3;
+
 static void worker(int id)
 {
 	DIR *d;
@@ -46,6 +48,14 @@ static void worker(int id)
 		case 1:
 			if (!symlink(UVC "/uncompressed/u", UVC "/header/h/u"))
 				unlink(UVC "/header/h/u");
+			break;
+		case 3:
+			/*
+			 * rename() between the configfs root and a directory
+			 * below it: lock_rename() locks the root first, then
+			 * the descendant, before vfs_rename() fails.
+			 */
+			rename(CFS "/nonexistent", WWN "/nonexistent");
 			break;
 		case 2:
 			d = opendir(CFS);
@@ -62,11 +72,13 @@ static void worker(int id)
 
 int main(void)
 {
-	pid_t pid[3];
-	long before[3];
+	pid_t pid[4];
+	long before[4];
 	int i, secs, stalled = 0;
 
 	mount("proc", "/proc", "proc", 0, "");
+	if (access("/rename", F_OK) == 0)
+		nworkers = 4;
 	mount("sysfs", "/sys", "sysfs", 0, "");
 	mount("devtmpfs", "/dev", "devtmpfs", 0, "");
 	mount("configfs", CFS, "configfs", 0, "");
@@ -80,7 +92,7 @@ int main(void)
 
 	count = mmap(NULL, 4096, PROT_READ | PROT_WRITE,
 		     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-	for (i = 0; i < 3; i++) {
+	for (i = 0; i < nworkers; i++) {
 		pid[i] = fork();
 		if (!pid[i])
 			worker(i);
@@ -88,24 +100,35 @@ int main(void)
 	for (i = 0; i < SECONDS; i++) {
 		int j;
 
-		for (j = 0; j < 3; j++)
+		for (j = 0; j < nworkers; j++)
 			before[j] = count[j];
 		sleep(1);
-		for (j = 0; j < 3; j++)
+		for (j = 0; j < nworkers; j++)
 			if (count[j] == before[j])
 				stalled = 1;
 		if (stalled)
 			break;
 	}
 	secs = i;
-	for (i = 0; i < 3; i++)
-		kill(pid[i], SIGKILL);
-	for (i = 0; i < 3; i++)
-		waitpid(pid[i], NULL, 0);
+	if (stalled) {
+		/* Show where the blocked tasks are waiting. */
+		FILE *f = fopen("/proc/sysrq-trigger", "w");
+
+		if (f) {
+			fputs("w", f);
+			fclose(f);
+		}
+		sleep(2);
+	} else {
+		for (i = 0; i < nworkers; i++)
+			kill(pid[i], SIGKILL);
+		for (i = 0; i < nworkers; i++)
+			waitpid(pid[i], NULL, 0);
+	}
 	printf("STRESS: %s after %d s; iterations: tpgt mkdir/rmdir %ld, "
-	       "symlink/unlink %ld, root readdir+chmod %ld\n",
+	       "symlink/unlink %ld, root readdir+chmod %ld, rename %ld\n",
 	       stalled ? "a worker STALLED" : "no stall", secs,
-	       count[0], count[1], count[2]);
+	       count[0], count[1], count[2], count[3]);
 	fflush(stdout);
 	sync();
 	reboot(RB_POWER_OFF);

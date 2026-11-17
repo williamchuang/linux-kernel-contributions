@@ -1,11 +1,40 @@
 # configfs: give the root directory inode its own lockdep class
 
-**Status:** submitted 2026-11-16, under review.
+**Status:** withdrawn (2026-11-17). Sashiko's review found a real
+deadlock that the analysis below missed; see "Correction" just below.
 **Reported by:** syzbot. **Analysis, fix and reproducer:** William Chuang (Logarchéon Inc.).
 
 - syzbot bug: https://syzkaller.appspot.com/bug?extid=c75a7db5ca6ae96ed2d4
   ("possible deadlock in configfs_depend_item_unlocked", open since July 2026)
-- mailing-list thread (lore): https://lore.kernel.org/all/?q=s%3A%22give+the+root+directory+inode+its+own+lockdep+class%22
+- mailing-list thread (lore): https://lore.kernel.org/all/20261117065314.4309-1-founder@logarcheon.com/T/
+
+## Correction (2026-11-17): a real deadlock
+
+The path check below missed `rename()`. `lock_rename()` locks both
+parent directories before `vfs_rename()` finds that configfs has no
+`->rename()`, and when one parent is the configfs root it locks the root
+first. `mkdir` of `target/usb_gadget/naa.<wwn>/tpgt_1` runs with the
+`naa.<wwn>` directory locked by the VFS, and `usbg_make_tpg()` then locks
+the root in `configfs_depend_item_unlocked()`. The two orders are
+opposite, so the two calls can deadlock.
+
+This was reproduced on unpatched mainline (`666539eec`) in QEMU with
+2 CPUs: one process loops `mkdir`/`rmdir` of `tpgt_1`, another loops
+`rename()` from the configfs root into `naa.<wwn>`. Both hang within
+about a second (`repro/run-stress.sh <bzImage> <log> rename`;
+`logs/stress-rename-unpatched.log`). The blocked-task dump shows:
+
+- `mkdir`: `down_write` ← `configfs_depend_item_unlocked` ←
+  `usbg_make_tpg` ← `target_fabric_make_tpg` ← `configfs_mkdir` ← `vfs_mkdir`
+- `rename`: `down_write_nested` ← `lock_two_directories` ←
+  `__start_renaming` ← `filename_renameat2`
+
+The patch would have hidden one link of this from lockdep, so it was
+withdrawn and the deadlock reported on the list, in the patch thread
+(reply of 2026-11-17 15:04 UTC):
+https://lore.kernel.org/all/20261117065314.4309-1-founder@logarcheon.com/T/
+
+The sections below are the original analysis, kept as submitted.
 
 ## The report
 
@@ -116,3 +145,4 @@ with `qemu-system-x86_64`. Logs of the runs above are in `logs/`.
 | `repro/kselftest-init.sh` | initramfs init used for the configfs kselftest |
 | `logs/unpatched.log`, `logs/patched.log` | QEMU console logs of the reproducer |
 | `logs/kselftest-*.log`, `logs/stress-*.log` | kselftest and stress runs, unpatched and patched |
+| `logs/stress-rename-unpatched.log` | the rename-versus-mkdir deadlock on unpatched mainline, with the blocked-task dump |
