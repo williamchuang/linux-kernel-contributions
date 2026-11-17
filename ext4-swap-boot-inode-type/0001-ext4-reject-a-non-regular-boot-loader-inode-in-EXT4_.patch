@@ -1,0 +1,75 @@
+From 7b4ae43b77c92b1ed25677ef74ceb8dd670df346 Mon Sep 17 00:00:00 2001
+From: William Chuang <founder@logarcheon.com>
+Date: Tue, 17 Nov 2026 06:10:46 +0000
+Subject: [PATCH] ext4: reject a non-regular boot loader inode in
+ EXT4_IOC_SWAP_BOOT
+
+swap_inode_boot_loader() gets the boot loader inode (inode 5) with
+EXT4_IGET_BAD.  On a new filesystem that inode is unused, its mode is
+0, and ext4_iget() returns it as a bad inode, which make_bad_inode()
+sets to S_IFREG.  On a corrupted or crafted filesystem, ext4_iget()
+can instead return inode 5 as a directory or another non-regular type,
+fully set up with that type's inode and file operations.
+
+Such an inode is first passed to lock_two_nondirectories(), which
+warns if it is a directory:
+
+  WARNING: fs/inode.c:1271 at lock_two_nondirectories
+   swap_inode_boot_loader
+   __ext4_ioctl
+
+The "never used as a boot loader" branch then sets inode_bl->i_mode
+to S_IFREG, changing the type of a live in-core inode while it keeps
+the operations of its old type.
+
+Check the type right after ext4_iget(): report the corruption and
+return -EFSCORRUPTED unless the inode is a regular file.  The unused
+case is unaffected, since make_bad_inode() has already made it
+S_IFREG.  This is the check Ted Ts'o suggested when the warning was
+first reported.
+
+Tested on UML at 666539eec: inode 5 set to a directory or a character
+device with debugfs, then EXT4_IOC_SWAP_BOOT issued twice.  Before
+this patch, the directory case warns, and both cases succeed and
+leave inode 5 as a regular file on disk.  After it, both return
+EFSCORRUPTED, the error is logged, and inode 5 is unchanged.  On a
+new filesystem the ioctl still succeeds, twice.  Not tested: KASAN
+builds and syzbot's 2023 reproducer.
+
+Fixes: 991ed014de08 ("ext4: fix bug_on in __es_tree_search caused by bad boot loader inode")
+Suggested-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/all/tencent_DABB2333139E8D1BCF4B5D1B2725FABA9108@qq.com/T/
+Link: https://sashiko.dev/#/bug/linux-8cfc8e22-8259-4c89-8a8b-64c16e4481a5
+Signed-off-by: William Chuang <founder@logarcheon.com>
+---
+ fs/ext4/ioctl.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index e8e579498..cf005fe2d 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -390,6 +390,20 @@ static long swap_inode_boot_loader(struct super_block *sb,
+ 		return PTR_ERR(inode_bl);
+ 	ei_bl = EXT4_I(inode_bl);
+ 
++	/*
++	 * An unused boot loader inode comes back from ext4_iget() as a bad
++	 * inode, which make_bad_inode() leaves as S_IFREG.  Any other type
++	 * means the on-disk inode is corrupted; its type cannot be changed
++	 * in place below.
++	 */
++	if (!S_ISREG(inode_bl->i_mode)) {
++		EXT4_ERROR_INODE(inode_bl,
++				 "boot loader inode is not a regular file (mode 0%o)",
++				 inode_bl->i_mode);
++		iput(inode_bl);
++		return -EFSCORRUPTED;
++	}
++
+ 	/* Protect orig inodes against a truncate and make sure,
+ 	 * that only 1 swap_inode_boot_loader is running. */
+ 	lock_two_nondirectories(inode, inode_bl);
+-- 
+2.43.0
+

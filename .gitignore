@@ -19,3 +19,5 @@ crash-*
 *.aux
 ext4-journal-credits/repro/root/
 ext4-journal-credits/repro/*.img
+ext4-swap-boot-inode-type/repro/root/
+ext4-swap-boot-inode-type/repro/*.img
