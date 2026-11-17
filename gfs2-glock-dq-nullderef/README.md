@@ -10,10 +10,14 @@
 ## Terms
 
 - **GFS2** (Global File System 2): a shared-disk cluster filesystem in the Linux kernel.
-- **`lseek()`**: the system call that moves a file's read/write position.
+- **`lseek()`**: the system call that moves a file's read/write position. This
+  is a fixed name in the kernel and its user-space interface, so it is used here
+  as is.
 - **`SEEK_DATA` / `SEEK_HOLE`**: `lseek()` options that find the next region of a
-  sparse file that holds data, or the next unallocated region.
-- **glock**: GFS2's cluster-wide lock; `gfs2_glock_dq()` releases one.
+  sparse file that holds data, or the next unallocated region. These are fixed
+  names defined by the kernel, so they are used here as is.
+- **glock**: GFS2's cluster-wide lock; `gfs2_glock_dq()` releases one. These are
+  fixed names in the kernel source, so they are used here as is.
 
 ## The bug
 
