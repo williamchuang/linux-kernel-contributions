@@ -139,9 +139,9 @@ All kit harnesses compile `-Wall -Wextra -Wpedantic` clean.
 
 ## Open items
 
-- The in-kernel `kunit.py` run (grammar compiled in-tree by `scripts/asn1_compiler`,
-  KASAN build) is the final gate before submission; the userspace dry-run is
-  green but is not that run.
+- The in-kernel `kunit.py` run on UML (grammar compiled in-tree by
+  `scripts/asn1_compiler`) passed 13/13 and is reported in the RFC. A run on a
+  KASAN-enabled build has not been recorded here.
 - `Asn1Safety.lean` wants one `lean` compile on a real toolchain; the Coq proof
   already closes here, and the model-check backs both.
 - CBMC reaches larger lengths with more solver time; the bound here is a

@@ -353,6 +353,7 @@ static struct kunit_suite asn1_decoder_test_suite = {
 	.name = "asn1_decoder",
 	.test_cases = asn1_decoder_test_cases,
 };
+
 kunit_test_suite(asn1_decoder_test_suite);
 
 MODULE_DESCRIPTION("KUnit tests for the ASN.1 BER/DER decoder");
