@@ -54,7 +54,7 @@ a `goto out` to skip the dequeue on the failure path.
    appears on an unpatched KASAN kernel and is gone with the patch applied. The
    reproducer and kernel config are linked from the syzbot bug page; steps to
    build and run them in a VM are in `REPRODUCE.md`. (Running this is optional —
-   the maintainer has already reviewed and accepted the fix.)
+   the maintainer has reviewed the fix and supplied its final form.)
 
 ## Files
 
@@ -64,19 +64,3 @@ a `goto out` to skip the dequeue on the failure path.
 | `Gfs2Holder.v` | the machine-checked Coq proof of the holder-lifecycle property |
 | `REPRODUCE.md` | download links and VM steps for the syzbot reproducer |
 | `README.md` | this file |
-
-## Companion contribution
-
-A separate, heavier piece of work in this repository — the ASN.1 BER/DER
-decoder KUnit suite (`../asn1-decoder-kunit/`) — is verified with **eight
-methods** across three families:
-
-- *Proofs on an abstract model:* (1) Coq proof, (2) Lean proof, (3) an
-  executable model-check.
-- *Proof on the real C:* (4) CBMC bounded model checking of the actual decoder.
-- *Exhaustive and stress execution:* (5) exhaustive enumeration under a guard
-  page, (6) randomized + grammar-biased + crafted stress under a guard page,
-  (7) libFuzzer coverage-guided fuzzing under ASan/UBSan, (8) an AddressSanitizer
-  + UBSan run — with mutation testing to confirm the harness has detection power.
-
-Those eight methods describe the ASN.1 decoder work, not this gfs2 fix.

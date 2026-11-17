@@ -25,12 +25,11 @@ The C reproducer mounts a crafted (corrupt) gfs2 image over a loop device with
 The corruption forces a withdraw, which is the path that leaves the glock
 holder NULL.
 
-## Why this cannot run in Claude's sandbox
+## Requirements
 
 The reproducer mounts filesystems, sets up loop devices, and runs as root
-against a custom KASAN kernel booted in a VM. This sandbox cannot boot a custom
-kernel or take those privileges, so the steps below are for a local machine
-with KVM. Never run a syzbot reproducer on your host — only inside a throwaway VM.
+against a custom KASAN kernel, so it needs a machine with KVM and a throwaway
+VM. Never run a syzbot reproducer on a host system.
 
 ## Steps (local machine with KVM)
 
@@ -79,8 +78,8 @@ with KVM. Never run a syzbot reproducer on your host — only inside a throwaway
 
 ## Note
 
-This is independent confirmation only. The fix is already reviewed and accepted
-by the gfs2 maintainer (Andreas Gruenbacher), and the `Reported-by:`/`Closes:`
+This is independent confirmation only. The fix has been reviewed by the gfs2
+maintainer (Andreas Gruenbacher), who supplied its final form, and the `Reported-by:`/`Closes:`
 tags let syzbot auto-close the bug once the fix lands in a tree it tracks, so
 running this is optional — it is the check that `#syz test` would have
 performed automatically had syzbot's test bot not been disabled.

@@ -3,7 +3,7 @@
 A bug fix and KUnit test suite for the Linux kernel's generic associative
 array (`lib/assoc_array.c`), submitted to LKML.
 
-**Status:** Submitted — under review (2026-11-16)
+**Status:** Withdrawn (2026-11-16)
 **Archive:** https://lore.kernel.org/all/20261116054112.39078-1-founder@logarcheon.com/
 **Author:** William Chuang <founder@logarcheon.com> · Logarchéon Inc.
 
@@ -54,7 +54,10 @@ GPL-2.0 throughout, matching the kernel tree.
 
 ## Status and review history
 
-**Status:** v1 submitted to LKML, 2026-11-16 — under review.
+**Status:** v1 submitted to LKML on 2026-11-16, then withdrawn. Maintainer
+feedback was that `assoc_array` is being replaced upstream by rhashtable, so
+new tests and fixes for it are not wanted. The analysis and verification are
+kept here as a record.
 
 **Archive:** https://lore.kernel.org/all/20261116054112.39078-1-founder@logarcheon.com/
 
@@ -62,5 +65,5 @@ GPL-2.0 throughout, matching the kernel tree.
 - Automated review (Sashiko AI, on the public keyrings list) flagged that
   building the test as a module (`ASSOC_ARRAY_KUNIT_TEST=m`) cannot resolve
   the non-exported `assoc_array_*()` symbols.
-- v2 planned: make the test built-in only (`bool`, `depends on KUNIT=y`)
-  to fix the modular build, and cc Jarkko Sakkinen.
+- A v2 (built-in-only test, `depends on KUNIT=y`) was planned to fix the
+  modular build, and was not sent after the withdrawal.
