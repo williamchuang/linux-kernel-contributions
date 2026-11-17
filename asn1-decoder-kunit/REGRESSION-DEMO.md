@@ -85,3 +85,7 @@ catches that.
 - `kunitconfig` — the config used (with KASAN).
 - `clean-run.log` — Result 1.
 - `regressed-run.log` — Result 2.
+
+## Independent reproduction
+
+Reproduced on x86_64 + QEMU: PASS 13/13 (clean) -> FAIL 12/13 (asn1_test_truncated_content caught, with the regression applied) -> PASS 13/13 (reverted).

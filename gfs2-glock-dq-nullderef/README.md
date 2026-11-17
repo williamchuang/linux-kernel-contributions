@@ -41,7 +41,7 @@ a `goto out` to skip the dequeue on the failure path.
    glock to the withdraw path. The fix follows the idiom already used elsewhere
    in the same file (`gfs2_fiemap`, `gfs2_getattr`).
 
-2. **Machine-checked Coq proof** (`Gfs2Holder.v`). A model of the control-flow
+2. **Machine-checked Coq proof** (`GlockHolder.v`). A model of the control-flow
    property the fix establishes, checked by `coqc` (Coq 8.18):
    - `fixed_is_safe` — the `goto out` flow dequeues only an *acquired* holder,
      so `gh_gl` is never NULL at `gfs2_glock_dq_uninit`;
@@ -49,7 +49,7 @@ a `goto out` to skip the dequeue on the failure path.
      failure path, i.e. the reported NULL dereference.
 
    ```sh
-   coqc Gfs2Holder.v        # exit 0 = both theorems accepted
+   coqc GlockHolder.v        # exit 0 = both theorems accepted
    ```
 
 3. **syzbot C reproducer** (`REPRODUCE.md`). Runtime confirmation: the crash
@@ -63,7 +63,7 @@ a `goto out` to skip the dequeue on the failure path.
 | File | What it is |
 |---|---|
 | `v2-0001-gfs2-seek-fix.patch` | the submitted patch (maintainer's final form, carried forward under the author's Signed-off-by) |
-| `Gfs2Holder.v` | the machine-checked Coq proof of the holder-lifecycle property |
+| `GlockHolder.v` | the machine-checked Coq proof of the holder-lifecycle property |
 | `REPRODUCE.md` | download links and VM steps for the syzbot reproducer |
 | `README.md` | this file |
 
