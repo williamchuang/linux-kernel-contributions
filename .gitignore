@@ -21,3 +21,7 @@ ext4-journal-credits/repro/root/
 ext4-journal-credits/repro/*.img
 ext4-swap-boot-inode-type/repro/root/
 ext4-swap-boot-inode-type/repro/*.img
+configfs-root-lockdep-class/repro/initramfs/
+configfs-root-lockdep-class/repro/initramfs.cpio
+configfs-root-lockdep-class/repro/stress-initramfs/
+configfs-root-lockdep-class/repro/stress.cpio

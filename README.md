@@ -6,6 +6,7 @@ root-cause analysis, and the verification artifacts.
 
 | Contribution | Subsystem | Status | Archive |
 |---|---|---|---|
+| [configfs: root directory lockdep class (false USB gadget/target deadlock report)](configfs-root-lockdep-class/) | `fs/configfs/mount.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/?q=s%3A%22give+the+root+directory+inode+its+own+lockdep+class%22) |
 | [ext4 swap-boot: reject a non-regular boot loader inode](ext4-swap-boot-inode-type/) | `fs/ext4/ioctl.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/?q=s%3A%22reject+a+non-regular+boot+loader+inode%22) |
 | [ext4 journal credit shortfalls (swap-boot, inline data)](ext4-journal-credits/) | `fs/ext4/ioctl.c`, `fs/ext4/inline.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261117052750.2955-1-founder@logarcheon.com/) |
 | [squashfs lookup: error code on directory header check](squashfs-lookup-errcode/) | `fs/squashfs/namei.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261116233530.47177-1-founder@logarcheon.com/) |
@@ -18,6 +19,9 @@ root-cause analysis, and the verification artifacts.
 Each folder's `VERIFICATION.md` or `README.md` gives the methods and exact
 commands. In brief:
 
+- **configfs:** a check of every path that takes the configfs root lock,
+  then a QEMU lockdep run of the three operations behind the reported
+  cycle, before and after the fix.
 - **ext4 swap-boot inode type:** crafted images (inode 5 as a directory or
   a character device) run on User Mode Linux before and after the fix;
   the normal first use of the ioctl is checked to still work.
