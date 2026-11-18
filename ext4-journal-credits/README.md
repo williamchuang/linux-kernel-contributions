@@ -1,11 +1,13 @@
 # ext4: journal credit shortfalls in swap-boot and inline-data writes
 
-**Status:** submitted 2026-11-16, under review.
+**Status:** submitted 2026-11-16; both patches reviewed by Jan Kara (`Reviewed-by`, 2026-11-18), awaiting the ext4 maintainer.
 **Reported by:** syzbot. **Root cause, fixes and reproducers:** William Chuang (Logarchéon Inc.).
 
 - syzbot bug: https://syzkaller.appspot.com/bug?extid=e8180f5590685cbc9037
   ("WARNING in jbd2_journal_dirty_metadata (4)")
 - mailing-list thread (lore): https://lore.kernel.org/all/20261117052750.2955-1-founder@logarcheon.com/
+- review of 1/2 (Jan Kara, `Reviewed-by`): https://lore.kernel.org/all/emqu2ydrdock22ssfqg7sm2gjlzcmep3mbaqeqmpzrcshdxo3q@4cccpl7jgqf2/
+- review of 2/2 (Jan Kara, `Reviewed-by`): https://lore.kernel.org/all/ko53oxbh4jdnp5rqxhavjen2phwv2bliqeqfuvip5c6n7lfwjc@qnknqdhu7jor/
 - sent as a reply to the syzbot report: https://lore.kernel.org/all/6afabb02.3f8ef711.2cc87e.0003.GAE@google.com/T/
 
 ## The bug

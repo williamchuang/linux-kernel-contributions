@@ -9,7 +9,7 @@ root-cause analysis, and the verification artifacts.
 | Contribution | Subsystem | Status | Archive |
 |---|---|---|---|
 | [ext4 swap-boot: reject a non-regular boot loader inode](ext4-swap-boot-inode-type/) | `fs/ext4/ioctl.c` | v3 submitted — under review; Sashiko: no issues (2026-11-17) | [lore](https://lore.kernel.org/all/20261117061822.3826-1-founder@logarcheon.com/) |
-| [ext4 journal credit shortfalls (swap-boot, inline data)](ext4-journal-credits/) | `fs/ext4/ioctl.c`, `fs/ext4/inline.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261117052750.2955-1-founder@logarcheon.com/) |
+| [ext4 journal credit shortfalls (swap-boot, inline data)](ext4-journal-credits/) | `fs/ext4/ioctl.c`, `fs/ext4/inline.c` | Reviewed-by Jan Kara (both patches, 2026-11-18) — awaiting maintainer | [lore](https://lore.kernel.org/all/20261117052750.2955-1-founder@logarcheon.com/) |
 | [squashfs lookup: error code on directory header check](squashfs-lookup-errcode/) | `fs/squashfs/namei.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261116233530.47177-1-founder@logarcheon.com/) |
 | [GFS2 lseek NULL-pointer fix in `gfs2_glock_dq`](gfs2-glock-dq-nullderef/) | `fs/gfs2/inode.c` | Applied by the gfs2 maintainer (2026-11-17) | [lore](https://lore.kernel.org/all/20261116180002.44336-1-founder@logarcheon.com/T/) |
 | [ASN.1 decoder KUnit suite + verification kit](asn1-decoder-kunit/) | `lib/asn1_decoder.c` | Withdrawn (2026-11-17) — maintainer judged an in-tree suite not worth its upkeep | [lore](https://lore.kernel.org/all/20261117001711.47722-1-founder@logarcheon.com/) |
