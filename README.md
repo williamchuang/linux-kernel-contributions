@@ -4,9 +4,10 @@ Verified contributions to the mainline Linux kernel from Logarchéon Inc.
 Each directory documents one submission: the patches as sent to LKML, the
 root-cause analysis, and the verification artifacts.
 
+**Status (2026-11-17):** 6 submissions — **1 accepted** · **3 in review** · **2 withdrawn**.
+
 | Contribution | Subsystem | Status | Archive |
 |---|---|---|---|
-| [configfs: root directory lockdep class; real rename/mkdir deadlock found](configfs-root-lockdep-class/) | `fs/configfs/mount.c` | Withdrawn (2026-11-17) — review found a real deadlock, reported with a reproducer | [lore](https://lore.kernel.org/all/20261117065314.4309-1-founder@logarcheon.com/T/) |
 | [ext4 swap-boot: reject a non-regular boot loader inode](ext4-swap-boot-inode-type/) | `fs/ext4/ioctl.c` | v2 submitted — under review (2026-11-17) | [lore](https://lore.kernel.org/all/20261117061822.3826-1-founder@logarcheon.com/) |
 | [ext4 journal credit shortfalls (swap-boot, inline data)](ext4-journal-credits/) | `fs/ext4/ioctl.c`, `fs/ext4/inline.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261117052750.2955-1-founder@logarcheon.com/) |
 | [squashfs lookup: error code on directory header check](squashfs-lookup-errcode/) | `fs/squashfs/namei.c` | Submitted — under review (2026-11-16) | [lore](https://lore.kernel.org/all/20261116233530.47177-1-founder@logarcheon.com/) |
@@ -19,13 +20,6 @@ root-cause analysis, and the verification artifacts.
 Each folder's `VERIFICATION.md` or `README.md` gives the methods and exact
 commands. In brief:
 
-- **configfs:** a check of every path that takes the configfs root lock
-  (which missed `rename()`; a QEMU stress run then reproduced the real
-  rename/mkdir deadlock that review pointed out);
-  a QEMU lockdep run of the three operations behind the reported cycle,
-  before and after the fix; the configfs kselftest (25/25) and a 60-second
-  three-process stress run on both kernels; and a comparison showing the
-  object code is identical without lockdep.
 - **ext4 swap-boot inode type:** crafted images (inode 5 as a directory,
   with link count 1 and 0, or as a character device) run on User Mode
   Linux before and after the fix; the normal first use of the ioctl is
