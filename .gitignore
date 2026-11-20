@@ -21,3 +21,53 @@ ext4-journal-credits/repro/root/
 ext4-journal-credits/repro/*.img
 ext4-swap-boot-inode-type/repro/root/
 ext4-swap-boot-inode-type/repro/*.img
+
+# macOS
+._*
+.AppleDouble
+.Spotlight-V100
+.Trashes
+__MACOSX/
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Editors
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# LaTeX auxiliary output (keep .tex and .pdf)
+*.bbl
+*.blg
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
