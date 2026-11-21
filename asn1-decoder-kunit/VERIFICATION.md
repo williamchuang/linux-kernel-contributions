@@ -133,7 +133,7 @@ libFuzzer target, the mutation tests, the sanitizer build.
         fuzz_asn1.c ../src/asn1_decoder.c ../src/asn1_test.asn1.c -o fuzz_asn1 && ./fuzz_asn1 corpus -max_total_time=90
 
     # KUnit dry-run against the real decoder
-    cd ../src && gcc -O2 -Ishiminc -I. -include stddef.h run_kunit.c asn1_decoder.c asn1_test.asn1.c -o run_kunit && ./run_kunit
+    cd ../src && gcc -O2 -Ishiminc -Iinc -I. -include stddef.h run_kunit.c asn1_decoder.c asn1_test.asn1.c -o run_kunit && ./run_kunit
 
 All kit harnesses compile `-Wall -Wextra -Wpedantic` clean.
 

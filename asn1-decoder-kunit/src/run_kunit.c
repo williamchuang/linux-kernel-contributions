@@ -1,6 +1,6 @@
 #include <kunit/test.h>
 #include "asn1_test.asn1.h"
-#include "/home/claude/deliver-asn1/asn1_decoder_kunit.c"
+#include "../upstream/asn1_decoder_kunit.c"
 int main(void){
   int total=0,failed=0;
   for(struct kunit_case*c=asn1_decoder_test_cases; c->name; c++){
